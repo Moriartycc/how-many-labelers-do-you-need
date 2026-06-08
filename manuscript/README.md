@@ -3,7 +3,10 @@ This directory contains the manuscript source files for the paper:  How many lab
 Authors: Chen Cheng^1, Hilal Asi^2 and John Duchi^3
 
 Affiliations:
-University of Chicago, Department of Statistics
-Apple Inc.
-Stanford University, Departments of Statistics and Electrical Engineering
+
+1. University of Chicago, Department of Statistics
+
+2. Apple Inc.
+
+3. Stanford University, Departments of Statistics and Electrical Engineering
 
