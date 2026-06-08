@@ -1,0 +1,38 @@
+\section{Inconsistency from aggregate labels}
+\label{sec:imp-mv}
+
+%Our theoretical analysis begins with a few simple observations that at least
+%suggest the importance of using non-aggregated labels: calibration
+%for labeler uncertainty is, in a
+%sense, impossible with only aggregated data, which is in strong contrast to
+%algorithms that use non-aggregated data.
+%
+To make clear the impossibility of estimation without some knowledge of the
+link and number $m$ of labelers, we show that there exist distributions with
+different linear classifiers $\theta\opt$ and $\wb{\theta}$ generating the
+same data distribution.  Consider a generalized linear model for binary
+classification, with link  $\sigma\opt \in \fsymlink$, $\theta\opt
+\in \R^d$, define the model \eqref{eq:general-calibration-model} with
+$\Prb_{\sigma\opt, \theta\opt}(Y = y \mid X = x) = \sigma\opt ( y \<
+\theta\opt, x\>)$, and let $X_1, X_2, \ldots, X_n \simiid \normal(0, I_d)$,
+where labels follow $Y_{ij}\simiid
+\Prb_{\sigma\opt,\theta\opt}(\cdot \mid X_i)$, $j = 1, \ldots, m$;
+$\majY_i = \maj(Y_{i1}, \ldots, Y_{im})$ denotes the majority-vote.
+Then
+there always exists a calibration function $\wb{\sigma}$ and label size
+$\wb{m}$ such that $\majY_i$ has identical distribution under both the
+model~\eqref{eq:general-calibration-model} and with $\wb{\sigma},
+\wb{m}$ replacing $\sigma\opt$ and $m$.  Letting
+$\P_{(X,\majY)}^{\sigma\opt, \theta\opt, m}$ denote the induced distribution
+on $(X_i, \majY_i)$, we have the following formal statement, which we prove
+in Appendix~\ref{proof:impossibility}.
+
+\begin{proposition} \label{prop:impossibility}
+  Suppose $\sigma\opt \in \fsymlink$ satisfies $\sigma\opt(t) > 0$ for all $ t > 0$. For any $\wb{\theta} \in \R^d$ such that $\wb{\theta}/\ltwo{\wb{\theta}} = \theta\opt/\ltwo{\theta\opt}$ and any positive integer $\wb{m}$, there is another link function $\wb{\sigma}$ such that 
+  \begin{align*}
+    \P_{(X,\majY)}^{\sigma\opt, \theta\opt, m} \stackrel{\textup{dist}}{=}
+    \P_{(X,\majY)}^{\wb{\sigma}, \wb{\theta}, \wb{m}}.
+  \end{align*}
+\end{proposition}
+
+%\cc{A comment for this section is required. What are we doing here? We basically say if the non-aggregated data is completely not revealed to us, it is impossible to calibrate. This gives rise to the study of learning from non-aggregated data as it should carry more information, and the most important of which---whether it is possible to achieve calibrated estimation.  Although It is possible to achieve partial recovery only knowing the number of labelers $m$ with some additional assumptions, but we will focus on the regime learning from revealed annotations for all labelers. }

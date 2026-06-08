@@ -1,0 +1,37 @@
+\subsection{Proof of Proposition~\ref{prop:impossibility}} \label{proof:impossibility}
+We assume without loss of generality $m$ is odd. When $m$ is even the proof
+is identical, except that we randomize $\majY$ when we have equal votes for
+both classes. As the marginal distribution of $X$ is $\normal(0, I_d)$ for
+both $\P_{(X,\majY)}^{\sigma\opt, \theta\opt, m}$ and
+$\P_{(X,\majY)}^{\wb{\sigma}, \wb{\theta}, \wb{m}}$, we only have to show
+the existence of a link $\wb{\sigma} \in \fsymlink$ such that the
+conditional distribution on any $X=x$ is the same, i.e.,
+\begin{align*}
+  % \label{eq:impossiblity-equation}
+  \Prb_{\sigma\opt, \theta\opt, m} (\majY = 1 \mid X=x) =
+  \Prb_{\wb{\sigma}, \wb{\theta}, \wb{m}}(\majY = 1 \mid X=x) .
+\end{align*}
+For $m \in \mathbb{N}$, define the probability that a $\bindist(m, t)$ is at
+least $\lceil m / 2 \rceil$ through the one-to-one transformation
+\begin{align*}
+  P_m(t) := \sum_{i=\lceil m/2 \rceil}^m \binom{m}{i} t^m(1-t)^{m-i}   ,
+\end{align*}
+ For any $m$, $P_m(t)$ monotonically increases in $t$, and $P_m(0)= 0, P_m(\frac{1}{2}) = \frac{1}{2}, P_m(1) = 1$, and by symmetry $P_m(t) + P_m(1-t) = 1$. By the definition of majority vote
+\begin{align*}
+	\Prb_{\sigma\opt, \theta\opt, m} (\majY = 1 \mid X=x) & = \sum_{i=\lceil m/2 \rceil}^m \binom{m}{i} \sigma\opt(\< \theta\opt, x \>)^m(1-\sigma\opt(\< \theta\opt, x \>))^{m-i} = P_m \circ \sigma\opt(\< \theta\opt, x \>).
+\end{align*}
+Therefore, the link
+\begin{align*}
+	\wb{\sigma}(t) := P_{\wb{m}}^{-1} \circ P_{m} \circ \sigma\opt \left(\frac{\ltwo{\theta}}{\ltwo{\wb{\theta}}} t \right)
+\end{align*}
+satisfies $\wb{\sigma}(0) = \frac{1}{2}$ and $\wb{\sigma}(t) - \frac{1}{2} > 0$ for all $t > 0$, since $P_m$ maps $(\frac 1 2, 1]$ to $(\frac 1 2 , 1]$. We also have
+\begin{align*}
+	\wb{\sigma}(t) + \wb{\sigma}(-t) & = P_{\wb{m}}^{-1} \circ P_{m} \circ \sigma\opt \left(\frac{\ltwo{\theta}}{\ltwo{\wb{\theta}}} t \right) + P_{\wb{m}}^{-1} \circ P_{m} \circ \sigma\opt \left(-\frac{\ltwo{\theta}}{\ltwo{\wb{\theta}}} t \right) \nonumber \\
+	& \stackrel{\mathrm{(i)}}{=} P_{\wb{m}}^{-1} \circ P_{m} \circ \sigma\opt \left(\frac{\ltwo{\theta}}{\ltwo{\wb{\theta}}} t \right) + P_{\wb{m}}^{-1} \circ P_{m} \circ \left(1 - \sigma\opt \left(\frac{\ltwo{\theta}}{\ltwo{\wb{\theta}}} t \right) \right) \nonumber \\
+	& \stackrel{\mathrm{(ii)}}{=} P_{\wb{m}}^{-1} \circ P_{m} \circ \sigma\opt \left(\frac{\ltwo{\theta}}{\ltwo{\wb{\theta}}} t \right) + P_{\wb{m}}^{-1} \circ \left(1 -  P_m \circ \sigma\opt \left(\frac{\ltwo{\theta}}{\ltwo{\wb{\theta}}} t \right)\right) \nonumber \\
+	& = 1   ,
+\end{align*}
+where (i) and (ii) follow from symmetry of $\sigma\opt$ and $P_m$, respectively. Thus $\wb{\sigma}$ belongs to $\fsymlink$ and is a valid link function. This $\bar{\sigma}$ yields the desired equality:
+\begin{align*}
+	\Prb_{\wb{\sigma}, \wb{\theta}, \wb{m}}(\majY = 1 \mid X=x) &   = P_{\wb{m}} \circ P_{\wb{m}}^{-1} \circ P_{m} \circ \sigma\opt \left(\frac{\ltwo{\theta}}{\ltwo{\wb{\theta}}} \cdot \< \wb{\theta}, x \> \right)  = \Prb_{\sigma\opt, \theta\opt, m} (\majY = 1 \mid X=x).
+\end{align*}

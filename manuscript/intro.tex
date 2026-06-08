@@ -1,0 +1,421 @@
+% -*- Mode: latex -*- %
+
+\section{Introduction}
+
+Challenge datasets drive advances in statistical machine
+learning~\cite{MarcusSaMa94, LewisYaRoLi04, AsuncionNe07, KrizhevskyHi09,
+  DengDoSoLiLiFe09, RussakovskyDeSuKrSaMaHuKaKhBeBeFe15},
+making the collection of
+labeled data essential~\cite{Donoho17}.
+%
+While in the past, experts could label reasonably sized datasets, the cost
+and size of modern datasets often precludes such annotation, motivating
+crowdsourcing and other dataset generation strategies that aggregate
+non-expert and expert feedback~\citep{DawidSk79,
+  WhitehillWuBeMoRu09, RussakovskyDeSuKrSaMaHuKaKhBeBeFe15,
+  CodellaRoTsCeDuGuHeKaLiMa19, GadreEtAl23}.
+%% SchuhmannBeVeGoWiChCoKaMuWoScKuCrScKaJi22,
+%
+Frequently, published data contain aggregated label information; for
+example, in the dataset~\cite{CodellaRoTsCeDuGuHeKaLiMa19}
+%% RotembergKuBeCaChCoCoDuGuGu21}
+of skin lesion images to be classified as
+malignant, biopsy and histology confirm positive examples, while physician
+consensus determines negative examples, yet the published data includes no
+notion of disagreement or uncertainty in these consensuses.
+%
+Similarly, the benchmark CIFAR~\citep{KrizhevskyHi09} and
+ImageNet~\citep{DengDoSoLiLiFe09, RussakovskyDeSuKrSaMaHuKaKhBeBeFe15}
+computer vision challenges include only a single label for each example, in
+spite of deriving from multiple pieces of feedback per image.
+%
+Researchers typically perform such aggregation in effort to obtain
+``high-quality'' or ``true'' labels~\cite{DengDoSoLiLiFe09,
+  RussakovskyDeSuKrSaMaHuKaKhBeBeFe15, DawidSk79,
+  WhitehillWuBeMoRu09}.
+
+Yet most statistical machine learning development does not investigate this
+full data generating process, assuming only that data comes in the form of
+$(X, Y)$ pairs of covariates $X$ and labels $Y$~\cite{Vapnik95,
+  BoucheronBoLu05, BartlettJoMc06, HastieTiFr09}.
+%
+We argue for a more
+holistic perspective: that analysis and algorithmic development should focus
+on the complete statistical learning pipeline, from dataset construction to
+model output.
+%
+We question the extent to which such label cleaning strategies are
+essential, arguing that benchmark datasets ought to include noisy labels as
+a rule; one may always clean the data in subsequent stages, but sometimes
+the more nauced labeling information may yield more accurate downstream
+models.
+
+%\cc{Also the second perspective---the crowdsourcing community aims to obtaining labels as clean as possible but largely ignoring how it would affect downstream tasks, or simply assuming the goal is to clean the labels as much as possible. Our results suggest (i) maybe the correct upstream tasks is not to get gold-standard labels; (ii) provided we can get multilabeled data from upstream tasks, we essentially have a different statistical learning model from the classical ones which makes it possible for us to do more.} 
+
+%% We revisit this data generation process and question its aggregation
+%% strategies.  While it is tempting to apply majority-vote aggregation to
+%% obtain an expert label, resembling a typical machine learning dataset, this
+%% ignores the inherent uncertainty and noise in this pipeline.  There has been
+%% numerous amounts of work from the crowd-sourcing
+%% community~\cite{WhitehillWuBeMoRu09,WelinderBrPeBe10,TianZh15} (see
+%% Section~\ref{sec:related-work} for more details) that \emph{experimentally}
+%% study the above process and design better algorithms by taking into
+%% consideration the inherent noise in the labels. However, a complete
+%% (theoretical) understanding of this process and the effects of uncertainties
+%% and other important problem parameters---such as number of labelers and data
+%% noise---is still lacking.
+
+We develop a stylized theoretical model to capture uncertainty in the
+labeling process, allowing us to understand the limitations of and possible
+improvements to using aggregated data in a statistical learning pipeline.
+%
+We model each example as a pair $(X_i, (Y_{i1},\dots,Y_{im}))$ where $X_i$
+is a data point and $Y_{ij}$ are noisy binary labels.
+%
+The basic
+formulation of our results compares two methods: empirical risk
+minimization using all labels and empirical risk minimization using
+majority vote labels $\majY$.
+%
+While this oversimplifies label
+aggregation strategies~\cite{DawidSk79, RussakovskyDeSuKrSaMaHuKaKhBeBeFe15,
+  RatnerBaEhFrWuRe17},
+the simplicity (i) allows us to understand
+fundamental limitations of algorithms based on majority-vote aggregation,
+(ii) facilitates circumventing these limits via non-aggregated
+information, and (iii) provides a base for future work: the purposeful
+simplicity permits classical tools to apply.
+%
+In these models, our results show that estimators using non-aggregated labels
+outperform those that use aggregated (majority-vote)
+labels if the predictive model has fidelity to the data,
+majority-vote estimators provide robust (but slower) convergence, and these
+tradeoffs are fundamental.
+%
+We extend the results to include misspecification, semiparametric
+scenarios, and simple models of learned annotator reliability.
+
+While our models are stylized, they make testable predictions for real data
+beyond simplified scenarios, in particular, that models fit on
+non-aggregated data should both make better-calibrated predictions and have
+lower classification error than those using cleaned labels.
+%
+Experiments on two real and one large semisynthetic dataset corroborate the
+implications of our theory beyond logistic models: majority-vote-based
+algorithms yield uncalibrated predictors, while algorithms using full label
+information provide (more) calibrated predictors.
+%
+The former algorithms exhibit worse classification error in our experiments,
+with the error gap depending on parameters---e.g.,
+noise---we address in our theoretical models.
+ 
+
+\subsection{Problem formulation}
+\label{sec:formulation}
+
+%% To situate our results, we begin by
+%% providing the key ingredients in the paper.
+
+% \paragraph{The label model.}
+Consider covariates $X_i \simiid \P_X$, $X_i \in \R^d$, in a
+binary classification problem with $m$ labelers,
+who annotate points independently through a generalized linear
+model (GLM) via link functions %% $ \flink$, where
+\begin{align*}
+  \sigma_1\opt, \dots,
+  \sigma_m\opt \in \flink := \brc{\sigma : \R \to [0, 1]
+    \mid \sigma(0) = 1/2, \sgn(\sigma(t) - 1/2) = \sgn(t)}.
+\end{align*} 
+%% Here $\sgn(t) = -1$ for $t <0$, $\sgn(t) = 1$ for $t > 0$ and $\sgn(0) = 0$. 
+For example, in the logistic model where
+labelers have identical link, $\sigma_j\opt(t) = 1 / \prn{1 + e^{-t}}$.
+%
+If $\sigma(t) + \sigma(-t) = 1$ for all $t \in \mathbb{R}$, we say the
+link function is symmetric, denoting the class of symmetric
+links by $\fsymlink \subset \flink$.
+%
+Labels then follow the distribution
+\begin{align}
+  \Prb_{\sigma, \theta}(Y = y \mid X = x) & =
+  \sigma ( y \< \theta, x\>) ~~~ \mbox{for~} y \in \left\{\pm 1\right\},
+  ~ x,\theta \in \R^d. \label{eq:general-calibration-model}
+\end{align}
+Key to our model, and what allows our analysis, is that we assume
+labelers use the same linear classifier $\theta\opt \in \R^d$, %%---though each
+%%labeler $j$ may have a distinct link $\sigma_j\opt$---
+so we obtain conditionally independent labels $Y_{ij} \sim \Prb_{\sigma_j\opt,
+  \theta\opt}(\cdot \mid X_i)$.
+ We
+seek to recover $\theta\opt$ or the direction $u\opt := \theta\opt /
+\ltwo{\theta\opt}$ from the observations $(X_i, Y_{ij})$.
+
+\paragraph{Error measures.}
+We evaluate an estimator $\what{\theta}$ and associated direction $\what{u}
+\defeq \what{\theta} / \ltwos{\what{\theta}}$ through
+\begin{enumerate}[leftmargin=10em,label=(\textsc{E}.\roman*)]
+\item \label{item:class}
+  The classification error: $\ltwos{u\opt - \what{u}}
+  = \sqrt{2(1 - \<u\opt, \what{u}\>)}$.
+  % \tag{\textsc{E.class}
+\item \label{item:cal}
+  The calibration error:~~ $\ltwos{\theta\opt - \what{\theta}}$.
+\end{enumerate}
+%% \begin{align*}
+%%   \textbf{(i)} & \quad \text{The classification error:} ~~ ~\|u^\star - \what{u}\|_2 = \sqrt{2(1 - \langle u\opt, \what{u} \rangle)}. \\
+%%   \textbf{(ii)} & \quad
+%%   \text{} ~~~~ ~~ \|\theta^\star - \what{\theta}\|_2.
+%% \end{align*}
+To motivate these errors, note that for classification, we only need to
+control the difference between the directions $\what{u}$ and $u\opt$, while
+calibration---that for a data point $X$, the value $\sigma_j\opt( \<
+\what{\theta}, X \>)\approx \sigma_j\opt(\< \theta\opt, X \>)$---requires
+controlling the error in $\what{\theta}$ as an estimate of $\theta\opt$.
+%
+If $X$ is rotationally symmetric,
+then $\P(\sgn(\<X, u\>) \neq \sgn(\<X, u\opt\>)) = \frac{1}{\pi}
+\cos^{-1}\<u, u\opt\>$ for any unit vectors $u, u\opt$; because $\cos^{-1} t
+= (1 + o(1)) \sqrt{2(1 - t)}$ as $t \uparrow 1$, the classification
+error~\ref{item:class}, $\ltwo{u\opt - u} =
+\sqrt{2(1 - \<u, u\opt\>)}$, is asymptotically equivalent to the angle
+between $u$ and $u\opt$.
+
+\paragraph{Estimators.}
+We consider two types of estimators: one
+using processed labels $\majY_i$ for each
+example $X_i$, and the other
+using each label $Y_{i1}, \ldots, Y_{im}$.
+%
+To center discussion, we instantiate this temporarily via logistic
+regression for the logistic link $\sigma\lr(t) = \frac{1}{1 + e^{-t}}$,
+defining
+\begin{align*}
+  \loss_\theta\lr(y \mid x) = -\log \Prb_{\sigma\lr, \theta}(y \mid x)
+  = \log(1 + e^{-y\<x,\theta\>})  .
+\end{align*}
+In the non-aggregated model, we let let $\Prb_{n,m}$ be the empirical
+measure on $\{(X_i, (Y_{i1},\dots,Y_{im}))\}$ and consider the logistic
+regression estimator (i.e., the MLE assuming the logistic model)
+\begin{align}
+  \label{eq:maximum-likelihood}
+  \tmle = \argmin_\theta \left\{\Prb_{n,m} \loss_\theta\lr
+  = \frac{1}{nm} \sum_{i = 1}^n \sum_{j = 1}^m \loss_\theta\lr(Y_{ij} \mid X_i)
+  \right\}.
+\end{align}
+We focus on the simplest
+aggregation strategy, where example $i$ has majority vote label
+\begin{align*}
+  \majY_i = \maj(Y_{i1}, \ldots, Y_{im})
+  \defeq \sgn\left(\sum_{j=1}^m Y_{ij}\right)
+  ~~~\mbox{where}~~~
+  \sgn(0) \sim \mathsf{Ber}(1/2)
+\end{align*}
+%% (breaking ties randomly).
+Then letting $\majmark{\Prb}_{n,m}$ be the empirical measure on
+$\{(X_i, \majY_i)\}$, the majority-vote estimator solves
+\begin{align}
+  \label{eq:logistic-majority}
+  \mve = \argmin_\theta  \brc{\majmark{\Prb}_{n,m}\loss_\theta\lr = \frac 1 n \sum_{i=1}^n  \loss_\theta\lr(\majY_i \mid X_i)}.
+\end{align}
+Method~\eqref{eq:logistic-majority} acts as our proxy for the ``standard''
+data analysis pipeline, with cleaned labels, while
+method~\eqref{eq:maximum-likelihood} is our proxy for non-aggregated methods
+using all labels.
+%
+More general formulations than the majority
+vote~\eqref{eq:logistic-majority} could allow complex aggregation
+strategies, e.g., crowdsourcing, but we simplify to capture what we view as
+the essentiae for problems (e.g.\ CIFAR~\cite{KrizhevskyHi09} or
+ImageNet~\cite{RussakovskyDeSuKrSaMaHuKaKhBeBeFe15}) where only aggregated
+label information is available.
+
+Our main results characterize the
+asymptotics of the
+estimators $\mve$ and $\tmle$.
+%
+Under
+appropriate assumptions on the data generating
+mechanisms~\eqref{eq:general-calibration-model}, which include
+misspecification, we (i) provide consistency results that elucidate the
+limits for $\mve$, $\tmle$, and a few more general
+estimators, and (ii) evaluate their limit distributions via
+asymptotic normality. The latter allows comparison
+of the estimators through their limiting covariances, which
+exhibit (to us) interestingly varying dependence on $m$ and the scaling of
+the true parameter $\theta\opt$.
+
+\subsection{Summary of results and implications}
+
+Asymptotic characterization of the
+estimators~\eqref{eq:maximum-likelihood}--\eqref{eq:logistic-majority}
+provides our main avenue to highlighting the import of multiple labels.
+%
+Table~\ref{table:comparisons}  summarizes our results, comparing
+the performance of the MLE-type~\eqref{eq:maximum-likelihood} and
+majority vote~\eqref{eq:logistic-majority} estimators for the
+classification~\ref{item:class} and calibration~\ref{item:cal} errors.
+%
+We highlight estimator performance in two scenarios:
+``single link'' corresponds to the case that the loss is
+well-specified, while ``mis-specified''
+corresponds to the case that $\loss_\theta(y \mid x) \neq -\log
+\Prb_{\sigma,\theta}(y \mid x)$, which may occur when labelers have
+distinct link functions $\sigma$ or the model is incorrect.
+%
+In all cases, the
+estimate $\what{\theta}$ and
+vector $\what{u} = \what{\theta} / \ltwos{\what{\theta}}$
+are asymptotically normal around a scalar multiple of $\theta\opt$,
+with differeing scaling and asymptotic variance.
+%
+With $m$ labelers,
+each estimator yields a rate $r(m)$ and scale $t(m)$ for which
+\begin{align}
+  \label{eqn:limit-scaling-for-table}
+  \sqrt{n}(\what{u} - u\opt)
+  \cd \normal(0, r(m) \Sigma_{\textup{n}})
+  ~~~ \mbox{and} ~~~
+  \sqrt{n}(\what{\theta} - t(m) \theta\opt)
+  \cd \normal(0, \Sigma_{\textup{u}}),
+\end{align}
+where $\Sigma_{\textup{n}}$ and $\Sigma_{\textup{u}}$ are ``normalized'' and
+``unnormalized'' covariances, respectively.
+%
+The classification error~\ref{item:class} is small whenever $r(m) \ll 1$,
+while the calibration error~\ref{item:cal} is small when $t(m) \approx 1$,
+and Table~\ref{table:comparisons} shows the
+scalings~\eqref{eqn:limit-scaling-for-table} for the different estimators.
+
+\begin{table}
+  \centering
+  \begin{tabular}{c|c|c}
+    \toprule 
+    & MLE-type estimator~\eqref{eq:maximum-likelihood}
+    & majority-vote estimator~\eqref{eq:logistic-majority} \\
+    \hline
+    single link
+    & \textbf{Classification}:
+    $r(m) \asymp \frac{1}{m}$
+    & Classification: $r(m) \asymp \frac{1}{\sqrt{m}}$ \\
+    (well-specified) & \textbf{Calibration}:
+    $t(m) = 1$ &
+    Calibration: $t(m) \asymp \sqrt{m}$ \\ 
+    \hline
+    mis-specified or
+    & Calibration: $t(m) \asymp 1$ &  Calibration: $t(m) \asymp \sqrt{m}$  \\ 
+    multiple links & Classification: $r(m) \asymp 1$ &
+    \textbf{Classification}: $r(m) \asymp 1 / \sqrt{m}$
+    \\
+    \hline
+  \end{tabular}
+  \caption{
+    Comparison of multi-label and majority-vote estimators
+    for $X \sim \normal(0, I_d)$
+    according to the scalings in classification error
+    $r(m)$ and calibration error $t(m)$ that
+    the limits~\eqref{eqn:limit-scaling-for-table} identify.
+    %
+    If $t(m) \gg 1$, the model is uncalibrated; if the rate $r(m)$ is small,
+    the model achieves lower asymptotic variance.
+    %
+    Boldface indicates the associated estimator
+    is (rate) optimal. \label{table:comparisons}}
+\end{table}
+
+%% We obtain several results clarifying the distinctions between
+%% estimators that use aggregate labels from those that treat them
+%% individually.
+
+\paragraph{Improved performance using multiple labels for well-specified models}
+%% As in our discussion above,
+We begin in Section~\ref{sec:well-sepcified-mod} by specializing our main
+results to the logistic model.
+%
+We show that the MLE~\eqref{eq:maximum-likelihood} is
+calibrated and enjoys faster rates of convergence (in $m$) than the
+majority-vote estimator~\eqref{eq:logistic-majority}.
+%
+The improvements depend on the underlying distribution, and
+Propositions~\ref{prop:lowd-maximum-likelihood}
+and~\ref{prop:lowd-majority-vote-m-noise} connect them to
+Mammen-Tsybakov-type noise conditions.
+%
+In ``standard'' cases, the improvement scales as
+$\sqrt{m}$; for problems with little classification noise, the majority vote
+estimator becomes brittle (relatively slower), while the convergence rate
+gap decreases for noisier problems.
+
+
+\paragraph{Robustness of majority-vote estimators}
+Our results also evidence support for majority vote
+estimators~\eqref{eq:logistic-majority}.  Section~\ref{sec:mis-spec}
+provides master results holding for well- and mis-specified losses, which
+highlight the robustness of the majority vote estimator
+(cf.\ Table~\ref{table:comparisons}).
+%
+The faster rates MLE-type estimators~\eqref{eq:maximum-likelihood} enjoy
+when the model is correct break down in ways we make precise for
+mis-specified models; in contrast, majority-vote-type
+estimators~\eqref{eq:logistic-majority} maintain their (not quite optimal)
+improved convergence guarantees, even under mis-specification, suggesting
+practical value to cleaning data when correctly modeling uncertainty is
+impossible.
+
+\paragraph{Fundamental limits of majority vote}
+Via local asymptotic minimax theory, Section~\ref{sec:lower-bound} develops
+fundamental limits for estimation given only majority vote labels $(X,
+\majY)$, which coincide with our results in
+Section~\ref{sec:well-sepcified-mod}.
+%
+These results highlight how cleaned labels force slower
+convergence in the number of labelers $m$ while reinforcing the claims of
+robustness.
+%
+In particular, while a mis-specified link function introduces structural
+bias that MLE-type estimators using all labels cannot overcome, majority
+vote-based estimators achieve rate-optimal convergence for procedures
+receiving cleaned labels $\majY$ (making the rate $r(m)$ in the bottom right
+of Table~\ref{table:comparisons} sharp).
+
+%% In particular, in both unspecified and well-specified cases, we cannot
+%% achieve calibration---contrasting with non-aggregated data, which allows
+%% calibrated estimators.
+
+%with the simple result that any
+%estimator based on majority vote aggregation cannot be calibrated:
+%there exist distributions with distinct numbers of labelers $m$
+%and link functions $\sigma$ that induce identical joint distributions on
+%$(X, \majY)$.  This contrasts with non-aggregated data, which allows
+%calibrated estimators.
+
+%% (\Cref{sec:mis-spec}) we study the mis-specified model where the estimators
+%% use a logistic model for the labelers which follow a different
+%% model. Somewhat surprisingly, our results demonstrate that the majority vote
+%% estimator is more robust to model mis-specification. In particular, it can
+%% provide faster convergence rates than the multi-label estimator by a factor
+%% of $\sqrt{m}$.
+
+\paragraph{Experimental evaluation}
+Our theoretical results predict two outcomes: (i) \emph{if} the
+model has fidelity to the labeling process, then using all noisy labels
+should yield better estimates than procedures using cleaned labels, and
+(ii), that majority vote estimators should be more robust. In
+Section~\ref{sec:experiments}, we thus provide real and semi-synthetic
+experiments that corroborate the theoretical predictions; the experiments
+also highlight a need, which some researchers are now beginning to
+address~\cite{GadreEtAl23}, for more applied dataset development so that we
+can evaluate the consequences of filtering and otherwise manipulating the
+data we use.
+
+\paragraph{Semi-parametric approaches}
+%% The final theoretical component of the paper (Section~\ref{sec:semi-param})
+%% provides an exemplar approach that puts the pieces together to achieve
+%% efficiency via semi-parametric approaches. 
+In our discussion (Section~\ref{sec:semi-param}), we include an exemplar
+approach for estimation via semi-parametric approaches, where
+one estimates labelers' links and reliability.
+%
+While not our main focus, the results provide potential insights into
+estimation using existing crowdsourcing techniques, where black box
+algorithms provide measures of labeler reliability that one may incorporate
+to achieve rate-optimal estimation.
+

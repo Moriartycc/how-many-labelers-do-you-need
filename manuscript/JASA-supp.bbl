@@ -1,0 +1,92 @@
+\begin{thebibliography}{14}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Chen et~al.(2010)Chen, Goldstein, and Shao]{ChenGoSh10}
+L.~H. Chen, L.~Goldstein, and Q.-M. Shao.
+\newblock \emph{Normal Approximation by Stein’s method}.
+\newblock Springer, 2010.
+
+\bibitem[Dawid and Skene(1979)]{DawidSk79}
+A.~Dawid and A.~Skene.
+\newblock Maximum likelihood estimation of observer error-rates using the {EM}
+  algorithm.
+\newblock \emph{Journal of the Royal Statistical Society}, 28:\penalty0 20--28,
+  1979.
+
+\bibitem[Gin{\'e} and Nickl(2021)]{GineNi21}
+E.~Gin{\'e} and R.~Nickl.
+\newblock \emph{Mathematical Foundations of Infinite-Dimensional Statistical
+  Models}.
+\newblock Cambridge University Press, 2021.
+
+\bibitem[Horn and Johnson(1985)]{HornJo85}
+R.~A. Horn and C.~R. Johnson.
+\newblock \emph{Matrix Analysis}.
+\newblock Cambridge University Press, 1985.
+
+\bibitem[Ledoux and Talagrand(1991)]{LedouxTa91}
+M.~Ledoux and M.~Talagrand.
+\newblock \emph{Probability in Banach Spaces}.
+\newblock Springer, 1991.
+
+\bibitem[Owen(1990)]{Owen90}
+A.~Owen.
+\newblock Empirical likelihood ratio confidence regions.
+\newblock \emph{The Annals of Statistics}, 18\penalty0 (1):\penalty0 90--120,
+  1990.
+
+\bibitem[Peterson et~al.(2019)Peterson, Battleday, Griffiths, and
+  Russakovsky]{PetersonBaGrRu19}
+J.~C. Peterson, R.~M. Battleday, T.~L. Griffiths, and O.~Russakovsky.
+\newblock Human uncertainty makes classification more robust.
+\newblock In \emph{Proceedings of the IEEE/CVF International Conference on
+  Computer Vision}, pages 9617--9626, 2019.
+
+\bibitem[Raykar et~al.(2010)Raykar, Yu, Zhao, Valadez, Florin, Bogoni, and
+  Moy]{RaykarYuZhVaFlBoMo10}
+V.~C. Raykar, S.~Yu, L.~H. Zhao, G.~H. Valadez, C.~Florin, L.~Bogoni, and
+  L.~Moy.
+\newblock Learning from crowds.
+\newblock \emph{Journal of Machine Learning Research}, 11\penalty0 (4), 2010.
+
+\bibitem[Shapiro et~al.(2009)Shapiro, Dentcheva, and
+  Ruszczy\'nski]{ShapiroDeRu09}
+A.~Shapiro, D.~Dentcheva, and A.~Ruszczy\'nski.
+\newblock \emph{Lectures on Stochastic Programming: Modeling and Theory}.
+\newblock SIAM and Mathematical Optimization Society, 2009.
+
+\bibitem[Shevtsova(2014)]{Shevtsova14}
+I.~Shevtsova.
+\newblock On the absolute constants in the {B}erry-{E}sseen-type inequalities.
+\newblock \emph{Doklady Mathematics}, 89\penalty0 (3):\penalty0 378--381, 2014.
+
+\bibitem[van~der Vaart(1998)]{VanDerVaart98}
+A.~W. van~der Vaart.
+\newblock \emph{Asymptotic Statistics}.
+\newblock Cambridge Series in Statistical and Probabilistic Mathematics.
+  Cambridge University Press, 1998.
+
+\bibitem[van~der Vaart and Wellner(1996)]{VanDerVaartWe96}
+A.~W. van~der Vaart and J.~A. Wellner.
+\newblock \emph{Weak Convergence and Empirical Processes: With Applications to
+  Statistics}.
+\newblock Springer, New York, 1996.
+
+\bibitem[Wainwright(2019)]{Wainwright19}
+M.~J. Wainwright.
+\newblock \emph{High-Dimensional Statistics: A Non-Asymptotic Viewpoint}.
+\newblock Cambridge University Press, 2019.
+
+\bibitem[Whitehill et~al.(2009)Whitehill, Wu, Bergsma, Movellan, and
+  Ruvolo]{WhitehillWuBeMoRu09}
+J.~Whitehill, T.~Wu, J.~Bergsma, J.~Movellan, and P.~Ruvolo.
+\newblock Whose vote should count more: Optimal integration of labels from
+  labelers of unknown expertise.
+\newblock \emph{Advances in Neural Information Processing Systems 22},
+  22:\penalty0 2035--2043, 2009.
+
+\end{thebibliography}

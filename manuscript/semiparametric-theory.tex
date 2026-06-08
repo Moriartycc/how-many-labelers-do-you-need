@@ -1,0 +1,362 @@
+% -*- mode: latex -*- %
+
+\providecommand{\lipconst}{\mathsf{L}}
+\newcommand{\uinit}{u_n^{\textup{init}}}
+\newcommand{\uerror}{\epsilon}
+
+\section{Semi-parametric approaches}
+\label{sec:semi-param}
+
+The preceding analysis highlights distinctions between a
+likelihood-based approach using all the labels, as
+in~\eqref{eq:maximum-likelihood}, and the robust but somewhat slower rates
+that majority vote estimators enjoy, as in
+Proposition~\ref{prop:lowd-misspcfd-majority-vote-m}.  That full-label
+estimators' performance so strongly depends on the fidelity of the link
+(recall Corollary~\ref{corollary:lowd-misspcfd-logistic-regression})
+suggests that we target estimators achieving the best of both worlds: learn
+both a link function (or collection thereof) and refit the model using
+\emph{all} the labels. While we mainly focus on efficiency bounds for
+procedures we view as closer to practice---fitting a model based on
+available data---in this section, we provide a few results targeting more
+efficient estimation schemes through semiparametric estimation approaches.
+
+As developing full semi-parametric efficiency bounds would
+lengthen and dilute the paper, we develop a few relatively general and
+simple convergence results into which we can essentially plug in
+semiparametric estimators. In distinction from standard results in
+semiparametric theory (e.g.~\cite[Ch.~25]{VanDerVaart98}
+or~\cite{BickelKlRiWe98}), the results require little more than consistent
+estimation of the links $\sigma_j\opt$ to recover $1/m$ (optimal) scaling in
+the asymptotic covariance, as the special structure of our classification
+problem allows more nuanced calculations; we assume each labeler (link
+function) generates labels for each of the $n$ datapoints $X_1, \ldots,
+X_n$, but we could relax the assumption at the expense of
+cumbersome notation.  We give two example applications of the general
+theory: the first (Sec.~\ref{sec:semiparametric}) analyzing a full pipeline
+for a single index model setting, which robustly estimates direction $u\opt$,
+the link $\sigma\opt$, and then re-estimates $\theta\opt$; the second
+assuming a stylized black-box crowdsourcing mechanism that provides
+estimates of labeler reliability, highlighting how even in some
+crowdsourcing scenarios, there could be substantial advantages to using full
+label information.
+
+\subsection{Master results}
+\label{sec:master-results-sem}
+
+For our specializations, we first provide master results that
+allow semi-parametric estimation of the link functions.  We consider
+Lipschitz symmetric link functions. Define for $\lipconst > 0$
+\begin{align*}
+  \fsymlinkL := \{\sigma \mid \sigma \not \equiv 1/2\text{ is non-decreasing,
+    symmetric, and} ~ \lipconst\text{-Lipschitz continuous} \}
+  \subset \fsymlink.
+\end{align*}
+We consider the general case where there are $m$ distinct labeler link
+functions $\sigma_1\opt, \ldots, \sigma_m\opt$. To eliminate ambiguity
+in the links, we
+normalize the model with $\ltwo{\theta\opt} = 1$ so $\theta\opt
+= u\opt$. We write $\vec{\sigma} = (\sigma_1, \ldots, \sigma_m)$ to distinguish from the typical case. For
+$(x, y) \in \R^d \times \{\pm 1\}^m$ define
+\begin{equation*}
+  \loss_{\vec{\sigma}, \theta}(y \mid x)
+  \defeq \frac{1}{m} \sum_{j = 1}^m \loss_{\sigma_j,\theta}(y_j \mid x),
+\end{equation*}
+which allows us to consider both the standard margin-based loss and the case
+in which we learn per-labeler measures of quality.
+We can then define the population
+loss
+\begin{equation*}
+	L(\theta, \vec{\sigma})
+	\defeq \frac{1}{m} \sum_{j = 1}^m
+	\E[\loss_{\sigma_j, \theta}(Y_j \mid X)].
+\end{equation*}
+For any sequence $\{\vec{\sigma}_n\} \subset (\fsymlinkL)^m$ of (estimated)
+links
+and data
+$(X_i, Y_i)$ for $Y_i = (Y_{i1}, \ldots, Y_{im})$, we define the semi-parametric
+estimator
+\begin{align*}
+  \spe \defeq \argmin_{\theta \in \R^d}
+  \frac{1}{n} \sum_{i = 1}^n
+  \loss_{\vec{\sigma}_n, \theta}(Y_i \mid X_i).
+\end{align*}
+
+We will demonstrate both consistency and
+asymptotic normality under appropriate convergence and regularity
+assumptions for the link functions. We assume there is a (semiparametric)
+collection $\fsymlinksp \subset (\fsymlinkL)^m$ of link functions of
+interest, which may coincide with $(\fsymlinkL)^m$ but may be smaller,
+making estimation easier.  Define the distance $d_{\fsymlinksp}$ on $\R^d
+\times \fsymlinksp$ by
+\begin{align}
+  d_{\fsymlinksp}\left((\theta_1, \vec{\sigma}_1), (\theta_2, \vec{\sigma}_2)
+  \right)
+  \defeq
+  \ltwo{\theta_1 - \theta_2}
+  + \LtwoPbold{\vec{\sigma}_1(-Y\<X, u\opt\>)
+    - \vec{\sigma}_2(-Y\<X, u\opt\>)}.
+  \label{eqn:link-distance}
+\end{align}
+We make the following assumption.
+\begin{assumption}
+  \label{assumption:sp-general}
+  The links $\vec{\sigma}\opt \in \fsymlinksp$ are normalized so
+  that $\P(Y_j = y \mid X = x) = \sigma\opt_j(y \<x, u\opt\>)$, and
+  the sequence $\{\vec{\sigma}_n\} \subset \fsymlinksp$ is consistent:
+  \begin{equation*}
+    \LtwoPbold{\vec{\sigma}_n(-Y\<X, u\opt\>)
+      - \vec{\sigma}\opt(-Y\<X, u\opt\>)}
+    \cp 0.
+  \end{equation*}
+  Additionally, the mapping $(\theta, \vec{\sigma}) \mapsto
+  \nabla_\theta^2 \poploss(\theta,
+  \vec{\sigma})$ is continuous for $d_{\fsymlinksp}$ at $(u\opt,
+  \vec{\sigma}\opt)$.
+\end{assumption}
+The continuity of $\nabla_\theta^2 \poploss(\theta, \vec{\sigma})$ at
+$(u\opt, \vec{\sigma}\opt)$ allows us to develop local asymptotic normality.
+To see that we may expect the assumption to hold, we give reasonably simple
+conditions sufficient for it, including that the collection of links
+$\fsymlinksp$ is sufficiently smooth or the data distribution is continuous
+enough. (See Appendix~\ref{proof:d-continuity-guarantees} for a proof.)
+
+\begin{lemma} \label{lem:d-continuity-guarantees}
+  Let $d_{\fsymlinksp}$ be the distance~\eqref{eqn:link-distance}. Let
+  Assumption~\ref{assumption:x-decomposition} hold, where $|Z| > 0$ with
+  probability one, has nonzero and continuously differentiable density
+  $p(z)$ on $(0, \infty)$ satisfying $\lim_{z \to s} z^2 p(z) = 0$ for $s
+  \in \{0, \infty\}$. The mapping $(\theta, \vec{\sigma}) \mapsto
+  \nabla_\theta^2 \poploss(\theta, \vec{\sigma})$ is continuous for
+  $d_{\fsymlinksp}$ at $(u\opt, \vec{\sigma}\opt)$ whenever $\Ep [\ltwo{X}^4] <
+  \infty$ and either of the following conditions holds:
+  \begin{enumerate}[leftmargin=2em,label=(C.\arabic*)]
+  \item For any  $\vec{\sigma} = (\sigma_1, \ldots, \sigma_m) \in \fsymlinksp$, $\sigma_j'$ are Lipschitz continuous.
+  \item $X$ has continuous density on $\R^d$.
+  \end{enumerate}
+\end{lemma}
+We can now present the master result for semi-parametric
+approaches, which characterizes the asymptotic behavior of the
+semi-parametric estimator with the variance function
+\begin{align*}
+  C_{m, \vec{\sigma}\opt} := \frac{1}{m} \cdot
+  \frac{\frac{1}{m} \sum_{j = 1}^m \E[\sigma_j\opt(Z) (1 - \sigma_j\opt(Z))]}{
+    (\frac{1}{m} \sum_{j = 1}^m
+    \E[{\sigma_j\opt}'(Z)])^2}.
+\end{align*} 
+\begin{theorem}
+  \label{theorem:semiparametric-master}
+  Let Assumption~\ref{assumption:x-decomposition} hold and assume $|Z| >
+  0$ with probability one and has nonzero and continuous density $p(z)$ on
+  $(0, \infty)$.  Let Assumption~\ref{assumption:sp-general} hold and assume
+  that $\Ep [\ltwo{X}^4] < \infty$.  Then $\sqrt{n}(\spe - u\opt)$ is
+  asymptotically normal, and the normalized estimator $\what{u}\sem_{n,m} =
+  \spe / \ltwos{\spe}$ satisfies
+	\begin{equation*}
+		\sqrt{n} \prn{\what{u}\sem_{n,m} - u\opt}
+		\cd \normal\prn{0, 	C_{m, \vec{\sigma}\opt}
+			\prn{\proj_{u\opt}^\perp \Sigma \proj_{u\opt}^\perp}^\dagger}.
+	\end{equation*}
+\end{theorem}
+\noindent
+See Appendix~\ref{proof:semiparametric-master} for proof.
+Notably, Theorem~\ref{theorem:semiparametric-master} exhibits optimal
+$1/m$ covariance scaling whenever $\E[{\sigma\opt_j}'(Z)] \gtrsim 1$.
+
+
+\subsection{A single index model}
+\label{sec:semiparametric}
+
+Our first example application of Theorem~\ref{theorem:semiparametric-master}
+is to a single index model. We present a multi-phase estimator that first
+estimates the direction $u\opt = \theta\opt / \ltwos{\theta\opt}$, then uses
+this estimate to find a (consistent) estimate of the link $\sigma\opt$,
+which we can then substitute directly into
+Theorem~\ref{theorem:semiparametric-master}.
+We defer all proofs of this section to Appendix~\ref{sec:proof-nonparametric},
+which also includes a few auxiliary results that we use to prove the
+results proper.
+
+We present the the abstract convergence result for link functions first,
+considering a scenario where we have an initial guess $\uinit$ of the
+direction $u\opt$, independent of $(X_i, Y_{ij})_{i \le n,j\le m}$, for
+example constructed via a small held-out subset of the data. We set
+\begin{equation*}
+  \vec{\sigma}_n = \argmin_{\vec{\sigma} \in \fsymlinksp}
+  \sum_{i = 1}^n\sum_{j = 1}^m
+  \left(\sigma_j(\<\uinit, X_i\>) - Y_{ij}\right)^2,
+\end{equation*}
+where $\fsymlinksp \subset (\fsymlinkL)^m$ and so it consists of
+nondecreasing $\lipconst$-Lipschitz link functions with $\sigma(0) = \half$.
+We assume that for all $n$, there exists a (potentially random) $\epsilon_n$
+such that
+\begin{equation*}
+  \ltwos{\uinit - u\opt} \le \uerror_n.
+\end{equation*}
+\begin{proposition}
+  \label{proposition:consistency-of-sigma}
+  Let $X_i$ be vectors with $\E[\ltwo{X}^k] < \infty$, where
+  $k \ge 2$. Then with probability $1$,
+  there is a finite (random)
+  $C < \infty$ such that for all large enough $n$,
+  \begin{equation*}
+    \LtwoPbold{\vec{\sigma}_n(Y\<u\opt, X\>)
+      - \vec{\sigma}\opt(Y\<u\opt, X\>)}^2
+    % = \LtwoQ{\sigma_n - \sigma\subopt}^2
+    \le C \left[
+      n^{\frac{2}{3k} - \frac{2}{3}}
+      + \uerror_n^2
+      + \lipconst n^{-\frac{k}{2(k + 1)}}
+      \right].
+  \end{equation*}
+\end{proposition}
+\noindent
+The proof is more or less a consequence of standard convergence results
+for nonparametric function estimation, though we include
+it for completeness in Appendix~\ref{sec:proof-consistency-of-sigma}
+as it includes a few additional technicalities because
+of the initial estimate of $u\opt$.
+
+Summarizing, we see that a natural procedure is available: if we have models
+powerful enough to accurately estimate the conditional label probabilities
+$Y \mid X$, then Proposition~\ref{proposition:consistency-of-sigma} coupled
+with Theorem~\ref{theorem:semiparametric-master} shows that we can achieve
+estimation with near-optimal asymptotic covariance. In particular, if
+$\uinit$ is consistent (so $\uerror_n \cp 0$), then $\spe$ induces a
+normalized estimator $\what{u}\sem_n = \spe / \ltwos{\spe}$ satisfying
+$\sqrt{n}(\what{u}\sem_n - u\opt) \cd \normal(0, C_{m,\vec{\sigma}}
+\prns{\proj_{u\opt}^\perp \Sigma \proj_{u\opt}^\perp}^\dagger)$.
+
+
+
+\subsection{Crowdsourcing model}
+\label{sec:crowdsourcing}
+
+%\ha{the results in this section need more motivation. Currently we only compare to majority-vote estimator however the main point of the works we reference in this section is that using this model we should do better than majority-vote aggregation? Can we provide some comparison in rates to what they do? Or to any aggregation strategy?}.
+
+Crowdsourcing typically targets estimating rater reliability, then using
+these reliability estimates to recover ground truth labels as accurately as
+possible, with versions of this approach central since at least
+\citeauthor{DawidSk79}'s Expectation-Maximization-based
+approaches~\cite{DawidSk79, WhitehillWuBeMoRu09, RaykarYuZhVaFlBoMo10}.  We
+focus here on a simple model of rater reliability,
+highlighting how---at least in our stylized model of classifier
+learning---by combining a crowdsourcing reliability model and still using
+all labels in estimating a classifier, we can achieve asymptotically
+efficient estimates of $\theta\opt$, rather than the robust but slower
+estimates $\what{\theta}_{n,m}\mv$ arising from ``cleaned'' labels.
+
+%% To relate our results, we consider the case where the annotators are
+%% heterogeneous. We still consider a binary classification model with multiple
+%% labelers, that is our data consists of $\left\{(X_i, Y_{i1}), \dots, (X_i,
+%% Y_{im})\right\}_{i=1}^n$, and $m$ is the number of annotators. Instead of
+%% assuming $Y_{ij} \mid X_i$ are identically distributed for $j=1,\dots, m$,
+%% we only assume that they are independent, allowing distinct link functions.
+
+We adopt \citeauthor{WhitehillWuBeMoRu09}'s roughly ``low-rank'' model for
+label generation~\citep{WhitehillWuBeMoRu09}: for binary classification with
+$m$ labelers and distinct link functions $\sigma_i\opt$, model the
+difficulty of $X_i$ by $\beta_i \in (-\infty, \infty)$, where
+$\sgn(\beta_i)$ denotes the true class $X_i$ belongs to.  A parameter
+$\alpha_j$ models the expertise of annotator $j$, and the probability
+labeler $j$ correctly classifies $X_i$ is
+\begin{align*}
+  \Prb(Y_{ij} = 1) = \frac{1}{1 +\exp(-\alpha_i \beta_j)}.
+\end{align*}
+(See also \citet{RaykarYuZhVaFlBoMo10}.) 
+The focus in these papers was to construct gold-standard labels
+and datasets $(X_i, Y_i)$; here, we take the alternative perspective
+we have so far advocated to show how using all labels can yield strong
+performance.
+
+%\ha{This is only true for majority vote with ERM. It would be interesting
+%to show this for any aggregation strategy. Unfortunately this isn't the
+%case currently.}
+
+We thus adopt a semiparametric approach: we model the labelers, assuming a
+black-box crowdsourcing model that can infer each labeler's ability, then
+fit the classifier.  We represent labeler $j$'s expertise by a scalar
+$\alpha_j\opt \in (0, \infty)$. Given data $X_i = X$ and the normalized
+$\theta\opt = u\opt$, we assume a modified logistic link
+\begin{align*}
+  \Prb(Y_{ij} = 1 \mid X_i = x) = \frac{1}{1 + \exp (-\alpha\opt_j  \< \theta\opt, x \>)} = \sigma\lr (\alpha_j\opt  \< u \opt, x \>),
+\end{align*}
+so $\alpha_j\opt = \infty$ represents an omniscient labeler while
+$\alpha_j\opt = 0$ means the labeler chooses random labels regardless of the
+data. Let $\alpha\opt = (\alpha_1\opt, \ldots, \alpha_m\opt) \in
+\R^m_{+}$. Then, in keeping with the plug-in approach of the master
+Theorem~\ref{theorem:semiparametric-master}, we assume the blackbox
+crowdsourcing model generates an estimate $\alpha_n = (\alpha_{n,1},
+\ldots, \alpha_{n,m}) \in \R_+^m$ of $\alpha^\star$ from the data $\{(X_i,
+(Y_{i1}, \ldots, Y_{im}))\}_{i=1}^n$.
+
+
+%In other crowdsourcing literatures, \cc{Ref} developed other types of carefully designed algorithms including blablabla. The main theme that crowdsourcing community focuses on is assigning an as clean label as possible to data $i$ given the whole dataset by inferring the classification ability for each individual labeler.
+
+%The paper however is purely empirical and lacks theoretical guarantees. Besides, another potential drawback for this modeling is that it assumes the annotator would make mistake at a constant probability $1-\alpha_j$ or $1-\beta_j$ even if the task is easy. Nonetheless, this paper shows that it's possible to learn a classifier and thus cover the learning procedure.
+
+% There are more literatures to be discussed. Under this general setup, we discuss what is being calibrated and develop theory for training given a crowdsourcing black box.
+
+%\subsubsection{What is a calibrated estimation?} 
+%
+%The first question might be a bit philosophical, but what is being calibrated when the annotators would have different predicting probabilities due to their different backgrounds (e.g. knowledge, expertise, or simply being lazy to label)? A short answer is, this still amounts to the same ``calibration error'' that we studied in the i.i.d. setup, that is $\ltwo{\what{\theta} - \theta\opt}$. To be specific, we would expect calibration in the following sense.
+%
+%\paragraph{Posterior calibration.} Suppose the expertise of each labeler $j$ is summarized in $\alpha_j$. It is reasonable to assume our labelers represent a certain group of people that we're interested in, that is $\alpha_j \simiid \mathbb{P}_\alpha$ we would want our machine learning procedure to produce a consistent estimate of the posterior probability, or the posterior difficulty of the data $X=x$. In this sense, being calibrated means
+%\begin{align*}
+%	\int \what{\Prb}\prn{Y = 1 \mid X =x, \alpha} d \Prb_\alpha \approx \int \Prb \prn{Y = 1 \mid X =x, \alpha} d \Prb_\alpha.
+%\end{align*}
+%
+%\paragraph{Point-wise calibration.} Suppose for any new annotator with expertise $\alpha = t$, it holds uniformly in $t$ that
+%\begin{align*}
+%	\what{\Prb}(Y = 1 \mid X = x, \alpha = t) \approx \Prb (Y = 1 \mid X = x, \alpha = t),
+%\end{align*}
+%we say our learning procedure is point-wise calibrated. This allows generalization not only in the data domain $X \in \sX$ but also in the population domain $\alpha \in \mathcal{A}$. To be specific, imagine we have another model that is trained to infer expertise $\what{\alpha}$ for a new group of people, the plug in estimator $\what{\Prb}(Y = 1 \mid X = x, \what{\alpha})$ can be well-calibrated for this group of population. A more realistic application would be selected censoring for sensitive images that might cause different levels of disturbance for different people groups. 
+
+
+%\subsubsection{Calibrated estimation using a blackbox crowdsourcing algorithm}
+%Suppose $m$ and $d$ are fixed.
+% It is clear that being posterior calibrated or point-wise calibrated both amount to $\ltwo{\what{\theta} - \theta\opt} \to 0$.
+
+We consider the algorithm using the blackbox crowdsourcing model and
+empirical risk minimization with the margin-based loss
+$\loss_{\vec{\sigma}_n, \theta}$ as in Section~\ref{sec:master-results-sem},
+with
+$\vec{\sigma}_n(t)
+\defeq (\sigma\lr(\alpha_{n,1}t),\dots, \sigma\lr(\alpha_{n,m}t))$,
+or equivalently using the rescaled logistic loss
+\begin{align*}
+  \loss_{\vec{\sigma}_n, \theta}(y \mid x)
+  = \frac{1}{m} \sum_{j=1}^m \loss\lr_\theta (y_j \mid \alpha_{n,j} x) .
+\end{align*}
+This allows us to apply our general semiparametric
+Theorem~\ref{theorem:semiparametric-master} as long as the crowdsourcing
+model produces a consistent estimate $\alpha_n \cp \alpha^\star$ (see
+Appendix~\ref{proof:crowd-sourcing-estimator} for a proof):
+\begin{proposition}
+  \label{prop:crowd-sourcing-estimator}
+  Let Assumption~\ref{assumption:x-decomposition} hold, $|Z| > 0$ have
+  nonzero and continuous density $p(z)$ on $(0, \infty)$, and $\Ep
+  [\ltwo{X}^4] < \infty$. If $\alpha_n \cp \alpha\opt \in \R^m$, then
+  $\sqrt{n}(\spe - u\opt)$ is asymptotically normal, and the normalized
+  estimator $\what{u}\sem_{n,m} = \spe / \ltwos{\spe}$ satisfies
+  \begin{equation*}
+    \sqrt{n} \prn{\what{u}\sem_{n,m} - u\opt}
+    \cd \normal\prn{0,
+      \frac{1}{\sum_{j = 1}^m \E[\sigma\lr(\alpha_j\opt Z)
+          (1 - \sigma\lr(\alpha_j\opt Z))]}
+      \prn{\proj_{u\opt}^\perp \Sigma \proj_{u\opt}^\perp}^\dagger}.
+  \end{equation*}
+%	\cc{If $|\alpha_j\opt| \geq \epsilon$ (i.e. are constant away from being just pure noise), then $C_m(t) \asymp 1/m$}
+\end{proposition}
+
+By Proposition~\ref{prop:crowd-sourcing-estimator}, the semiparametric
+estimator $\what{u}\sem_{n,m}$ is efficient when the rater reliability
+estimates $\alpha_n \in \R^m$ are consistent.  It is also immediate that if
+$\alpha_j\opt \le \alpha_{\max} < \infty$ are bounded, then the asymptotic
+covariance multiplier $C_{m,\alpha\opt} = (\sum_{j = 1}^m
+\E[\sigma\lr(\alpha_j\opt Z) (1 - \sigma\lr(\alpha_j\opt Z))])^{-1} =
+O(1/m)$, so we recover the $1/m$ scaling of the MLE, as opposed to the
+slower rates of the majority vote estimators in
+Section~\ref{sec:robustness-model-misspecification}.  At this point, the
+refrain is perhaps unsurprising: using all the label information can yield
+much stronger convergence guarantees.

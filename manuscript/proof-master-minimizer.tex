@@ -1,0 +1,38 @@
+\subsection{Proof of Lemma~\ref{lemma:generic-solutions}}
+\label{sec:proof-generic-solutions}
+
+Recall that $h = h_{t\opt, m}$ is the calibration
+gap function~\eqref{eqn:h-m-func}.
+We see that because $\E[Z] = 0$, we have
+$h(0) = -2 \E[Z \varphi_m(t\opt Z)] < 0$,
+while using Assumption~\ref{assumption:model-link} and that
+$\E[|Z|] < \infty$, we apply dominated convergence and that
+$\lim_{t \to \infty} (\sigma(t Z) - \half) Z = c|Z|$ with probability 1
+to obtain
+\begin{align*}
+	\lim_{t \to \infty} h(t) = \E[c|Z| (1 - \varphi_m(t\opt Z))]
+	+ \E[c |Z| \varphi_m(t\opt Z)] = c \E[|Z|] > 0.
+\end{align*}
+Because $h'(t) = \E[\sigma'(tZ) Z^2 (1 - \varphi_m(t\opt Z))]
++ \E[\sigma'(-tZ) Z^2 \varphi_m(t\opt Z)] > 0$, we see that there
+is a unique $t_m$ solving $h(t_m) = 0$, and evidently
+$\theta\opt_L = t_m u\opt$ is a minimizer of $L$.
+
+We compute the Hessian of $L$. For this,
+we again let $\theta = t u\opt$ to write
+\begin{align*}
+	\nabla^2 L(\theta, \sigma) & = \E[\sigma'(-\<\theta, X\>) XX^\top \varphi_m(\<X, \theta\opt\>)]
+	+ \E[\sigma'(\<\theta, X\>) XX^\top (1 - \varphi_m(\<X, \theta\opt\>))] \\
+	& = \E\left[\sigma'(-t Z) \varphi_m(t\opt Z)
+	\left(Z^2 u\opt {u\opt}^\top + WW^\top\right)\right]
+	+ \E\left[\sigma'(t Z) (1 - \varphi_m(t\opt Z))
+	\left(Z^2 u\opt {u\opt}^\top + WW^\top \right)\right] \\
+	& = \E\left[\left(\sigma'(-tZ) \varphi_m(t\opt Z)
+	+ \sigma'(tZ) (1 - \varphi_m(t\opt Z)) \right) Z^2\right]
+	u\opt {u\opt}^\top \\
+	& \quad + \E\left[\sigma'(-tZ) \varphi_m(t\opt Z)
+	+ \sigma'(tZ) (1 - \varphi_m(t\opt Z))\right] \E[WW^\top],
+\end{align*}
+which gives $\nabla^2 L(\theta, \sigma) \succ 0$ and so $\theta\opt_L$ is
+unique.  Finally, the desired form of the Hessian follows as $\E[WW^\top] =
+\projperp \Sigma \projperp$.

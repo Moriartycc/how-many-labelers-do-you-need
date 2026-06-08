@@ -1,0 +1,435 @@
+\section{Proofs of nonparametric convergence results}
+\label{sec:proof-nonparametric}
+
+\newcommand{\noise}{\xi}
+\newcommand{\localcomplexity}{\mc{R}}
+
+
+In this technical appendix, we include proofs of the results from
+Section~\ref{sec:semiparametric} as well as a few additional results, which
+are essentially corollaries of results on localized complexities and
+nonparametric regression models, though we require a few modifications
+because our setting is slightly non-standard.
+
+
+\subsection{Preliminary results}
+
+To set notation and to make reading it self-contained, we provide some
+definitions. The $L^r(P)$ norm of a function or random vector is
+$\norm{f}_{L^r(P)} = (\int |f|^r dP)^{1/r}$, so that its $L^2(P_n)$-norm is
+$\LtwoPn{f}^2 = \frac{1}{n} \sum_{i = 1}^n f(X_i)^2$.  We consider the
+following abstract nonparametric regression setting: we have a function
+class $\mc{F} \subset \{\R \to \R\}$ with $f\opt \in \mc{F}$, and our
+observations follow the model
+\begin{equation}
+  \label{eqn:nonparametric-model}
+  Y_i = f\opt(X_i) + \noise_i,
+\end{equation}
+but instead of observing $(X_i, Y_i)$ pairs we observe $(\wt{X}_i, Y_i)$
+pairs, where $\wt{X}_i$ may not be identical to $X_i$ (these play the roll
+of $\<u\opt, X_i\>$ versus $\<\uinit, X_i\>$ in the results to come).  We
+assume that $\noise_i$ are bounded so that $\sup \noise - \inf \noise \le
+1$, independent, and satisfy the conditional mean-zero property that
+$\E[\noise_i \mid X_i] = 0$ (though $\noise_i$ may not be independent of
+$X_i$).  For a (thus far unspecified) function class $\mc{F}$ we set
+\begin{equation*}
+  \what{f} = \argmin_{f \in \mc{F}} P_n(Y - f(\wt{X}))^2.
+\end{equation*}
+
+We now demonstrate that the error $\LtwoPns{\what{f} - f\opt}^2 =
+\frac{1}{n} \sum_{i = 1}^n (\what{f}(X_i) - f\opt(X_i))^2$ can be bounded by
+a combination of the errors $\wt{X}_i - X_i$ and local complexities of the
+function class $\mc{F}$.  Our starting point is a local complexity bound
+analagous to the localization results available for in-sample prediction
+error in nonparametric regression~\cite[cf.][Thm.~13.5]{Wainwright19}.  To
+present the results, for a function class $\mc{H}$ we define the
+localized $\noise$-complexity
+\begin{equation*}
+  \localcomplexity_n(u; \mc{H})
+  \defeq \E\left[ \sup_{h \in \mc{H},
+      \LtwoPns{h} \le u}
+    \left|n^{-1} \sum_{i = 1}^n \noise_i h(x_i) \right| \right],
+\end{equation*}
+where we treat the expectation conditionally on $X_i$ and $\noise_i$ are
+random (i.e.\ $\noise_i = Y_i - f\opt(X_i)$).  For the
+model~\eqref{eqn:nonparametric-model}, we define the centered class
+$\mc{F}\opt = \{f - f\opt \mid f \in \mc{F}\}$, which is star-shaped as
+$\mc{F}$ is a convex set.\footnote{ A set $\mc{H}$ is \emph{star-shaped} if
+  for all $h \in \mc{H}$, if $\alpha \in [0, 1]$ then $\alpha h \in
+  \mc{H}$.}  We say that $\delta$ satisfies the \emph{critical radius
+  inequality} if
+\begin{equation}
+  \frac{1}{\delta} \localcomplexity_n(\delta; \mc{F}\opt)
+  \le \delta.
+  \label{eqn:critical-inequality}
+\end{equation}
+With this, we can provide a proposition giving a high-probability
+bound on the in-sample prediction
+error of the empirical estimator $\what{f}$, which is essentially
+identical to~\cite[Thm.~13.5]{Wainwright19}, though we require a few
+modifications to address that we observe $\wt{X}_i$ and not $X_i$
+and that the noise $\noise_i$ are bounded but not Gaussian.
+\begin{proposition}
+  \label{proposition:in-sample-convergence}
+  Let $\mc{F}$ be a convex function class, $\delta_n > 0$ satisfy the
+  critical inequality~\eqref{eqn:critical-inequality},
+  and let
+  $\gamma^2 = \sup_{f \in \mc{F}}
+  \frac{1}{n} \sum_{i = 1}^n (f(X_i) - f(\wt{X}_i))^2$.
+  Then for $t \ge \delta_n$,
+  \begin{equation*}
+    \P\left(\LtwoPns{\what{f} - f\opt}^2 \ge 30 t \delta_n
+    + 25 \gamma \max\{\gamma, \LtwoPns{\noise}\}
+    \mid X_1^n, \wt{X}_1^n
+    \right)
+    \le \exp\left(-\frac{n t \delta_n}{4}\right).
+  \end{equation*}
+\end{proposition}
+\noindent
+See Section~\ref{sec:proof-in-sample-convergence} for a proof of the
+proposition.
+
+Revisiting the critical radius inequality~\eqref{eqn:critical-inequality},
+we can also apply \cite[Corollary~13.7]{Wainwright19}, which allows
+us to use an entropy integral to guarantee bounds on the critical
+radius. Here, we again fix $X_1^n = x_1^n$, and for a function
+class $\mc{H}$ we let
+$\mc{B}_n(\delta; \mc{H}) = \{h \in \starhull(\mc{H})
+\mid \LtwoPn{h} \le \delta\}$. Let $N_n(t; \mc{B})$ denote the
+$t$-covering number of $\mc{B}$ in $\LtwoPn{n\cdot}$-norm. Then
+modifying a few numerical constants, we have
+\begin{corollary}[Wainwright~\cite{Wainwright19}, Corollary 13.7]
+  \label{corollary:localization-via-dudley}
+  Let the conditions of
+  Proposition~\ref{proposition:in-sample-convergence} hold. Then
+  for a numerical constant $C \le 16$,
+  any $\delta \in [0, 1]$ satisfying
+  \begin{equation*}
+    \frac{C}{\sqrt{n}} \int_{\delta^2 / 4}^\delta
+    \sqrt{\log N_n(t; \mc{B}_n(\delta, \mc{F}\opt))} dt
+    \le \frac{\delta^2}{2}
+  \end{equation*}
+  satisfies the critical inequality~\eqref{eqn:critical-inequality}.
+\end{corollary}
+\noindent
+As an immediate consequence of this inequality, we have the following:
+\begin{corollary}
+  \label{corollary:lipschitz-criticality}
+  Assume $|x_i| \le b$ for all $i \in [n]$ and that
+  $\mc{F}$ is contained in the class of $M$-Lipschitz functions
+  with $f(0) = 0$ (or any other fixed constant).
+  Then for a numerical
+  constant $c < \infty$, the choice
+  \begin{equation*}
+    \delta_n = c \left(\frac{M b}{n}\right)^{1/3}
+  \end{equation*}
+  satisfies the critical inequality~\eqref{eqn:critical-inequality}.
+\end{corollary}
+\begin{proof}
+  The covering numbers $N_\infty$
+  for the class $\mc{F}$ of $M$-Lipschitz functions
+  on $[-b, b]$
+  satisfying $f(0) = 0$
+  in supremum norm $\linf{f} = \sup_{x \in [-b, b]} |f(x)|$ satisfy
+  $\log N_\infty(t; \mc{F}) \lesssim \frac{M b}{t}$
+  \cite[cf.][Example 5.10]{Wainwright19}. Using that $N_n \le N_\infty$,
+  we thus have
+  \begin{equation*}
+    \int_{\delta^2/4}^\delta
+    \sqrt{\log N_n(t; \mc{B}_n(\delta, \mc{F}\opt))}
+    \lesssim
+    \int_{\delta^2/4}^\delta
+    \sqrt{\frac{Mb}{t}} dt
+    = 2 \sqrt{Mb} \left(\sqrt{\delta} - \delta/4\right)
+    \le 2 \sqrt{Mb \delta}
+  \end{equation*}
+  whenever $\delta \le 1$.
+  For a numerical constant $c > 0$ it suffices in
+  Corollary~\ref{corollary:localization-via-dudley} to choose
+  $\delta$ satisfying
+  $c \frac{1}{\sqrt{n}} \sqrt{Mb \delta} \le \delta^2$, or
+  $\delta = c (\frac{Mb}{n})^{1/3}$.
+\end{proof}
+
+
+\subsection{Proof of Proposition~\ref{proposition:consistency-of-sigma}}
+\label{sec:proof-consistency-of-sigma}
+
+We assume without loss of generality that $m = 1$, as nothing in the
+proof changes except notationally (as we assume $m$ is fixed).
+We apply Proposition~\ref{proposition:in-sample-convergence} and
+Corollary~\ref{corollary:lipschitz-criticality}.  For
+notational simplicity, let $Q$ denote the measure
+on $\R$ that $Y \<u\opt, X\>$ induces for $X \sim P$, and $Q_n$ similarly for
+$P_n$.
+We first show that
+$\LtwoQns{\sigma_n - \sigma\subopt}$ converges.  First, we
+recall~\cite[Lemma 3]{Owen90} that $\max_{i \le n} n^{-1/k} \ltwo{X_i} \cas
+0$ as $n \to \infty$. Thus there is a (random) $B < \infty$ such that
+$\max_{i \le n} \ltwo{X_i} \le B n^{1/k}$ for all $n$. Therefore,
+Corollary~\ref{corollary:lipschitz-criticality} implies that the choice
+$\delta_n = c (\frac{\lipconst B}{n^{1-1/k}})^{1/3}$ satisfies the critical
+inequality~\eqref{eqn:critical-inequality}, and taking $\gamma^2_n =
+\frac{\lipconst^2}{n} \sum_{i = 1}^n \<\uinit - u\opt, X_i\>^2 \le M^2 \uerror_n^2
+\LtwoPn{X}^2$, we have that for $t \ge \delta_n$,
+\begin{equation*}
+  \LtwoPns{\sigma_n - \sigma\subopt}^2
+  \lesssim t \delta_n + \lipconst^2 \uerror_n^2 \LtwoPn{X}^2
+  ~~~ \mbox{with~probability~at~least}~
+  1 - \exp\left(-\frac{n t \delta_n}{4}\right)
+\end{equation*}
+on the event that $\max_{i \le n} \ltwo{X_i} \le B n^{1/k}$ for all $n$,
+where we have conditioned (in the probability) on $X_i$.
+As $\LtwoPn{X}^2 \cas \E[\ltwo{X}^2]$, we may choose
+$t = \delta_n \gg 1/n^{1/3}$ and find that the Borell-Cantelli lemma
+then implies that with probability $1$, there is a random $C < \infty$
+such that
+\begin{equation}
+  \label{eqn:ltwopn-sigma-converge}
+  \LtwoQn{\sigma_n - \sigma\opt}^2 \le C \left(
+  n^{\frac{2}{3k} - \frac{2}{3}} + \epsilon_n^2 \right)
+\end{equation}
+for all $n$ with probability $1$.
+
+Finally we argue that $\LtwoQ{\sigma_n - \sigma\opt} \cas 0$.
+Let $b < \infty$ be otherwise arbitrary, and let
+$\mc{G}_b$ be the collection of $2\lipconst$-Lipschitz functions on
+$[-b, b]$ with $\linf{g} \le 1$ and $g(0)$ for $g \in \mc{G}_b$, noting
+that $\sigma_n - \sigma\opt$ restricted to $[-b, b]$ evidently
+belongs to $\mc{G}_b$. Then we have
+\begin{align}
+  \lefteqn{\LtwoQ{\sigma_n - \sigma\subopt}^2} \nonumber \\
+  & = \LtwoQn{\sigma_n - \sigma\subopt}^2
+  + \int_{|t| \le b} (\sigma_n(t) - \sigma\subopt(t))^2
+  (dQ(t) - dQ_n(t))
+  + \int_{|t| > b} (\sigma_n(t) - \sigma\subopt(t))^2 
+  (dQ(t) - dQ_n(t)) \nonumber \\
+  & \le \LtwoQn{\sigma_n - \sigma\subopt}^2
+  + \sup_{g \in \mc{G}_b} |Q g^2 - Q_n g^2|
+  + Q([-b, b]^c) + Q_n([-b, b]^c),
+  \label{eqn:three-terms-bike}
+\end{align}
+where the inequality used that $\linf{\sigma_n - \sigma\subopt} \le 1$
+by construction.
+The first term in inequality~\eqref{eqn:three-terms-bike} we have
+already controlled. We may control the second supremum term
+almost immediately using Dudley's entropy integral
+and a Rademacher contraction inequality.
+Indeed, we have
+\begin{equation*}
+  \E[\sup_{g \in \mc{G}_b} |Q_n g^2 - Q g^2|]
+  \stackrel{(i)}{\le} 2 \E[\sup_{g \in \mc{G}_b} |Q_n^0 g^2|]
+  \stackrel{(ii)}{\le} 4 \E[\sup_{g \in \mc{G}_b} |Q_n^0|]
+  \stackrel{(iii)}{\lesssim} \frac{1}{\sqrt{n}} \int_0^\infty
+  \sqrt{\log N_\infty(t; \mc{G}_b)} dt,
+\end{equation*}
+where inequality~$(i)$ is a standard symmetrization inequality, $(ii)$ is
+the Rademacher contraction inequality~\cite[Ch.~4]{LedouxTa91} applied to
+the function $t \mapsto t^2$, which is $2$ Lipschitz for $t \in [-1, 1]$,
+and $(iii)$ is Dudley's entropy integral bound. As the $\sup$-norm
+log-covering numbers of $\lipconst$-Lipschitz functions on $[-b, b]$ scale
+as $\frac{\lipconst b}{t}$ for $t \le \lipconst b$ and are 0 otherwise, we
+obtain $\E[\sup_{g \in \mc{G}_b} |Q_n g^2 - Q g^2|] \lesssim
+\frac{\lipconst b}{\sqrt{n}}$.  The bounded-differences inequality then implies that
+for any $t > 0$,
+\begin{equation*}
+  \P\left(\sup_{g \in \mc{G}_b} |(Q_n - Q)g^2|
+  \ge c \frac{\lipconst b}{\sqrt{n}} + t \right) \le
+  \P\left(\sup_{g \in \mc{G}_b} |(Q_n - Q) g^2|
+  \ge \E[\sup_{g \in \mc{G}_b} |(Q_n - Q) g^2|] + t \right)
+  \le \exp(-c n t^2).
+\end{equation*}
+Finally, the final term in the bound~\eqref{eqn:three-terms-bike}
+evidently satisfies $Q([-b, b]^c) \le \frac{\E[\ltwo{X}^k]}{b^k}$
+and $\sup_b |Q_n([-b,b]^c) - Q([-b, b])| \le 2 \sqrt{t / n}$
+with probability at least $1 - e^{-2t^2}$ by the DKW inequality.
+We thus find by the Borel-Cantelli lemma that simultaneously
+for all $b < \infty$, with probability at least
+$1 - e^{-nt^2}$ we have
+\begin{equation*}
+  \LtwoQ{\sigma_n - \sigma\subopt}^2 \le
+  \LtwoQn{\sigma_n - \sigma\subopt}^2
+  + \frac{C \lipconst b}{\sqrt{n}} + C t + \frac{\E[\ltwo{X}^k]}{b^k},
+\end{equation*}
+where $C$ is a numerical constant.
+
+Substituting inequality~\eqref{eqn:ltwopn-sigma-converge} into
+the preceding display and taking $b = n^{-\frac{1}{2(k + 1)}}$, we
+get the result.
+
+\subsection{Proof of Proposition~\ref{proposition:in-sample-convergence}}
+\label{sec:proof-in-sample-convergence}
+
+We begin with an extension of the
+familiar basic inequality~\cite[e.g.][Eq.~(13.18)]{Wainwright19}, where
+we see by convexity that for any $\eta > 0$ we have
+\begin{align*}
+  \sum_{i = 1}^n (Y_i - \what{f}(X_i))^2
+  & \le (1 + \eta) \sum_{i = 1}^n (Y_i - \what{f}(\wt{X}_i))^2
+  + (1 + 1/\eta) \sum_{i = 1}^n (\what{f}(\wt{X}_i) - \what{f}(X_i))^2 \\
+  & \le (1 + \eta) \sum_{i = 1}^n (Y_i - f\opt(\wt{X}_i))^2
+  + (1 + 1/\eta) \sum_{i = 1}^n (\what{f}(\wt{X}_i) - \what{f}(X_i))^2 \\
+  & \le (1 + \eta)^2 \sum_{i = 1}^n (Y_i - f\opt(X_i))^2
+  + (2 + \eta + 1/\eta) \sum_{i = 1}^n
+  \left[(\what{f}(\wt{X}_i) - \what{f}(X_i))^2
+    + (f\opt(\wt{X}_i) - f\opt(X_i))^2 \right].
+\end{align*}
+Noting that $Y_i = f\opt(X_i) + \noise_i$, algebraic manipulations yield
+that if
+$\Delta = [f\opt(X_i) - \what{f}(X_i)]_{i = 1}^n$ is the error vector, then
+\begin{equation*}
+  \LtwoPn{\Delta}^2 - \frac{2}{n} \noise^T \Delta
+  + \LtwoPn{\noise}^2 \le
+  (1 + \eta)^2 \LtwoPn{\noise}^2
+  + \frac{2 + \eta + 1/\eta}{n} \sum_{i = 1}^n
+  \left[(\what{f}(\wt{X}_i) - \what{f}(X_i))^2
+    + (f\opt(\wt{X}_i) - f\opt(X_i))^2 \right].
+\end{equation*}
+Simplifying, we obtain the following:
+\begin{lemma}
+  \label{lemma:basic-inequality}
+  Let $\gamma^2 = \sup_{f \in \mc{F}}
+  \frac{1}{n} \sum_{i = 1}^n (f(X_i) - f(\wt{X}_i))^2$
+  and $\Delta = [\what{f}(X_i) - f\opt(X_i)]_{i = 1}^n$.
+  Then
+  \begin{align*}
+    \LtwoPn{\Delta}^2
+    & \le \inf_\eta \left\{(2 \eta + \eta^2) \LtwoPn{\noise}^2
+    + \frac{2}{n} \noise^T \Delta
+    + (4 + 2 \eta + 2/\eta) \gamma^2 \right\} \\
+    & \le \frac{2}{n} \noise^T \Delta
+    + 11 \gamma \max\left\{\gamma, \LtwoPn{\noise}\right\}.
+  \end{align*}
+\end{lemma}
+\begin{proof}
+  The first inequality is algebraic manipulations and
+  uses that our choice of $\eta$ was arbitrary.
+  For the second, we consider two cases:
+  that $\LtwoPn{\noise} \ge \gamma$ and that $\LtwoPn{\noise} \le \gamma$.
+  In the first case, we consider $\eta \le 1$,
+  yielding the simplified bound
+  that
+  $\LtwoPn{\Delta}^2 \le \frac{2}{n} \noise^T \Delta
+  + 3 \eta \LtwoPn{\noise}^2 + \frac{8 \gamma^2}{\eta}$ for
+  $\eta \le 1$. Taking $\eta = \gamma / \LtwoPn{\noise}$ gives
+  that
+  \begin{equation*}
+    \LtwoPn{\Delta}^2
+    \le \frac{2}{n} \noise^T \Delta
+    + 11 \LtwoPn{\noise} \gamma.
+  \end{equation*}
+  In the case that $\gamma \ge \LtwoPn{\noise}$, we choose $\eta = 1$,
+  and the bound simplifies to
+  $\LtwoPn{\Delta}^2 \le \frac{2}{n} \noise^T \Delta
+  + 3 \LtwoPn{\noise}^2 + 8 \gamma^2
+  \le \frac{2}{n} \noise^T \Delta + 11 \gamma^2$.
+\end{proof}
+
+We now return to the proof of the proposition proper.
+We begin with an essentially immediate extension of the result~\cite[Lemma
+  13.12]{Wainwright19}.  We let $\mc{H}$ be an arbitrary star-shaped
+function class.
+Define the event
+\begin{equation}
+  \label{eqn:A-wainwright-event}
+  A(u) \defeq \left\{
+  \mbox{there~exists~} g \in \mc{H} ~ \mbox{s.t.}~
+  \LtwoPn{g} \ge u ~ \mbox{and} ~
+  \left|P_n \noise g\right| \ge 2 \LtwoPn{g} u
+  \right\},
+\end{equation}
+which we treat conditionally on $X_1^n = x_1^n$ as in the definition
+of the local complexity $\localcomplexity_n$.
+(Here the noise $\noise_i$ are still random, taken conditionally
+on $X_1^n = x_1^n$.)
+
+\begin{lemma}[Modification of Lemma 13.12 of~\citet{Wainwright19}]
+  \label{lemma:star-shaped-localization}
+  Let $\mc{H}$ be a start-shaped function class
+  and let $\delta_n > 0$ satisfy the critical radius inequality
+  \begin{equation*}
+    \frac{1}{\delta} \localcomplexity_n(\delta; \mc{H}) \le
+    \delta.
+  \end{equation*}
+  Then for all $u \ge \delta_n$, we have
+  \begin{equation*}
+    \P(A(u)) \le \exp\left(-\frac{n u^2}{4} \right).
+  \end{equation*}
+\end{lemma}
+\noindent
+Deferring the proof of Lemma~\ref{lemma:star-shaped-localization}
+to Section~\ref{sec:proof-star-shaped-localization},
+we can parallel the argument for~\cite[Thm.~13.5]{Wainwright19}
+to obtain our proposition.
+
+Let $\mc{H} = \mc{F}\opt$ in Lemma~\ref{lemma:star-shaped-localization}.
+Whenever $t \ge \delta_n$, we have
+$\P(A(\sqrt{t \delta_n})) \le e^{-nt \delta_n / 4}$. We consider the two
+cases that $\LtwoPns{\Delta} \lessgtr \sqrt{t \delta_n}$. In the
+former that $\LtwoPns{\Delta} \le \sqrt{t \delta_n}$, we have
+nothing to do. In the latter, we have $\what{f} - f\opt \in \mc{F}\opt$
+while $\LtwoPns{\Delta} > \sqrt{t \delta_n}$, so that if
+$A(\sqrt{t \delta_n})$ fails then we must have
+\begin{equation*}
+  \left|\frac{1}{n} \sum_{i = 1}^n \noise_i \Delta(x_i)\right|
+  \le 2 \LtwoPn{\Delta} \sqrt{t \delta_n}.
+\end{equation*}
+From the extension of the basic inequality in
+Lemma~\ref{lemma:basic-inequality} we see that
+\begin{equation*}
+  \LtwoPn{\Delta}^2 \le 
+  4 \LtwoPn{\Delta} \sqrt{t \delta_n} +
+  11 \max\left\{\gamma^2, \gamma \LtwoPn{\noise}\right\}.
+\end{equation*}
+Solving for $\LtwoPn{\Delta}$ then yields
+\begin{equation*}
+  \LtwoPn{\Delta}
+  \le \frac{4 \sqrt{t \delta_n} + \sqrt{16 t \delta_n
+      + 44 \gamma \max\{\gamma, \LtwoPn{\noise}\}}}{2}
+  \le 4 \sqrt{t \delta_n} +
+  \sqrt{11 \gamma \max\{\gamma, \LtwoPn{\noise}\}}.
+\end{equation*}
+Simplifying gives Proposition~\ref{proposition:in-sample-convergence}.
+
+\subsubsection{Proof of Lemma~\ref{lemma:star-shaped-localization}}
+\label{sec:proof-star-shaped-localization}
+
+Mimicking the proof of~\cite[Lemma 13.12]{Wainwright19}, we
+begin with~\cite[Eq.~(13.40)]{Wainwright19}:
+\begin{equation*}
+  \P(A(u))
+  \le \P(Z_n(u) \ge 2 u^2)
+  ~~ \mbox{for} ~~
+  Z_n(u) \defeq \sup_{g \in \mc{H},
+    \LtwoPns{g} \le u} \left|n^{-1} \sum_{i=1}^n \noise_i g(x_i)\right|.
+\end{equation*}
+Now note that if $\LtwoPns{g} \le u$, then the function $\noise \mapsto
+|n^{-1} \sum_{i = 1}^n \noise_i g(x_i)|$ is $u / \sqrt{n}$-Lipschitz
+with respect to the $\ell_2$-norm, so that convex concentration
+inequalities~\cite[e.g.][Theorem 3.4]{Wainwright19}
+imply that
+$\P(Z_n(u) \ge \E[Z_n(u)] + t)
+\le \exp(-\frac{t^2 n}{4 b^2 u^2})$
+whenever $\sup \noise - \inf \noise \le b$, and so
+for $b = 1$ we have
+\begin{equation*}
+  \P(Z_n(u) \ge \E[Z_n(u)] + u^2) \le
+  \exp\left(-\frac{n u^2}{4}\right).
+\end{equation*}
+As $\E[Z_n(u)] = \localcomplexity_n(u)$, we
+finally use that the normalized complexity $t \mapsto
+\frac{\localcomplexity_n(t)}{t}$ is non-decreasing~\cite[Lemma
+  13.6]{Wainwright19} to obtain that
+for $u \ge \delta_n$,
+$\frac{1}{u} \localcomplexity_n(u)
+\le \frac{1}{\delta_n} \localcomplexity_n(\delta_n)
+\le \delta_n$, the last inequality by assumption.
+In particular, we find that for $u \ge \delta_n$ we have
+$\E[Z_n(u)] = \localcomplexity_n(u)
+\le u \delta_n \le u^2$, and so
+\begin{equation*}
+  \P(Z_n(u) \ge 2 u^2) \le
+  \P(Z_n(u) \ge \E[Z_n(u)] + u^2)
+  \le \exp\left(-\frac{n u^2}{4} \right),
+\end{equation*}
+as desired.

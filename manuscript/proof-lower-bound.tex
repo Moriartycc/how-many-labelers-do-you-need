@@ -1,0 +1,358 @@
+\section{Proofs of fundamental limits of estimation with aggregate labels} 
+\label{sec:lower-bound-supp}
+
+\input{proof-warm-up.tex}
+
+\subsection{Proof of Lemma~\ref{lem:fisher-information-decomposition}} \label{proof:lem:fisher-information-decomposition}
+  For $p_\theta(x, y) = \Prb_\theta(\majY = y \mid X = x) q(x)$, where
+$q$ is the $d$-dimensional centered density of $X$,
+the Fisher information matrix at $\theta$ is
+\begin{align*}
+	\fishermv_m(\theta) = \E \brk{\nabla_\theta \log p_\theta(X, \majY) \cdot \nabla_\theta \log p_\theta(X, \majY)^\top }.
+\end{align*}
+Substituting $\rho_m(|\<x, \theta^\star\>|) = \Prb(\majY =
+\sgn(\<x, \theta^\star\>) \mid X = x)$, we then have
+\begin{align*}
+	& \E \brk{\nabla_\theta \log p_{\theta\opt}(X, \majY) \cdot  \nabla_\theta \log p_{\theta\opt}(X, \majY)^\top \mid X = x } \\
+	& =  \rho_m(|\<x, \theta^\star\>|) \cdot \frac{\nabla_\theta \rho_m(|\<x, \theta^\star\>|) \cdot \nabla_\theta \rho_m(|\<x, \theta^\star\>|)^\top}{\rho_m(|\<x, \theta^\star\>|)^2} \nonumber \\
+	& \qquad + (1- \rho_m(|\<x, \theta^\star\>|) \cdot \frac{\prn{\nabla_\theta(1 - \rho_m(|\<x, \theta^\star\>|)} \cdot \prn{\nabla_\theta(1 - \rho_m(|\<x, \theta^\star\>|)}^\top}{(1 - \rho_m(|\<x, \theta^\star\>|)^2} \nonumber \\
+	%		& =  \frac{\rho_m'(|\<x, \theta^\star\>|)^2}{\rho_m(|\<x, \theta^\star\>|)} xx^\top + \frac{\rho_m'(|\<x, \theta^\star\>|)^2}{1 - \rho_m(|\<x, \theta^\star\>|)} xx^\top \nonumber \\
+	& = \frac{\rho_m'(|\<x, \theta^\star\>|)^2}{\rho_m(|\<x, \theta^\star\>|) ( 1 - \rho_m(|\<x, \theta^\star\>|))} \cdot xx^\top
+\end{align*}
+as desired.
+
+
+\subsection{Proof of Theorem~\ref{thm:lower-bound-fisher-information}} \label{proof:lower-bound-fisher-information}
+
+Throughout this proof, we use $a_m \sim b_m$ to mean that
+$a_m/b_m \to 1$ as $m \to \infty$, or equivalently that
+$a_m = b_m \cdot(1 + o_m(1))$.
+By Lemma~\ref{lem:fisher-information-decomposition},
+we have 
+\begin{align*} 
+	\fisher_m(\theta\opt) = A_m (t\opt) \cdot u\opt {u\opt}^\top +   B_m (t\opt) \cdot \proj_{u\opt}^\perp \Sigma \proj_{u\opt}^\perp 
+\end{align*}
+with
+\begin{subequations}
+\begin{align}
+	A_m(t) & := \E \brk{\frac{\rho_m'(t|Z|)^2 Z^2}{\rho_m(t|Z|) ( 1 - \rho_m(t|Z|))}}, \label{eq:fisher-information-Am} \\
+	B_m(t)& := \E \brk{\frac{\rho_m'(t|Z|)^2 }{\rho_m(t|Z|) ( 1 - \rho_m(t|Z|))}}. \label{eq:fisher-information-Bm}
+\end{align}
+\end{subequations}
+It is crucial to understand the behavior of
+$\rho_m$ and $\rho_m'$, which have the exact forms
+\begin{align*}
+  \rho_m(t) & %= \sum_{k > m/2} \binom{m}{k} \sigma^k(t) (1 - \sigma(t))^{m-k} 
+  = \sum_{k>m/2}\binom{m}{k} \frac{e^{kt}}{(1+e^t)^m}, \\
+  \rho_m'(t) & %= \sum_{k > m/2} \binom{m}{k} \frac{ke^{kt}\cdot (1+e^t)^m - m(1+e^t)^{m-1} e^t \cdot e^{kt}}{(1+e^t)^{2m}} 
+  = \sum_{k > m/2} \binom{m}{k} \frac{ke^{kt} (1+e^t) - me^{(k+1)t}}{(1+e^t)^{m+1}}.
+\end{align*}
+Throughout this proof, we assume without loss of generality that $m$ is
+odd. When $m$ is even, we replace $\binom{m}{\frac{m+1}{2}}$ with
+$\binom{m}{\frac{m}{2}+1}$, but otherwise all arguments are identical.
+\begin{lemma} \label{lem:rho-m-prime-asymptotics}
+	The function $\rho_m'$ is even, and for any $t > 0$,
+	\begin{align*}
+		\rho_m'(t) &= \binom{m}{\frac{m+1}{2}} \cdot \frac{m+1}{2} \frac{e^{\frac{m+1}{2}t}}{(1+e^t)^{m+1}}.
+	\end{align*}
+\end{lemma}
+\begin{proof}
+	By direct calculations
+	\begin{align*}
+		\rho_m'(t) &  = \sum_{k > m/2} \binom{m}{k} \frac{ke^{kt} (1+e^t) - me^{(k+1)t}}{(1+e^t)^{m+1}} \\
+		&  \stackrel{(i)}{=} \sum_{k > m/2} \left\{  \binom{m}{k} \frac{ke^{kt}(1+e^t)}{(1+e^t)^{m+1}} - \binom{m}{k} \frac{ke^{(k+1)t}}{(1+e^t)^{m+1}} - \binom{m}{k+1} \frac{(k+1)e^{(k+1)t}}{(1+e^t)^{m+1}} \right\} \nonumber \\
+		& = \frac{1}{(1+e^t)^{m+1}}\sum_{k > m/2} \left\{ \binom{m}{k} ke^{kt} - \binom{m}{k+1} (k+1)e^{(k+1)t}\right\}, 
+	\end{align*}
+	where (i) uses the combinatorial identity
+	\begin{align*}
+		m \binom{m}{k} = k \binom{m}{k} + (k+1)\binom{m}{k+1}.
+	\end{align*}
+	This yields a telescoping sum and establishes the result.
+%	\begin{align*}
+%		\rho_m'(t) = \frac{1}{(1+e^t)^{m+1}} \binom{m}{\frac{m+1}{2}} \frac{m+1}{2} e^{\frac{m+1}{2} t}.
+%	\end{align*}
+\end{proof}
+Next,  we define the function
+\begin{align*}
+	\eta_m(t) = \frac{\rho_m'(t)^2}{\rho_m(t)(1-\rho_m(t))}.
+\end{align*}
+We can then write for the Fisher information $\fisher_m(\theta\opt) = A_m (t\opt) \cdot u\opt {u\opt}^\top +   B_m (t\opt) \cdot \proj_{u\opt}^\perp \Sigma \proj_{u\opt}^\perp $ via
+\begin{align*}
+	A_m(t) = \E \brk{\eta_m(tZ)Z^2}, \qquad B_m(t) = \E \brk{\eta_m(tZ)},
+\end{align*}
+as $\eta_m$ is a even function. The next lemma provides the key asymptotic
+guarantees for $\eta_m(t)$ in the above displays. See
+Appendix~\ref{proof:rho-m-fisher-asymptotics} for a proof.
+
+\begin{lemma} \label{lem:rho-m-fisher-asymptotics}
+  There exists a function $c_m(t)$ satisfying the following:
+  \begin{enumerate}[leftmargin=*,label=(\roman*)]
+  \item \label{item:eta-via-c}
+    For any $t > 0$, $c_m(t) \geq 1 - e^{-t}$ and
+    \begin{align*}
+      \eta_m(t) = \frac{(m+1)^2}{4} \binom{m}{\frac{m+1}{2}} \cdot \frac{e^{\frac{m+3}{2}t}}{(1+e^t)^{m+2}} \cdot c_m(t),
+    \end{align*}
+  \item \label{item:c-m-by-delta} For any $\delta \in (0,1)$, there exist
+    $C=C(\delta) > 0$ and $M=M(\delta)$ such that for all $m \geq M$
+    and all $t > 0$,
+    \begin{align*}
+      c_m(t) \leq
+      \frac{C \cdot(1 - e^{-t})}{1 - e^{-(\lfloor \delta \sqrt{m} \rfloor + 1) t}}.
+    \end{align*}
+  \item \label{item:normal-ratio-limit}
+    For any fixed $w > 0$,
+    \begin{align*}
+      \lim_{m \to \infty} \sqrt{m} c_m \prn{\frac{w}{\sqrt{m}}}  = e^{-\frac{w^2}{8}} \sqrt{\frac{2}{\pi}} \cdot \frac{1}{\Phi(-w/2) \Phi(w/2)}.
+    \end{align*}
+  \end{enumerate}
+\end{lemma}
+
+We use the asymptotics in Lemma~\ref{lem:rho-m-fisher-asymptotics} to
+compute $A_m(t)$ and $B_m(t)$, respectively.
+
+\paragraph{Part I: Asymptotics for $B_m(t)$.}
+We begin by showing the claimed asymptotic formula for $B_m(t)$ in
+the theorem's statement.
+By Stirling's formula, the multiplicative factor in $\eta_m$ satisfies
+\begin{align*}
+	\frac{(m+1)^2}{4} \binom{m}{\frac{m+1}{2}} \sim \frac{m^2}{4} \cdot 2^m \sqrt{\frac{2}{\pi m}},
+\end{align*}
+and thus
+\begin{align*}
+	B_m(t) &\sim \frac{m^2}{2 \sqrt{2 \pi m}} \E \brk{2^m \frac{e^{\frac{m+3}{2}tZ}}{(1+e^{tZ})^{m+2}} \cdot c_m(tZ)} = \frac{m^2}{8 \sqrt{2 \pi m}} \E \brk{2^{m+2} \frac{e^{\frac{m+3}{2}tZ}}{(1+e^{tZ})^{m+2}} \cdot c_m(tZ)} \nonumber \\
+	& = \frac{m^2}{8 \sqrt{2 \pi m}} \E \brk{\prn{\frac{2 e^{\frac{tZ}{2}}}{1 + e^{tZ}}}^{m+2}\cdot e^{\frac{tZ}{2}} c_m(tZ)} \sim \frac{\sqrt{m}}{8\sqrt{2\pi}} \cdot \underbrace{(m+2) \E \brk{\prn{\frac{2 e^{\frac{tZ}{2}}}{1 + e^{tZ}}}^{m+2}\cdot e^{\frac{tZ}{2}} c_m(tZ)}}_{=:J_{m+2}(t)}.
+\end{align*}
+Our goal now is to show that
+\begin{equation}
+  \label{eqn:J-m-limit-term}
+  \lim_{m \to \infty} m^{\frac{\beta - 1}{2}}
+  J_m(t)
+  = \frac{c_Z}{t^\beta} \sqrt{\frac{8}{\pi}}
+  \cdot \int_0^\infty \frac{e^{-z^2} z^{\beta - 1}}{\Phi(-z) \Phi(z)} dz,
+\end{equation}
+which then immediately implies the asymptotic
+$B_m(t) \sim b m (t \sqrt{m})^{-\beta}$
+for $b = \frac{c_Z}{4\pi} \int_0^\infty \frac{e^{-z^2} z^{\beta - 1}}{
+  \Phi(-z) \Phi(z)} dz$, as claimed in the theorem.
+
+The proof of the limit~\eqref{eqn:J-m-limit-term} involves
+an argument via dominated convergence.
+By the change of variables $w := \sqrt{m} u$,
+\begin{align*}
+	 J_m(t) & =  \int_0^\infty m \prn{\frac{2e^{\frac{tu}{2}}}{1 + e^{tu}}}^{m} e^{\frac{tu}{2}} c_{m-2}(tu) p(u) du \nonumber \\
+	 & =  \int_0^\infty \sqrt{m} \prn{\frac{2e^{\frac{tw}{2\sqrt{m}}}}{1 + e^{\frac{tw}{\sqrt{m}}}}}^{m} e^{\frac{tw}{\sqrt{m}}} c_{m-2}\prn{\frac{tw}{\sqrt{m}}} p \prn{\frac{w}{\sqrt{m}}} dw \nonumber  \\
+	 & = \prn{\frac{1}{\sqrt{m}}}^{\beta-1} \int_0^\infty \prn{\frac{2e^{\frac{tw}{2\sqrt{m}}}}{1 + e^{\frac{tw}{\sqrt{m}}}}}^{m} e^{\frac{tw}{\sqrt{m}}} w^{\beta-1} \cdot \sqrt{m}  \prn{\frac{w}{\sqrt{m}}}^{1-\beta} c_{m-2}\prn{\frac{tw}{\sqrt{m}}} p \prn{\frac{w}{\sqrt{m}}} dw.
+%	 \\
+%	  & \sim  p(0) \cdot \int_0^m \sqrt{m} \prn{1 - \frac{1}{2} \prn{e^{\frac{tw}{2\sqrt{m}}} - 1}^2}^m  \cdot \prn{1 - e^{\frac{tw}{\sqrt{m}}}}dw \nonumber \\
+%	  & \sim  p(0) \cdot \int_0^m \prn{1 - \frac{1}{2} \cdot \frac{t^2 w^2}{4m}}^m tw dw \nonumber \\
+%	  & \sim  p(0) \cdot \int_0^\infty e^{-\frac{1}{8} t^2w^2} tw dw = \frac{4p(0)}{t}.
+\end{align*}
+We now demonstrate dominating functions for the various terms in the above
+integrand. To bound the lsat several terms,
+we use Assumption~\ref{assumption:z-density} that $\kappa := \sup_{z
+  \in (0, \infty)} z^{1-\beta} p(z) < \infty$ and
+Lemma~\ref{lem:rho-m-fisher-asymptotics}, which combine
+to give the upper bound
+\begin{align*}
+  \sqrt{m}  \prn{\frac{w}{\sqrt{m}}}^{1-\beta} c_{m-2}\prn{\frac{tw}{\sqrt{m}}} p \prn{\frac{w}{\sqrt{m}}}
+  & \leq  \kappa  \sqrt{m} c_{m-2} \prn{\frac{tw}{\sqrt{m}}} \\
+  & \leq  \frac{\kappa  c\sqrt{m}\prn{1 - e^{-\frac{tw}{\sqrt{m}}}}}{1 - e^{-(\lfloor \delta \sqrt{m-2} \rfloor + 1) \frac{tw}{\sqrt{m}}}}
+  \leq c' \sup_{w \in (0, \infty)} \frac{ tw}{1 - e^{-\delta tw}} < \infty
+\end{align*}
+for some $c' = c(\delta, \kappa)$ and all sufficiently large $m$.  The next
+lemma controls the first terms in the integral above. (We defer its proof to
+Appendix~\ref{proof:Jm-integral-term-upper-bound}.)
+\begin{lemma} \label{lem:Jm-integral-term-upper-bound}
+  There exists a universal constant $0 < C$ such that for all $m$,
+  \begin{align*}
+    \prn{\frac{2e^{\frac{tw}{2\sqrt{m}}}}{1 + e^{\frac{tw}{\sqrt{m}}}}}^{m} e^{\frac{tw}{\sqrt{m}}} w^\beta   & \leq \frac{1}{C}
+    w^\beta \exp \brc{-C \min \{t^2w^2, \sqrt{tw}\}}.
+  \end{align*}
+\end{lemma}
+
+Certainly the right hand side term in
+Lemma~\ref{lem:Jm-integral-term-upper-bound} is integrable on $(0, \infty)$.
+Rewriting $J_m(t)$, we can therefore invoke dominated convergence to
+exchange the limit in $m$ and integral to obtain
+\begin{align*}
+	\lim_{m \to \infty} m^{\frac{\beta-1}{2}} J_m(t) & = \int_0^\infty \lim_{m \to \infty} \prn{\frac{2e^{\frac{tw}{2\sqrt{m}}}}{1 + e^{\frac{tw}{\sqrt{m}}}}}^{m} e^{\frac{tw}{\sqrt{m}}} w^{\beta-1}  \cdot \sqrt{m}  \prn{\frac{w}{\sqrt{m}}}^{1-\beta} c_{m-2}\prn{\frac{tw}{\sqrt{m}}} p \prn{\frac{w}{\sqrt{m}}} dw \nonumber \\
+	& \stackrel{(i)}{=}  c_Z \int_0^\infty \lim_{m \to \infty} w^{\beta-1} \exp \brc{-\frac{t^2w^2}{2} \cdot \prn{\frac{\sqrt{m}}{tw} \cdot \prn{1-e^{-\frac{tw}{2\sqrt{m}}}}}^2 } \cdot \lim_{m \to \infty} \sqrt{m} c_{m-2}\prn{\frac{tw}{\sqrt{m}}} dw \nonumber \\
+	& \stackrel{(ii)}{=} c_Z \int_0^\infty e^{-\frac{1}{8}t^2w^2} \cdot  e^{-\frac{t^2 w^2}{8}} \sqrt{\frac{2}{\pi}} \cdot \frac{w^{\beta-1}}{\Phi(-tw/2) \Phi(tw/2)} dw \nonumber \\
+	& = \frac{c_Z}{t^\beta} \sqrt{\frac{8}{\pi}} \cdot \int_0^\infty \frac{e^{-z^2} z^{\beta-1}}{\Phi(-z) \Phi(z)} dz,
+\end{align*}
+where in equality $(i)$ we invoke Assumption~\ref{assumption:z-density} and
+in $(ii)$ we use Lemma~\ref{lem:rho-m-fisher-asymptotics}. This
+gives the desired limit~\eqref{eqn:J-m-limit-term}.
+
+\paragraph{Part II: Asymptotics for $A_m(t)$.}
+The calculations are similar to those we have done to approximate
+$B_m(t)$. In this case
+\begin{align*}
+	A_m(t) \sim \frac{1}{8\sqrt{2\pi m}} \cdot \underbrace{(m+2)^2 \E \brk{\prn{\frac{2 e^{\frac{tZ}{2}}}{1 + e^{tZ}}}^{m+2}\cdot e^{\frac{tZ}{2}} c_m(tZ) Z^2}}_{=:I_{m+2}(t)},
+\end{align*}
+and again invoking dominated convergence,
+\begin{align*}
+  \lim_{m \to \infty}  m^{\frac{\beta-1}{2}} I_m(t) & = \int_0^\infty \lim_{m \to \infty} \prn{\frac{2e^{\frac{tw}{2\sqrt{m}}}}{1 + e^{\frac{tw}{\sqrt{m}}}}}^{m} e^{\frac{tw}{\sqrt{m}}} w^{\beta-1}  \cdot \sqrt{m}  \prn{\frac{w}{\sqrt{m}}}^{1-\beta} c_{m-2}\prn{\frac{tw}{\sqrt{m}}} p \prn{\frac{w}{\sqrt{m}}} w^2 dw \nonumber \\
+  & = c_Z \int_0^\infty e^{-\frac{1}{8}t^2w^2} \cdot e^{-\frac{t^2 w^2}{8}} \sqrt{\frac{2}{\pi}} \cdot \frac{w^{\beta+1}}{\Phi(-tw/2) \Phi(tw/2)} dw \nonumber  \\
+  &  = \frac{8 c_Z}{t^{\beta+2}} \sqrt{\frac{2}{\pi}} \cdot \int_0^\infty \frac{e^{-z^2} z^{\beta+1}}{\Phi(-z) \Phi(z)} dz.
+\end{align*}
+Hence
+\begin{align*}
+	A_m(t) = \frac{a}{t^2} \prn{\frac{1}{t\sqrt{m}}}^{\beta} (1 + o_m(1)), \qquad a = \frac{c_Z}{ \pi} \int_0^\infty \frac{e^{-z^2} z^{\beta+1}}{\Phi(-z) \Phi(z)} dz.
+\end{align*}
+
+\subsection{Proof of Lemma~\ref{lem:rho-m-fisher-asymptotics}} \label{proof:rho-m-fisher-asymptotics}
+
+We begin by proving part~\ref{item:eta-via-c}. Define
+\begin{equation*}
+  s_m(t) = \sum_{k <
+    m/2} \binom{m}{k} e^{kt} \le \half (1+e^t)^m,
+\end{equation*}
+where the inequality is valid for $t \ge 0$.
+Invoking Lemma~\ref{lem:rho-m-prime-asymptotics} yields
+\begin{align*}
+	\eta_m(t) & = \frac{\rho_m'(t)^2}{\rho_m(t)(1-\rho_m(t))} = \frac{\frac{(m+1)^2}{4} \binom{m}{\frac{m+1}{2}}^2 \cdot \frac{e^{(m+1)t}}{(1+e^t)^{2m+2}}}{\prn{\sum_{k > m/2} \binom{m}{k} e^{kt}} \prn{\sum_{k < m/2} \binom{m}{k} e^{kt}} \cdot \frac{1}{(1+e^t)^{2m}}} \nonumber \\
+	& = \frac{(m+1)^2}{4} \binom{m}{\frac{m+1}{2}}^2 \cdot \frac{e^{(m+1)t}}{(1+e^t)^{m+2}} \cdot \frac{1}{(1 - s_m(t)/(1+e^t)^m) s_m(t)} \nonumber \\
+	& = \frac{(m+1)^2}{4} \binom{m}{\frac{m+1}{2}} \cdot \frac{e^{\frac{m+3}{2}t}}{(1+e^t)^{m+2}} \cdot \underbrace{\frac{ \binom{m}{\frac{m+1}{2}} e^{\frac{m-1}{2}t}}{(1 - s_m(t)/(1+e^t)^m) s_m(t)}}_{:=c_m(t)},
+\end{align*}
+which gives the equality in part~\ref{item:eta-via-c}.
+It then remains to show $c_m(t) \geq 1 - e^{-t}$. For this,
+we upper bound
+\begin{align*}
+  e^{-\frac{m-1}{2}t} s_m(t) \leq \sum_{k < m/2}\binom{m}{\frac{m+1}{2}} e^{-\prn{\frac{m-1}{2}-k}t} \leq \binom{m}{\frac{m+1}{2}} \frac{1}{1-e^{-t}},
+\end{align*}
+and noting the inequality
+$\half \le 1 - \frac{s_m(t)}{(1+e^t)^m} \leq 1$, it then follows
+that
+\begin{align*}
+  c_m(t) \geq \frac{\binom{m}{\frac{m+1}{2}} e^{\frac{m-1}{2}t}}{s_m(t)} \geq 1 -e^{-t}.
+\end{align*}
+
+Proceeding to the proof of part~\ref{item:c-m-by-delta},
+for any $\delta \in (0, 1)$,
+\begin{align*}
+  \binom{m}{\frac{m+1}{2}}^{-1} e^{-\frac{m-1}{2}t} s_m(t) & = \sum_{l=0}^\infty \binom{m}{\frac{m+1}{2}}^{-1} \binom{m}{\frac{m+1}{2} - l} e^{-lt} \geq  \underbrace{\binom{m}{\frac{m+1}{2}}^{-1} \binom{m}{\frac{m+1}{2} - \lfloor \delta \sqrt{m} \rfloor}}_{:=q_m(\delta)} \sum_{l=0}^{\lfloor \delta \sqrt{m} \rfloor} e^{-lt} \nonumber 	\\
+  & =  q_m(\delta) \cdot \frac{1 - e^{-(\lfloor \delta \sqrt{m} \rfloor + 1) t}}{1 - e^{-t}},
+%	& = q_m(\delta) \cdot \frac{1 - e^{-(\lfloor \delta \sqrt{m} \rfloor + 1) t}}{1 - e^{-t}} \geq \frac{C \cdot (1 - e^{-(\lfloor \delta \sqrt{m} \rfloor + 1) t})}{1 - e^{-t}} \label{eq:s-m-lower}
+\end{align*}
+where the inequality uses that $\binom{m}{\frac{m+1}{2} - l}$ is decreasing
+in $l$. We next establish that $q_m(\delta) \sim e^{-2\delta^2}$. Indeed,
+applying Stirling's formula yields
+\begin{align*}
+ 	q_m(\delta) &= \frac{\prn{\frac{m}{2}}^{\frac{m}{2}} \cdot \prn{\frac{m}{2}}^{\frac{m}{2}}}{m^m} \cdot  \frac{m^m}{\prn{\frac{m}{2}-\delta \sqrt{m}}^{\frac{m}{2}-\delta \sqrt{m}} \cdot \prn{\frac{m}{2}+\delta \sqrt{m}}^{\frac{m}{2}+\delta \sqrt{m}}} \cdot  (1+o_m(1)) \nonumber \\
+ 	& = \prn{1-\frac{2\delta}{\sqrt{m}}}^{-\frac{m}{2}+\delta \sqrt{m}} \cdot \prn{1+\frac{2\delta}{\sqrt{m}}}^{-\frac{m}{2}-\delta \sqrt{m}} \cdot (1+o_m(1)) \nonumber \\
+ 	& = \prn{1-\frac{4\delta^2}{m}}^{-\frac{m}{2}} \cdot \prn{1-\frac{2\delta}{\sqrt{m}}}^{\delta \sqrt{m}} \cdot \prn{1+\frac{2\delta}{\sqrt{m}}}^{-\delta \sqrt{m}} \cdot (1+o_m(1)) \nonumber \\
+ 	& = e^{2\delta^2} \cdot e^{-2\delta^2} \cdot e^{-2\delta^2} \cdot (1+o_m(1)) = e^{-2 \delta^2} \cdot (1+o_m(1)).
+\end{align*}
+Substituting the above displays into the definition $c_m(t) =
+\binom{m}{\frac{m + 1}{2}} e^{\frac{m - 1}{2} t} s_m(t)^{-1} (1 -
+\frac{s_m(t)}{(1 + e^t)^m})^{-1}$, we can then establish the upper bound
+using $1 - s_m(t)/(1+e^t)^m \ge \half$, so
+\begin{align*}
+c_m(t) \leq \frac{2\binom{m}{\frac{m+1}{2}} e^{\frac{m-1}{2}t}}{s_m(t)} \leq \frac{2(1-e^{-t})}{q_m(\delta) \cdot (1 - e^{-(\lfloor \delta \sqrt{m} \rfloor + 1) t})}.
+\end{align*}
+Since $q_m(\delta) \sim e^{-2\delta^2}$, this inequality
+establishes part~\ref{item:c-m-by-delta}.
+
+For part~\ref{item:normal-ratio-limit}, we compute $\lim_{m \to \infty}
+\sqrt{m} c_m(w/\sqrt{m})$. For any fixed $\delta > 0$, we explicitly expand
+$s_m(w/\sqrt{m})$ to obtain
+\begin{align*}
+	\binom{m}{\frac{m+1}{2}}^{-1} e^{-\frac{m-1}{2} \cdot \frac{w}{\sqrt{m}}} s_m(w/\sqrt{m}) & = \sum_{l=0}^\infty \binom{m}{\frac{m+1}{2}}^{-1} \binom{m}{\frac{m+1}{2} - l} e^{-lw/\sqrt{m}} \nonumber \\
+	& = \sqrt{m}  \sum_{k=0}^{\infty} \underbrace{\frac{1}{\sqrt{m} }\sum_{\lfloor k \delta \sqrt{m} \rfloor \leq l < \lfloor (k+1) \delta \sqrt{m}  \rfloor} \binom{m}{\frac{m+1}{2}}^{-1} \binom{m}{\frac{m+1}{2} - l} e^{-lw/\sqrt{m}}}_{:=a_{m,k}(\delta)}.
+\end{align*}
+Here, we partition the set of all nonnegative integers $\{l \in \N \mid 0
+\leq l < \infty\}$ into sets $L_k = \{\lfloor k \delta \sqrt{m} \rfloor
+\leq l < \lfloor (k+1) \delta \sqrt{m} \rfloor \}$ for $k = 0, 1, \ldots$.
+Using the same asymptotics derived
+above for $q_m(\delta)$ and that $e^{-(k+1) \delta w} \leq e^{-lw/\sqrt{m}}
+\leq e^{-k \delta w} $ for all $l \in L_k$, it holds for some
+remainder term $r_{m,k}$ satisfying
+$|r_{m,k}(\delta)| \leq 1 - e^{-\delta w}$ that
+\begin{align*}
+	a_{m,k}(\delta) & = \delta \cdot \frac{1}{\delta \sqrt{m}} \sum_{\lfloor k \delta \sqrt{m} \rfloor \leq l < \lfloor (k+1) \delta \sqrt{m}  \rfloor} e^{-2k^2 \delta^2}  \cdot (1 + o_m(1)) \cdot  e^{-lw/\sqrt{m}} \nonumber \\
+	& = \delta \cdot \frac{1 + r_{m,k}(\delta)}{\delta \sqrt{m}} \sum_{\lfloor k \delta \sqrt{m} \rfloor \leq l < \lfloor (k+1) \delta \sqrt{m}  \rfloor} e^{-2k^2 \delta^2}  \cdot (1 + o_m(1)) \cdot  e^{-k \delta w} \nonumber \\
+	& = \prn{1 + r_{m,k}(\delta)} \cdot \delta e^{-2k^2 \delta^2-k\delta w} \cdot (1 + o_m(1)).
+\end{align*}
+
+We will invoke dominated convergence for series to allow
+us to exchange summation and limits in $m$.
+We observe the following termwise domination:
+\begin{align*}
+  a_{m,k}(\delta) & \leq \frac{1}{\sqrt{m} } \cdot \prn{\lfloor (k+1) \delta \sqrt{m}  \rfloor - \lfloor k \delta \sqrt{m} \rfloor } e^{-\lfloor k \delta \sqrt{m} \rfloor w / \sqrt{m}} \\
+  & \leq \frac{\delta \sqrt{m} + 1}{\sqrt{m}} e^{-k\delta w + w/\sqrt{m}} \nonumber
+  \leq (\delta +1) e^{-k\delta w + w},
+\end{align*}
+which is summable in $k$.  We can then invoke dominated convergence theorem
+for infinite series to obtain that for some $|r(\delta)| \leq 1 - e^{-\delta
+  w}$,
+\begin{align*}
+  \lim_{m \to \infty} \sum_{k=0}^\infty a_{m,k}(\delta) = (1 + r(\delta)) \cdot \sum_{k=0}^\infty \delta e^{-2k^2 \delta^2 - k\delta w},
+\end{align*}
+implying that for any $\delta > 0$,
+\begin{align*}
+	\binom{m}{\frac{m+1}{2}}^{-1} e^{-\frac{m-1}{2} \cdot \frac{w}{\sqrt{m}}} s_m(w/\sqrt{m}) \sim \sqrt{m} \cdot (1 + r(\delta)) \cdot \sum_{k=0}^\infty \delta e^{-2k^2 \delta^2 - k\delta w}.
+\end{align*}
+Since the left hand side does not depend on $\delta$, we can then send $\delta$ to zero on the right hand side and use the definition of Riemann integral to obtain
+\begin{align*}	
+ 	\binom{m}{\frac{m+1}{2}}^{-1} e^{-\frac{m-1}{2} \cdot \frac{w}{\sqrt{m}}} s_m(w/\sqrt{m}) 
+	& \sim \sqrt{m} \lim_{\delta \to 0} \sum_{k=0}^\infty \delta e^{-2 k^2 \delta^2 - k\delta w } \nonumber \\
+	& = \sqrt{m} \int_0^\infty e^{-2x^2 -wx} dx = \sqrt{\frac{ \pi m}{2}} e^{\frac{w^2}{8}} \Phi(-w/2).
+\end{align*}
+%
+%. and the binomial asymptotics to conclude that
+%\begin{align*}
+%	\lim_{m \to \infty} \sum_{k=0}^\infty a_{m,k}  = \sum_{k=0}^\infty \delta e^{-2k^2 \delta^2 - k\delta w} \cdot (1+o_\delta(1)).
+%\end{align*}
+%Therefore, sending $\delta \to 0$ and using the definition of Riemann integral, we obtain
+%\begin{align*}
+%	\binom{m}{\frac{m+1}{2}}^{-1} e^{-\frac{m-1}{2} \cdot \frac{w}{\sqrt{m}}} s_m(w/\sqrt{m})& \sim \sqrt{m} \lim_{\delta \to 0} \sum_{k=0}^\infty \delta e^{-2 k^2 \delta^2 - k\delta w } \cdot (1+o_\delta(1)) \nonumber \\
+%	& = \sqrt{m} \int_0^\infty e^{-2x^2 -wx} dx = \sqrt{\frac{ \pi m}{2}} e^{\frac{w^2}{8}} \Phi(-w/2).
+%\end{align*}
+%
+Now we compute the limit of the remaining term in $c_m(t)$,
+\begin{align*}
+	s_m(w/\sqrt{m})/(1+e^{w/\sqrt{m}})^m & \sim \prn{\frac{1}{1 + e^{w/\sqrt{m}}}}^m  \cdot \binom{m}{\frac{m+1}{2}} e^{-w \sqrt{m}/2} \cdot \sqrt{\frac{ \pi m}{2}} e^{\frac{w^2}{8}} \Phi(-w/2) \nonumber \\
+	& \sim \prn{\frac{2}{1 + e^{w/\sqrt{m}}}}^m \cdot  e^{-w\sqrt{m}/2} e^{\frac{w^2}{8}} \Phi(-w/2) \nonumber \\
+	& =  \prn{\frac{2 e^{-\frac{w}{2\sqrt{m}}}}{1 + e^{\frac{w}{\sqrt{m}}}}}^m \cdot e^{\frac{w^2}{8}} \Phi(-w/2) = \prn{1 - \frac{\prn{1 - e^{-\frac{w}{2\sqrt{m}}}}^2}{1 + e^{\frac{w}{\sqrt{m}}}}}^m \cdot e^{\frac{w^2}{8}} \Phi(-w/2) \nonumber \\
+	& \sim \prn{1 - \frac{1}{8} \frac{w^2}{m}}^m \cdot e^{\frac{w^2}{8}} \Phi(-w/2) \sim  \Phi(-w/2).
+\end{align*}
+Taking the above displays collectively into
+\begin{align*}
+	c_m(w/\sqrt{m}) = \frac{\binom{m}{\frac{m+1}{2}} e^{\frac{m-1}{2}\cdot \frac{w}{\sqrt{m}}}}{s_m(w/\sqrt{m})} \cdot \frac{1}{1 - s_m(w/\sqrt{m})/(1+e^{w/\sqrt{m}})^m}
+\end{align*}
+we establish part~\ref{item:normal-ratio-limit} of the lemma, that is,
+\begin{align*}
+	\lim_{m \to \infty} \sqrt{m} c_m \prn{\frac{w}{\sqrt{m}}} = \lim_{m \to \infty} \frac{\sqrt{m}}{\sqrt{\frac{ \pi m}{2}} e^{\frac{w^2}{8}} \Phi(-w/2)} \cdot \frac{1}{1 - \Phi(-w/2)} = e^{-\frac{w^2}{8}} \sqrt{\frac{2}{\pi}} \cdot \frac{1}{\Phi(-w/2) \Phi(w/2)}.
+\end{align*}
+
+\subsection{Proof of Lemma~\ref{lem:Jm-integral-term-upper-bound}} \label{proof:Jm-integral-term-upper-bound}
+We pick some constant $C > 0$. When $w \leq C\sqrt{m}/t$,
+\begin{align*}
+	& \prn{\frac{2e^{\frac{tw}{2\sqrt{m}}}}{1 + e^{\frac{tw}{\sqrt{m}}}}}^{m} e^{\frac{tw}{\sqrt{m}}} w^\beta \nonumber \\
+	& = \prn{1 - \frac{\prn{1-e^{-\frac{tw}{2\sqrt{m}}}}^2}{1 + e^{-\frac{tw}{\sqrt{m}}}}}^{m} e^{\frac{tw}{\sqrt{m}}} w^\beta \leq e^C  w^\beta  \exp \brc{-\frac{m\prn{1-e^{-\frac{tw}{2\sqrt{m}}}}^2}{1 + e^{-\frac{tw}{\sqrt{m}}}} }  \nonumber \\
+	&  \leq e^C  w^\beta \exp \brc{-\frac{1}{2} \cdot m\prn{1-e^{-\frac{tw}{2\sqrt{m}}}}^2 } = e^C  w^\beta \exp \brc{-\frac{t^2w^2}{2} \cdot \prn{\frac{\sqrt{m}}{tw} \cdot \prn{1-e^{-\frac{tw}{2\sqrt{m}}}}}^2 }  \nonumber \\
+	& \leq e^C w^\beta \cdot \exp \left\{-\frac{t^2 w^2}{2} \cdot \prn{\inf_{z \in (0, C]} \frac{1-e^{-z/2}}{z} }^2 \right\} ,
+\end{align*}
+and when $w > C\sqrt{m}/t$,
+\begin{align*}
+	\prn{\frac{2e^{\frac{tw}{2\sqrt{m}}}}{1 + e^{\frac{tw}{\sqrt{m}}}}}^{m} e^{\frac{tw}{\sqrt{m}}} w^\beta & = \prn{\frac{2e^{-\frac{tw}{2\sqrt{m}}}}{1 + e^{-\frac{tw}{\sqrt{m}}}}}^{m} e^{\frac{tw}{\sqrt{m}}} w^\beta \nonumber \\
+	& \leq \prn{2e^{-\frac{tw}{4\sqrt{m}}}}^m \cdot \exp \brc{-\frac{\sqrt{tw}}{4\sqrt{m}} \cdot \sqrt{tw}} e^{\frac{tw}{\sqrt{m}}}w^\beta \nonumber \\
+	& \leq \prn{2e^{-\frac{tw}{4\sqrt{m}} + \frac{tw}{m\sqrt{m}}}}^m \cdot w^\beta \exp \brc{-\frac{C}{4} \sqrt{tw}} \nonumber \\
+	& \leq \prn{2e^{-C\prn{\frac{1}{4} - \frac{1}{m}}}}^m  w^\beta \exp \brc{-\frac{C}{4} \sqrt{tw}} .
+\end{align*}
+Then for $m \geq 8$ and $C > 8 > \log 2$, it holds $2e^{-C\prn{\frac{1}{4} - \frac{1}{m}}} < 1$ and consequently
+\begin{align*}
+	\prn{\frac{2e^{\frac{tw}{2\sqrt{m}}}}{1 + e^{\frac{tw}{\sqrt{m}}}}}^{m} e^{\frac{tw}{\sqrt{m}}} w^\beta \le w^\beta \exp \brc{-\frac{C}{4} \sqrt{tw}}.
+\end{align*}
+
+\subsection{Proof of Corollary~\ref{cor:LAM-lower-bounds}} \label{proof:LAM-lower-bounds}
+As we have the explicit formula for the density $p_\theta(X,\majY) = \Prb(\majY \mid X) q(X)$, with $\Prb(\majY = \sgn(\<x, \theta^\star\>) \mid X = x) = \rho_m(|\<x, \theta^\star\>|) $ and $q$ being the $d$-dimensional centered density with covariance $\Sigma$. It is differentiable in quadratic mean and allows us to invoke \citet[Thm.~8.9]{VanDerVaart98}. It only remains to show the asymptotic rate in $m$ for $\Sigma_{\theta\opt}$ and $\Sigma_{u\opt}$. Indeed, by Lemma~\ref{lem:Sigma-inverse},
+\begin{align*}
+	\Sigma_{\theta\opt} = \fisher_m(\theta\opt)^{-1} = A_m (t\opt)^{-1} \cdot u\opt {u\opt}^\top + B_m(t\opt)^{-1} \cdot \prn{\proj_{u\opt}^\perp \Sigma \proj_{u\opt}^\perp}^\dagger,
+\end{align*}
+and  Theorem~\ref{thm:lower-bound-fisher-information} implies
+\begin{align*}
+	\Sigma_{\theta\opt} \asymp {t\opt}^{\beta +2} m^{\frac{\beta}{2}} \cdot u\opt {u\opt}^\top +  {t\opt}^{\beta}m^{\frac{\beta-2}{2}}  \cdot \prn{\proj_{u\opt}^\perp \Sigma \proj_{u\opt}^\perp}^\dagger.
+\end{align*}
+Analogously we establish the proof for $\Sigma_{u\opt}$.

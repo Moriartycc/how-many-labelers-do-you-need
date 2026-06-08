@@ -1,0 +1,449 @@
+\section{Technical lemmas} \label{sec:technical}
+
+We collect several technical lemmas and their proofs in this section, which
+will be helpful in the main proofs. See
+Appendices~\ref{proof:Sigma-inverse}, \ref{proof:t-Z-integral-noise},
+\ref{proof:m-rho-integral-noise-general} and
+\ref{proof:rademacher-symmetrization} for their proofs.
+
+\begin{lemma} \label{lem:Sigma-inverse}
+  Suppose $A, B \in \mathbb{R}^{d \times d}$ are symmetric, $AB = BA = 0$
+  and the matrix $A+B$ is invertible. Then
+  \begin{align*}
+    \left(A +B\right)^{-1} = A^\dagger + B^\dagger.
+  \end{align*}
+\end{lemma}
+
+The next two lemmas characterize asymptotic behaviors of expectations
+involving a fixed function $f$ and some random variable $Z$ that satisfies
+Assumption~\ref{assumption:z-density} for given $\beta>0$ and $c_Z <
+\infty$. To facilitate stating the theorems, we recall
+that such $Z$ are $(\beta,
+c_Z)$-regular.
+\begin{lemma} \label{lem:t-Z-integral-noise}
+  Let $\beta > 0$ and $f$ be a function on $\R_+$ such that
+  $z^{\beta-1}f(z)$ is integrable. If $Z$ is $(\beta,
+  c_Z)$-regular (Assumption~\ref{assumption:z-density}), then
+  \begin{align*}
+    \lim_{t \to \infty} t^\beta \Ep [f(t|Z|)] =  c_Z \int_{0}^{\infty} z^{\beta - 1} f(z) dz.
+  \end{align*}
+\end{lemma}
+
+\begin{lemma} \label{lem:m-rho-integral-noise-general}
+  Let $\beta > 0$ and $c_Z < \infty$, and $Z$ be $(\beta, c_Z)$-regular, let
+  $f : \R_+ \to \R$ satisfy $|f(z)| \leq a_0 + a_p z^p$ for some $a_0, a_p <
+  \infty$ and all $z \in \R$, and assume $|Z|$ has finite $p$th
+  moment. Additionally let $\rho_m(t)$ be the majority vote prediction
+  function~\eqref{eq:link-function-m-majority-vote-general} and
+  Assumption~\ref{assumption:condition-misspcfd-link-majority-vote} hold for
+  each $\sigma_j\opt$ with limiting average derivative
+  ${\wb{\sigma}\opt}'(0)$ at zero. Then for any $c > 0$
+  \begin{align*}
+    \lim_{m \to \infty} m^{\frac{\beta}{2}}\Ep \left[f(\sqrt{m}|Z|) (1 - \rho_m(cZ))\right] = c_Z \int_0^\infty z^{\beta - 1} f(z) \Phi \left(-2 {\wb{\sigma}\opt}'(0) cz\right) dz,
+  \end{align*}
+  where $\Phi(z) = \int_{-\infty}^z \frac{1}{\sqrt{2 \pi}}
+  e^{-\frac{t^2}{2}}dt$ is the standard normal cumulative distribution function.
+\end{lemma}
+
+The fourth lemma is a uniform convergence result for the empirical risk in
+the case that we have potentially distinct link functions
+(cf.~Sec.~\ref{sec:master-results-sem}).
+\begin{lemma}
+  \label{lemma:rademacher-symmetrization}
+  Assume $\E[\ltwo{X}^{\gamma}] \le M^\gamma$ for some $M \ge 1$ and $\gamma
+  \ge 2$ and let the radius $1 \le r < \infty$. Let $\Flink \subset \{\sigma
+  : \R \to [0, 1], \lipnorm{\sigma} \le \lipconst\}$.  Then for a constant
+  $C \lesssim \sqrt{d \lipconst}$, we have
+  \begin{equation*}
+    \E\left[\sup_{\ltwo{\theta} \le r}
+      \sup_{\vec{\sigma} \in \Flink^m} |P_n \loss_{\vec{\sigma},\theta} - L(\theta,
+      \vec{\sigma})|\right]
+    \le C \cdot
+    (M r)^\frac{4\gamma}{3\gamma + 1} 
+    \left(\frac{m}{n}\right)^\frac{\gamma}{3\gamma + 1}
+    \sqrt{\log(rn)}.
+  \end{equation*}
+\end{lemma}
+
+
+\subsection{Proof of Lemma~\ref{lem:Sigma-inverse}}
+\label{proof:Sigma-inverse}
+
+As $AB=BA=0$, the symmetric matrices $A$ and $B$ commute and so are
+simultaneously orthogonally diagonalizable~\cite[Thm.~4.5.15]{HornJo85}. As
+$AB=BA=0$, we can thus write
+\begin{align*}
+	A = U \begin{bmatrix} \Lambda_1 & 0 \\ 0 & 0 \end{bmatrix} U^\top  , \qquad B = U \begin{bmatrix} 0 & 0 \\ 0 & \Lambda_2 \end{bmatrix} U^\top  ,
+\end{align*}
+for some orthogonal $U \in \R^{d \times d}$, and as $A+B$ is invertible,  $\Lambda_1, \Lambda_2$ are invertible diagonal matrices. We conclude the proof by writing
+\begin{align*}
+	(A+ B)^{-1} = U \begin{bmatrix} \Lambda_1^{-1} & 0 \\ 0 & \Lambda_2^{-1} \end{bmatrix} U^\top = U \begin{bmatrix} \Lambda_1^{-1} & 0 \\ 0 & 0 \end{bmatrix} U^\top + U \begin{bmatrix} 0 & 0 \\ 0 & \Lambda_2^{-1} \end{bmatrix} U^\top = A^\dagger + B^\dagger .
+\end{align*}
+
+\subsection{Proof of Lemma~\ref{lem:t-Z-integral-noise}}  \label{proof:t-Z-integral-noise}
+By the change of variables $w =t z$, we have
+\begin{align*}
+	t^\beta \Ep [f(t|Z|)] & = \int_{0}^{\infty} f(t z) \cdot t^{\beta - 1} p(z)  \cdot td z =  \int_{0}^{\infty} f(w) \cdot t^{\beta-1} p (w/t) d w \\
+	& =  \int_{0}^{\infty} w^{\beta - 1} f(w) \cdot (w/t)^{1-\beta} p (w/t) d w.
+\end{align*}
+As $|  w^{\beta - 1} f(w) \cdot (w/t)^{1-\beta} p (w/t)| \leq \sup_{z \in (0, \infty)} z^{1-\beta} p(z) \cdot |w^{\beta - 1} f(w)|$, where $w^{\beta - 1} f(w)$ is integrable by assumption, we can invoke dominated convergence to see that
+\begin{align*}
+	\lim_{t \to \infty} t^\beta \Ep [f(t|Z|)] = \int_{0}^{\infty} w^{\beta - 1} f(w) \cdot \lim_{t \to \infty} (w/t)^{1-\beta} p (w/t) d w = c_Z \int_{0}^{\infty} w^{\beta - 1} f(w) dw.
+\end{align*}
+
+\subsection{Proof of Lemma~\ref{lem:m-rho-integral-noise-general}} \label{proof:m-rho-integral-noise-general}
+By rescaling arguments, it suffices to prove the theorem for any function
+$f$ satisfying
+$|f(z)| \leq 1 + z^p$ on $\R_+$ for any $p \in \N$ such that $|Z|$
+has finite $p$th moment.  For such $f$, we wish to
+show
+\begin{align*}
+  \lim_{m \to \infty} m^{\frac{\beta}{2}} \Ep \left[f(\sqrt{m}|Z|) (1 - \rho_m(c Z))\right] = c_Z \int_0^\infty z^{\beta-1} f(z) \Phi \left(-2 {\wb{\sigma}\opt}'(0) c z\right) dz,
+\end{align*}
+where $\Phi$ is the standard normal cdf. The key insight is that we can
+approximate $1 - \rho_m(t)$ by a suitable Gaussian cumulative distribution
+function (recognizing that $\rho_m(t) > \half$ for $t \neq 0$ by
+definition~\eqref{eq:link-function-m-majority-vote-general} as the
+probability the majority vote is correct given margin
+$\<\theta\opt, X\> = t$).
+
+We first assume $Z \geq 0$ with probability $1$, as the general result
+follows by writing $Z = (Z)_+ - (-Z)_+$.  We decompose into two
+expectations, depending on $Z$ being large or small:
+\begin{align}
+  \lefteqn{m^{\frac{\beta}{2}} \Ep \left[f(\sqrt m |Z|) (1 - \rho_m(cZ)) \right]}
+  \nonumber \\
+  & = \underbrace{m^{\frac{\beta}{2}} \Ep \left[f(\sqrt m Z) (1 - \rho_m(cZ)) \ind\left\{0 \leq Z \leq \frac{M}{\sqrt m}\right\} \right]}_{\mathrm{(I)}} + \underbrace{m^{\frac{\beta}{2}} \Ep \left[f(\sqrt m Z) (1 - \rho_m(cZ)) \ind\left\{Z > \frac{M}{\sqrt m}\right\} \right]}_{\mathrm{(II)}}   .  \label{eq:normal-mid-main}
+\end{align}
+The proof consists of three main parts. 
+\begin{enumerate}[leftmargin=2em,label=\arabic*.]
+\item We approximate $1-\rho_m(t)$ by a Gaussian cdf.
+\item We can approximate term (I) by replacing $1-\rho_m(t)$ with
+  the Gaussian cdf, showing that
+  \begin{align}
+    \left|\lim_{m \to \infty} \mathrm{(I)} - c_Z \int_0^\infty z^{\beta - 1} f(z) \Phi \left( - 2{\wb{\sigma}\opt}'(0) cz \right) dz \right| = o_M(1)   . \label{eq:normal-mid-3}
+  \end{align} 
+\item For term (II), we show $1- \rho_m(cz)$ is small when $Z > M/\sqrt{m}$, which allows us to show that
+  \begin{equation*}
+    \limsup_{m \to \infty}
+    \left|\mathrm{(II)} \right| = o_M(1).
+  \end{equation*}
+\end{enumerate} 
+Thus by adding the two preceding displays and taking $M \to \infty$, we
+obtain the lemma.
+
+\newcommand{\linkstd}{\sigma_m^{\textup{std}}}
+
+Before we dive into further details, we use the shorthand functions
+\begin{equation}
+  \linkstd(z)
+  \defeq, \frac{\sum_{j=1}^m \prns{\sigma_j\opt(cz) - \half}}{\sqrt{\sum_{j=1}^m \sigma_j\opt(cz)\prns{1 - \sigma_j\opt(cz)}}},
+  ~~~
+  \Delta_m(z) \defeq 1 - \rho_m(cz) - \Phi(- \linkstd(z))
+  \label{eqn:std-link},
+\end{equation}
+and we also write $p_\infty(\beta) := \sup_{z \in (0, \infty)} z^{1-\beta}
+p(z) < \infty$.
+
+\paragraph{Part 1. Normal approximation for $1- \rho_m(t)$ when $t = O(1/\sqrt{m})$.} Let $p_j = \sigma_j\opt(t)$ for shorthand and $Y_j \sim \mathrm{Bernoulli}(p_j)$ be independent random variables. For $t > 0$, then
+\begin{align*}
+  1 - \rho_m(t) & = \Prb \prn{Y_1 + \cdots + Y_m < \half} = \Prb
+  \prn{\frac{\sum_{j=1}^m (Y_j - p_j)}{\sqrt{\sum_{j=1}^m p_j
+        (1-p_j)}} < - \frac{\sum_{j=1}^m (p_j - \half)}{
+      \sqrt{\sum_{j=1}^m p_j (1-p_j)}}} .
+\end{align*}
+Consider the centered and standardized random variables $\xi_j = (Y_j - p_j)/\sqrt{\sum_{j=1}^m p_j (1-p_j)} $ so that $\xi_1, \dots, \xi_m$ are zero mean, mutually independent, and satisfy
+\begin{align*}
+  \sum_{j=1}^m \var \prn{\xi_j} & = 1  , \\
+  \sum_{j=1}^m \Ep \brk{\left|\xi_j\right|^3} & =
+  \frac{\sum_{j=1}^m p_j (1-p_j)(p_j^2 + (1-p_j)^2)}{\prns{\sum_{j=1}^m p_j (1-p_j)}^{3/2}}
+  \leq \frac{\max_{1 \leq j \leq m} (p_j^2 + (1-p_j)^2)}{\sqrt{\sum_{j=1}^m p_j(1-p_j)}}  .
+\end{align*} 
+By the Berry-Esseen theorem (cf.~\citet{ChenGoSh10, Shevtsova14}), for all
+$t > 0$
+\begin{align*}
+	\left|1 - \rho_m(t) - \Phi \left(-\frac{ \sum_{j=1}^m \left( p_j - \half\right)}{\sqrt{\sum_{j=1}^m p_j (1-p_j)}}\right)\right| \leq \frac{3}{4} \cdot \frac{\max_{1 \leq j \leq m} (p_j^2 + (1-p_j)^2)}{\sqrt{\sum_{j=1}^m p_j (1-p_j)}}  .
+\end{align*}
+%
+Fix any $M <\infty$. Then for $0 \leq t \leq cM /\sqrt m$ and large enough
+$m$, the right hand side of the preceding display has the upper bound
+$2/\sqrt{m}$, as in numerator we have $p_j^2 + (1-p_j)^2 \leq 1$, and in
+denominator $\min_{1 \leq j \leq m}p_j(1-p_j) \to 1/4$ for all $j$ as $m \to
+\infty$, which follows from
+Assumption~\ref{assumption:condition-misspcfd-link-majority-vote}
+that
+\begin{equation*}
+  \half \leq \limsup_{m \to \infty} \max_{1 \leq j \leq m} p_j \leq \limsup_{m \to \infty} \sup_{1 \leq j < \infty} {\sigma_j\opt} \prn{\frac{cM}{\sqrt m} } =
+  \half.
+\end{equation*}
+By repeating the same argument for $-cM /\sqrt m \leq t < 0$, we obtain that for large $m$ and $|t| \leq cM / \sqrt m$,
+\begin{align}
+  \left|1 - \rho_m(t) - \Phi \left(-\left|\frac{ \sum_{j=1}^m \left( \sigma_j\opt(t) - \half\right)}{\sqrt{\sum_{j=1}^m \sigma_j\opt(t) \prn{1 - \sigma_j\opt(t)}}}\right|\right)\right| \leq \frac{2}{\sqrt m}   . \label{eq:BE-approximation}
+\end{align}
+
+\paragraph{Part 2. Approximating (I) by Gaussian cdf.}
+For the first term (I) in~\eqref{eq:normal-mid-main}, we further decompose into a normal approximation term and an error term,
+\begin{align*}
+  \mathrm{(I)} = \underbrace{m^{\frac{\beta}{2}}
+    \Ep \left[f(\sqrt m Z)\Phi(-\linkstd(z))
+      \ind\left\{0 \leq Z \leq \frac{M}{\sqrt m}\right\} \right]}_{\mathrm{(III)}} + \underbrace{m^{\frac{\beta}{2}} \Ep \left[f(\sqrt m Z)\Delta_m(z) \ind\left\{0 \leq Z \leq \frac{M}{\sqrt m}\right\} \right]}_{\mathrm{(IV)}}, %\label{eq:normal-mid-0}
+\end{align*}
+where $\Delta_m(z) = 1 - \rho_m(cz) - \Phi(-\linkstd(z))$ as in
+def.~\eqref{eqn:std-link}. We will show $\mathrm{(IV)} \to 0$ and so
+$\mathrm{(III)}$ dominates. By the change of variables $w = \sqrt{m}z$, we can
+further write (III) as
+\begin{align*}
+  \mathrm{(III)} 
+  & = m^{\frac{\beta}{2}} \int_0^{\frac{M}{\sqrt m}} f(\sqrt m z) \Phi
+  ( -\linkstd(z)) \cdot p(z) d z \nonumber \\
+  & = \int_0^{M} w^{\beta - 1} f(w) \Phi  \left( - \linkstd\prn{\frac{w}{\sqrt m}}\right) \cdot  (w/\sqrt{m})^{1-\beta} p(w/\sqrt{m}) d w   .
+\end{align*}
+We want to take the limit $m \to \infty$ and apply dominated convergence
+theorem. Because $(w/\sqrt{m})^{1-\beta} p(w/\sqrt{m}) \leq p_\infty(\beta)
+< \infty$ and $\linkstd(w/\sqrt m) \geq 0$, we have
+\begin{align*}
+	&  w^{\beta - 1} f(w) \Phi  \left( - \linkstd\prn{\frac{w}{\sqrt m}}\right) \cdot  \left( - \linkstd\prn{\frac{w}{\sqrt m}}\right) \cdot  (w/\sqrt{m})^{1-\beta} p(w/\sqrt{m}) \leq w^{\beta - 1} f(w) \cdot \Phi(0) p_\infty(\beta)   .
+\end{align*} 
+As $\beta > 0$ and $|f(w)| \leq 1 + w^p$, $w^{\beta - 1} f(w)$ is integrable
+on $[0, M]$, and by~\eqref{ass:misspcfd-link-1} and \eqref{ass:misspcfd-link-3}
+  in Assumption~\ref{assumption:condition-misspcfd-link-majority-vote},
+\begin{align*}
+	\lim_{m \to \infty} \linkstd\prn{\frac{w}{\sqrt m}} & = \lim_{m \to \infty}\frac{\sqrt{m}\left(\wb{\sigma}_m\opt\prn{\frac{cw}{\sqrt m}}-\frac{1}{2}\right)}{\sqrt{ \frac{1}{m} \sum_{j=1}^m \sigma_j\opt\prn{\frac{cw}{\sqrt m}}\prn{1 - \sigma_j\opt\prn{\frac{cw}{\sqrt m}}}}} =  2 {\wb{\sigma}\opt}'(0) cw   .
+\end{align*}
+Using the above display and that $\lim_{m \to \infty} (w/\sqrt{m})^{1-\beta}
+p(w/\sqrt{m}) = c_Z$, we can thus apply dominated convergence theorem
+to conclude that
+\begin{align*}
+	\lim_{m \to \infty}\mathrm{(III)} 
+%	&  = \int_0^{M} w^{\beta - 1} f(w) \cdot   \Phi  \left( -\lim_{m \to \infty} \linkstd(z)\right) \cdot \lim_{m \to \infty} w^{\beta - 1}m^{\frac{\beta - 1}{2}} p(wm^{-\frac{1}{2}}) d w \nonumber \\
+	&  = c_Z \int_0^M w^{\beta - 1} f(w) \cdot  \Phi  \left( - 2 {\wb{\sigma}\opt}'(0) cw\right) dw = c_Z \int_0^\infty w^{\beta - 1} f(w) \Phi \left( - 2{\wb{\sigma}\opt}'(0) cw \right) dw + o_M(1). %\label{eq:normal-mid-1}
+\end{align*} 
+
+Next we turn to the error term (IV). By the
+bound~\eqref{eq:BE-approximation}, $|\Delta_m(z)| \leq 2/\sqrt{m}$ when $|z|
+\leq M/\sqrt{m}$ for large enough $m$, and substituting $w = \sqrt{m}z$,
+\begin{align*}
+	|\mathrm{(IV)}| & \leq m^{\frac{\beta}{2}} \Ep \left[|f(\sqrt m Z)| \cdot \frac{2}{\sqrt m} \cdot \ind\left\{0 \leq Z \leq \frac{M}{\sqrt m}\right\}   \right] \nonumber \\
+	& = \frac{2}{\sqrt m} \int_0^{\frac{M}{\sqrt m}} \sqrt m \cdot |f(\sqrt m z)| \cdot m^{\frac{\beta-1}{2}} p(z) dz  = \frac{2}{\sqrt m} \int_0^M w^{\beta - 1}|f(w)| \cdot(w/\sqrt{m})^{1-\beta} p(w/\sqrt{m}) dw.
+\end{align*}
+By using Assumption~\ref{assumption:z-density} again that $(w/\sqrt{m})^{1-\beta} p(w/\sqrt{m}) \leq p_\infty(\beta) < \infty$, we further have
+\begin{equation*}
+  |\mathrm{(IV)}| 
+  \leq \frac{2p_\infty(\beta) }{\sqrt m} \cdot \int_0^M w^{\beta - 1}|f(w)| dw
+  \leq  \frac{2p_\infty(\beta) }{\sqrt m} \cdot
+  \prn{\frac{M^\beta}{\beta} +\frac{M^{p+\beta}}{p+\beta}}
+  \to 0,
+\end{equation*}
+where we use $|f(w)| \leq 1+w^p$. We have thus shown the
+limit~\eqref{eq:normal-mid-3}.
+
+%Substitute Eqs.~\eqref{eq:normal-mid-1} and \eqref{eq:normal-mid-2} into Eq.~\eqref{eq:normal-mid-0}, we obtain
+%\begin{align*}
+%	\left|\lim_{m \to \infty} \mathrm{(I)} - c_Z \int_0^\infty w^{\beta - 1} f(w) \Phi \left( - 2{\wb{\sigma}\opt}'(0) cw \right) dw \right| = o_M(1)   .
+%\end{align*} 
+\paragraph{Part 3. Upper bounding (II).}
+In term~(II), when $Z$ is large, the key is that the quantity
+$1-\rho_m(t)$ is
+small when $|t| \geq cM /\sqrt{m}$: Hoeffding's
+inequality implies the tail bound
+\begin{align*}
+  0 \leq 1 - \rho_m(t) \leq e^{-2 \left(\wb{\sigma}_m\opt(t) - \half\right)^2 m}  .
+\end{align*}
+Thus
+\begin{align}
+	|\mathrm{(II)}| &\leq  \int_{\frac{M}{\sqrt m}}^1 \sqrt m |f(\sqrt m z)|  e^{-2\left(\wb{\sigma}_m\opt(cz) - \half\right)^2m}\cdot  m^{\frac{\beta-1}{2}} p(z) dz + \int_{1}^\infty m^{\frac \beta 2} |f(\sqrt m z)|  e^{-2\left(\wb{\sigma}_m\opt(cz) - \half\right)^2m}\cdot  p(z) dz   . \nonumber  
+\end{align}
+Using the assumption that $\gamma \defeq\liminf_m \inf_{t \geq c}
+\prn{\wb{\sigma}_m\opt(t) - \half} > 0$ from~\eqref{ass:misspcfd-link-2},
+that $|f(z)| \leq 1 +z^p$ and $|Z|$ has finite $p$th moment, we observe
+that
+\begin{align*}
+	\int_{1}^\infty m^{\frac \beta 2} |f(\sqrt m z)|  e^{-2\left(\wb{\sigma}_m\opt(cz) - \half\right)^2m}\cdot  p(z) dz\leq  m^{\frac{1}{2}(\beta + p)}  e^{-2\gamma^2m} \int_1^\infty (1 + z^p) p(z) dz \to 0  ,
+\end{align*}
+and consequently
+\begin{align*} 
+	\limsup_{m \to \infty} |\mathrm{(II)}|  & \leq  \limsup_{m \to \infty} \int_{\frac{M}{\sqrt m}}^1 \sqrt m |f(\sqrt m z)|  e^{-2\left(\wb{\sigma}_m\opt(cz) - \half\right)^2m}\cdot  m^{\frac{\beta-1}{2}} p(z) dz \nonumber \\
+	& = \limsup_{m \to \infty}   \int_{M}^{\sqrt{m}}  w^{\beta - 1} |f(w)| e^{-2\left(\wb{\sigma}_m\opt\prn{\frac{cw}{\sqrt m}} - \half\right)^2m} \cdot (w/\sqrt{m})^{1-\beta} p(w/\sqrt{m}) d w   .
+\end{align*}
+For $w \in [M, \sqrt m]$, we have
+\begin{align*}
+	\left(\wb{\sigma}_m\opt\prn{\frac{cw}{\sqrt m}} - \half\right)^2m & = \left(\frac{\wb{\sigma}_m\opt\prn{\frac{cw}{\sqrt m}} - \half}{\frac{cw}{\sqrt m}}\right)^2 c^2 w^2 \geq \left(\inf_{0 < t \leq c} \frac{\wb{\sigma}_m\opt(t) - \half}{t}\right)^2 c^2 w^2   ,
+\end{align*}
+while Assumption~\eqref{ass:misspcfd-link-2} gives $\delta:=\inf_{0 < t \leq c} \frac{\wb{\sigma}_m\opt(t) - \half}{t} > 0$,  so
+\begin{align*}
+\limsup_{m \to \infty} |\mathrm{(II)}| & \leq \int_{M}^{\sqrt{m}}  w^{\beta - 1} |f(w)| e^{-\delta w^2} \cdot (w/\sqrt{m})^{1-\beta} p(w/\sqrt{m}) d w. %\label{eq:normal-mid-4}
+\end{align*}
+Using the inequality
+$(w/\sqrt{m})^{1-\beta} p(w/\sqrt{m}) \leq p_\infty(\beta) < \infty$, we
+apply dominated convergence:
+\begin{align*}
+  \lim_{m \to \infty} \int_{M}^{\sqrt{m}}  w^{\beta - 1} |f(w)| e^{-\delta w^2} \cdot (w/\sqrt{m})^{1-\beta} p(w/\sqrt{m}) d w  = c_Z \int_M^\infty  w^{\beta - 1}  |f(w)| e^{-\delta w^2} dw = o_M(1).
+\end{align*}
+
+\subsection{Proof of Lemma~\ref{lemma:rademacher-symmetrization}} \label{proof:rademacher-symmetrization}
+We follow a typical symmetrization approach, then construct a covering
+that we use to prove the lemma.
+Let $P_n^0 = n^{-1} \sum_{i = 1}^n \varepsilon_i 1_{X_i, Y_i}$ be the
+(random) symmetrized measure with point masses at $(X_i, Y_i)$ for
+$Y_i = (Y_{i1}, \ldots, Y_{im})$. Then by a standard symmetrization
+argument, we have
+\begin{equation}
+	\label{eqn:symmetrization-step}
+	\E\left[\sup_{\ltwo{\theta} \le r}
+	\sup_{\vec{\sigma} \in \Flink^m} |P_n \loss_{\vec{\sigma},\theta} - L(\theta,
+	\vec{\sigma})|\right]
+	\le 2 \E\left[\sup_{\ltwo{\theta} \le r}
+	\sup_{\vec{\sigma} \in \Flink^m} \left|P_n^0 \loss_{\vec{\sigma}, \theta}
+	\right|\right].
+\end{equation}
+
+We use a covering argument to bound the symmetrized
+expectation~\eqref{eqn:symmetrization-step}.  Let $R < \infty$ to be
+chosen, and for an (again, to be determined) $\epsilon > 0$ let $\mc{G}
+\subset \Flink$
+denote an $\epsilon$-cover of $\Flink$ in the supremum norm on $[-R, R]$,
+that is, $\norm{g - \sigma} = \sup_{t \in [-R,R]} |g(t) - \sigma(t)|$, and
+so for each $\sigma \in \Flink$ there exists $g \in \mc{G}$ such that
+$\norm{g - \sigma} \le \epsilon$. Then~\cite[Ch.~2.7]{VanDerVaartWe96} we
+have $\log \card(\mc{G}) \le O(1) \frac{R \lipconst}{\epsilon}$. Let
+$\Theta_\epsilon$ be a minimal $\epsilon$-cover of $\{\theta \mid
+\ltwo{\theta} \le r\}$ in $\ltwo{\cdot}$, so that $\log
+\card(\Theta_\epsilon) \le d \log(1 + \frac{2r}{\epsilon})$
+and $\max_{\theta \in \Theta_\epsilon} \ltwo{\theta} \le r$.
+We claim that for each $\ltwo{\theta} \le r$ and $\sigma
+\in \Flink$, there exists
+$v \in \Theta_\epsilon$ and $g \in \mc{G}$ such that
+\begin{equation}
+	\left|\frac{1}{n} \sum_{i = 1}^n \varepsilon_i
+	\left(\loss_{\sigma, \theta}(Y_{ij} \mid X_i)
+	-
+	\loss_{g, v}(Y_{ij} \mid X_i)\right)
+	\right|
+	\le \epsilon +
+	\frac{1}{n}\sum_{i = 1}^n \ltwo{X_i} \epsilon
+	+ \frac{1}{n} \sum_{i = 1}^n\indic{\ltwo{X_i} \ge R / r}.
+	\label{eqn:covering-diff}
+\end{equation}
+Indeed, for any $g \in \Flink$ and $\theta, v \in \R^d$, we have
+\begin{align*}
+	\left|\loss_{\sigma, \theta}(y \mid x)
+	- \loss_{g, v}(y \mid x)\right|
+	& = \left|\int_0^{y \<x, \theta\>} \sigma(-t) dt
+	- \int_0^{y \<x, v\>} g(-t) dt\right| \\
+	& \le \sup_{|t| \le r \ltwo{x}} |\sigma(t) - g(t)|
+	+ \left|\int_{y\<x, v\>}^{y\<x, \theta\>}
+	|\sigma(-t) - g(-t)| dt \right| \\
+	& \le \norm{\sigma - g} + \indic{\ltwo{x} \ge R/r}
+	+ |\<x, \theta - v\>| \\
+	& \le
+	\norm{\sigma - g} + \ltwo{x} \ltwo{\theta - v}
+	+ \indic{\ltwo{x} \ge R/r},
+\end{align*}
+where we have used that $\sigma, g \in [0, 1]$.
+Taking the elements $g, v$ in the respective coverings to minimize
+the above bound gives the guarantee~\eqref{eqn:covering-diff}.
+
+We now leverage inequality~\eqref{eqn:covering-diff}
+in the symmetrization step~\eqref{eqn:symmetrization-step}.
+We have
+\begin{align*}
+	\lefteqn{\E\left[\sup_{\ltwo{\theta} \le r}
+		\sup_{\vec{\sigma} \in \Flink^m} |P_n \loss_{\vec{\sigma},\theta} - L(\theta,
+		\vec{\sigma})|\right]} \\
+	& \lesssim
+	\E\left[\max_{\theta \in \Theta_\epsilon}
+	\max_{\vec{g} \in \mc{G}^m}
+	\left|P_n^0 \loss_{\vec{g}, \theta}\right|
+	\right]
+	+ \epsilon + \E[\ltwo{X_1}] \epsilon
+	+ \frac{1}{n} \sum_{i = 1}^n \P(\ltwo{X_i} \ge R / r) \\
+	& \stackrel{(i)}{\lesssim}
+	\sqrt{\frac{d m R \lipconst}{\epsilon}
+		\log\left(1 + \frac{2r}{\epsilon}\right)}
+	\E\left[\frac{r^2}{n}\sum_{i = 1}^n \ltwo{X_i}^2\right]^{1/2}
+	+ \epsilon + \E[\ltwo{X_1}] \epsilon
+	+ \frac{\E[\ltwo{X_i}^{\gamma}]}{(R/r)^{\gamma}} \\
+	& \le
+	M r \sqrt{\frac{dm R \lipconst}{n \epsilon}
+		\log \left(1 + \frac{2r}{\epsilon}\right)}
+	+ (M + 1) \epsilon
+	+ \frac{M^{\gamma}}{(R/r)^{\gamma}},
+\end{align*}
+where inequality $(i)$ uses that if $Z_i$ are $\tau^2$-sub-Gaussian, then
+$\E[\max_{i \le N} |Z_i|] \le \sqrt{2 \tau^2 \log N}$, and that
+conditional on $\{X_i, Y_i\}_{i = 1}^n$, the symmetrized sum $\sum_{i =
+	1}^n \varepsilon_i \frac{1}{m} \sum_{j = 1}^m \loss_{g_j, \theta}(Y_{ij}
+\mid X_i)$ is $r^2 \sum_{i = 1}^n \ltwo{X_i}^2$-sub-Gaussian, as
+$|\loss_{g_j, \theta}(Y_{ij} \mid X_i)| \le |\<X_i, \theta\>| \le r
+\ltwo{X_i}$.  We optimize this bound to get the final guarantee of the
+lemma: set $\epsilon = (Rm / n)^{1/3}$ (and note that we will
+choose $R \ge 1$) to obtain
+\begin{equation*}
+	\E\left[\sup_{\ltwo{\theta} \le r}
+	\sup_{\vec{\sigma} \in \Flink^m} |P_n \loss_{\vec{\sigma},\theta} - L(\theta,
+	\vec{\sigma})|\right]
+	\lesssim \sqrt{d \lipconst \log(rn)}
+	M r \left(\frac{R m}{n}\right)^{1/3}
+	+ \frac{(Mr)^\gamma}{R^\gamma}.
+\end{equation*}
+Choose $R
+= ((Mr)^{3(\gamma - 1)} n / m)^\frac{1}{3\gamma + 1}$.
+
+%\subsection{Proof of Lemma~\ref{lemma:glivenko-cantelli}} \label{proof:glivenko-cantelli}
+%We use a more or less standard Rademacher complexity and
+%symmetrization argument. Let
+%$\Prb_{n}'$ denote an independent copy of $\Prb_{n}$, that is, we draw
+%independent copies $X_i'$ and, draw $Y_{ij}'$
+%independently conditional on $X_i'$ according to the same distribution from which $Y_{ij} \mid X_i$ are drawn. Let $\varepsilon_i \in \{\pm 1\}$ be
+%i.i.d.\ uniform signs. Then for any $1 \le k < \infty$,
+%\begin{align*}
+%	\Ep\left[\sup_{\ltwo{\theta} \le r, \eta \in \mathcal{E}} \left|\Prb_n\loss_{\theta, \eta} -
+%	\Prb \loss_{\theta, \eta} \right|^k\right]
+%	& \le \Ep\left[\sup_{\ltwo{\theta} \le r, \eta \in \mathcal{E}}
+%	\left|(\Prb_{n} - \Prb_{n}') \loss_{\theta, \eta} \right|^k\right] \\
+%	& \le 2^k \Ep\left[\sup_{\ltwo{\theta} \le r, \eta \in \mathcal{E}}
+%	\left|\frac{1}{n} \sum_{i = 1}^n \varepsilon_i
+%	\left(\frac{1}{m} \sum_{j = 1}^m \prn{h_{\eta, j}(Y_{ij} \<\theta, X_i\>)
+%		- h_{\eta, j}(0) }\right)\right|^k\right],
+%\end{align*}
+%where the first inequality is Jensen's and the second adds and subtracts
+%$\frac{1}{m} \sum_{j=1}^m h_{\eta, j}(0) = \loss_{0,\eta}$, then uses that $\frac{1}{m} \sum_{j = 1}^m h_{\eta, j}(Y_{ij} \<\theta, X_i\>) - \frac{1}{m} \sum_{j = 1}^m h_{\eta, j}(Y_{ij}' \<\theta, X_i'\>)$ is
+%symmetric. Next apply Jensen's inequality once again for $|x|^k$ we have
+%\begin{align*}
+%	\Ep\left[\sup_{\ltwo{\theta} \le r, \eta \in \mathcal{E}} \left|\Prb_n\loss_{\theta, \eta} -
+%	\Prb \loss_{\theta, \eta} \right|^k\right] \leq \frac{2^k}{m} \sum_{j=1}^m \Ep\left[\sup_{\ltwo{\theta} \le r, \eta \in \mathcal{E}}
+%	\left|\frac{1}{n} \sum_{i = 1}^n \varepsilon_i
+%	\left(\prn{h_{\eta, j}(Y_{ij} \<\theta, X_i\>)
+%		- h_{\eta, j}(0) }\right)\right|^k\right]
+%\end{align*}
+%Applying the Rademacher contraction
+%inequality~\cite[Thm.~4.12]{LedouxTa91},
+%we thus obtain
+%\begin{align*}
+%	\Ep\left[\sup_{\ltwo{\theta} \le r, \eta \in \mathcal{E}} \left|\Prb_n\loss_{\theta, \eta} -
+%	\Prb \loss_{\theta, \eta} \right|^k\right]
+%	& \le \frac{4^k}{m} \sum_{j=1}^m \Ep\left[\sup_{\ltwo{\theta} \le r}
+%	\left|\frac{1}{n} \sum_{i = 1}^n \varepsilon_i
+%	\cdot \mathsf{L} Y_{ij} \<\theta, X_i\>\right|^k\right] \\
+%	& = \frac{\prn{4\mathsf{L}r}^k}{m} \sum_{j=1}^m \Ep\left[
+%	\ltwo{\frac 1 n\sum_{i = 1}^n \varepsilon_i X_i  Y_{ij}}^k
+%	\right] \\
+%	& \le \left(\frac{4 \mathsf{L}r \sqrt{k}}{n}\right)^k
+%	\Ep\left[\left(\sum_{i = 1}^n \ltwo{X_i}^2\right)^{k/2}
+%	\right],
+%\end{align*}
+%where the final inequality uses that $Y_{ij} \in \{\pm 1\}$ and standard
+%Khintchine-type bounds in Hilbert spaces~\cite[Sec.~1.4]{delaPenaGi99}.
+%Finally, we note that $\Ep[(\sum_{i = 1}^n \ltwo{X_i}^2)^{k/2}] \le n^{k/2}
+%\frac{1}{n} \sum_{i = 1}^n \Ep[\ltwo{X_i}^{k}]$ for all $k \ge 2$ by
+%Jensen's inequality. Applying
+%Markov's inequality, for any $t \ge 0$ and $k \ge 1$,
+%\begin{align*}
+%	\Prb\left(\sup_{\ltwo{\theta} \le r}
+%	\left|\Prb_{n,m}\loss_\theta - \poploss(\theta) \right| \ge t \right)
+%	& \le \left(\frac{4 \mathsf{L} r \sqrt{k}}{t \sqrt{n}}\right)^k
+%	\Ep[\ltwo{X_1}^k].
+%\end{align*}
+%For $k > 2$, this is summable, so that the Borel-Cantelli theorem gives
+%a.s.\ convergence. Take $n \to \infty$ to get the result.
+

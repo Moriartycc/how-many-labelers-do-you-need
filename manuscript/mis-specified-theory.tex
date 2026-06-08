@@ -1,0 +1,495 @@
+\section{Label aggregation and misspecified model}
+\label{sec:mis-spec}
+
+The logistic link provides clean interpretation and results, but we can
+move beyond it to more realistic cases where labelers use
+distinct links; to allow precise statements, we still assume the
+same linear term $x \mapsto \<\theta\opt, x\>$ for each labeler's
+generalized linear model. We study generalizations of the maximum
+likelihood and majority vote estimators~\eqref{eq:maximum-likelihood}
+and~\eqref{eq:logistic-majority}, highlighting dependence on
+link fidelity.
+In this setting, there are $m$ (unknown and possibly distinct)
+link functions $\sigma_i\opt$, $i=1,2, \ldots, m$.
+We show that the majority-vote estimator $\mve$ enjoys better robustness to model mis-specification than the non-aggregated estimator $\tmle$,
+though both use identical losses.
+In particular, our main result in this section implies
+%\begin{equation*}
+%\sqrt{n}(\what{u}\lr_{n,m} - u\opt) \cd
+%\normal\left(0, c\lr \Sigma \cdot (1 + o_m(1))\right)
+%~~ \mbox{while} ~~
+%\sqrt{n}(\what{u}\mv_{n,m} - u\opt) \cd
+%\normal\left(0, m^{-1/2} c\mv \Sigma \cdot (1 + o_m(1))\right),
+%\end{equation*}
+\begin{equation*}
+	\sqrt{n}(\what{u}\lr_{n,m} - u\opt) \cd
+	\normal\left(0, c\lr \Sigma \right)
+	~~ \mbox{while} ~~
+	\sqrt{n}(\what{u}\mv_{n,m} - u\opt) \cd
+	\normal\left(0, m^{-1/2} c\mv \Sigma \right),
+\end{equation*}
+where $c\lr$ and $c\mv$ are problem-dependent constants. %% that depend only on the links $\sigma$,
+%% $t\opt = \ltwos{\theta\opt}$, and $\Sigma = I - u\opt {u\opt}^\top$ when $X \sim
+%% \normal(0, I_d)$.  
+In contrast to the previous section, the majority-vote
+estimator enjoys roughly $\sqrt{m}$-faster rates than the non-aggregated
+estimator, maintaining its (slow) improvement with $m$, which the
+MLE loses to misspecification.
+
+To set the stage for our results, we define the
+general link-based loss
+\begin{equation*}
+  \loss_{\sigma,\theta} (y \mid x) \defeq -\int_0^{y \<\theta, x\>} \sigma(-v) dv.
+\end{equation*}
+We then consider the general multi-label and majority-vote
+estimators using the loss $\loss_{\sigma,\theta}$,
+\begin{equation}
+  \label{eqn:general-estimators}
+  \gme(\sigma) \defeq \argmin_\theta \Prb_{n,m} \loss_{\sigma, \theta},
+  \qquad
+  \mve(\sigma) \defeq \argmin_\theta \wb{\Prb}_{n,m} \loss_{\sigma, \theta}.
+\end{equation}
+For the logistic link $\sigma = \sigma\lr$, we recover the
+results for the 
+logistic loss
+$\loss_{\sigma\lr,\theta} (y \mid x) = \loss_\theta\lr(y \mid x)$ in Section~\ref{sec:well-sepcified-mod}.
+We suppress the link dependence
+to write $\gme, \mve$ when the context is clear.
+%\begin{align*}
+%	\loss_{\sigma\lr,\theta} (y \mid x)  = -\int_0^{y \<\theta, x\>} \frac{1}{1 +e^{v}} dv = \log(1 + e^{-y\<x, \theta\>}) = \loss_\theta\lr(y \mid x).
+%\end{align*}
+
+%When $\sigma = \sigma\lr$, we recover the same estimators as in~\Cref{sec:well-sepcified-mod}, that is, we have $\gme(\sigma) = \tmle$ and $\mve(\sigma\lr) = \mve$. For the majority vote estimator, we will suppress the dependence on the link $\sigma$ in the loss function, and just write $\mve$ when the context is clear. \ha{why just for MV estimator? might confuse readers.} Our goal is to understand the performance of $	\gme(\sigma)$ and $ \mve$.
+
+\subsection{Master results} \label{sec:master-results}
+
+%%To characterize the behavior of multiple label estimators versus majority
+%% vote, 
+We provide master results as a foundation for our convergence rate analyses,
+and by a bit of notational chicanery, we consider the majority vote and
+multiple (non-aggregated) simultaneously.
+%
+When the estimator uses the majority vote
+$\majY$, let
+\begin{equation*}
+  \varphi_m(t) = \rho_m(t) \ind \{t \geq 0\} + (1 - \rho_m(t)) \ind\{t < 0\},
+  ~~ \mbox{where} ~~
+  \rho_m(t) \defeq
+  \P(\majY = \sgn(t) \mid \<X, \theta\opt\> = t),
+\end{equation*}
+and in the case that the estimator uses each label
+from the $m$ labelers, let
+\begin{equation*}
+	\varphi_m(t) = \frac{1}{m} \sum_{j = 1}^m \sigma_j\opt(t)
+	= \frac{1}{m} \sum_{j = 1}^m \P(Y_j = 1 \mid \<X, \theta\opt\> = t).
+\end{equation*}
+In either case, we then see that the population loss with
+the link-based loss $\loss_{\sigma,\theta}$ becomes
+\begin{equation}
+	\label{eqn:generic-loss}
+	L(\theta, \sigma) = \E\left[\loss_{\sigma,\theta}(1 \mid X)
+	\varphi_m(\<X, \theta\opt\>)
+	+ \loss_{\sigma,\theta}(-1 \mid X)
+	(1 - \varphi_m(\<X, \theta\opt\>))\right],
+\end{equation}
+where we have taken a conditional expectation given $X$. We assume
+Assumption~\ref{assumption:x-decomposition} holds, that $X$ decomposes into
+the independent sum $X= Zu\opt + W$ with $W \perp u\opt$, and the true link
+functions $\sigma_j\opt \in \Flink$.
+%
+We further impose the following
+assumption for the model link, which guarantees a
+non-vanishing gap to the margin when $|Z|$ is large.
+\begin{assumption}
+  \label{assumption:model-link}
+  For $s \in \{-1, 1\}$,
+  the model link function $\sigma$ satisfies
+  $\lim_{t \to \infty} \sigma(s \cdot t) = \half + sc$ for a constant
+  $0 < c \le \half$ and is a.e.\ differentiable.
+\end{assumption}
+\paragraph{Minimizer of the population loss.}
+We first characterize the (unique)
+minimizers $\theta\opt_L
+\defeq \argmin_\theta L(\theta, \sigma)$ of the population
+loss~\eqref{eqn:generic-loss}.
+%
+We use the familiar ansatz that $\theta\opt_L$ aligns with $u\opt =
+\theta\opt / \ltwo{\theta\opt}$, so $\theta = t u\opt$.
+%
+Using the
+formulation~\eqref{eqn:generic-loss}, we see that for $t\opt \defeq
+\ltwo{\theta\opt}$ and $\theta = t u\opt$,
+\begin{align}
+	\nabla L(\theta, \sigma) &
+	= -\E[\sigma(-\<\theta, X\>) X
+	\varphi_m(\<X, \theta\opt\>)]
+	+ \E[\sigma(\<\theta, X\>) X (1 - \varphi_m(\<X, \theta\opt\>))]
+	\nonumber \\
+	& = -\E[\sigma(- t Z) X \varphi_m(t\opt   Z)]
+	+  \E[\sigma(tZ) X (1 - \varphi_m(t\opt Z))] \nonumber \\
+	& = \left(-\E[\sigma(- tZ) Z \varphi_m(t\opt Z)] 
+	+ \E[\sigma(tZ) Z (1 - \varphi_m(t\opt Z))] \right) u\opt
+	= h_m(t) u\opt, \label{eqn:generic-gradient}
+\end{align}
+where the final line uses the decomposition $X = Z u\opt + W$ for the random
+vector $W \perp u\opt$ independent of $Z$, and we recall
+expression~\eqref{eqn:h-centering} to define the
+\emph{calibration function}
+\begin{equation}
+  \label{eqn:h-m-func}
+  h_{t\opt, m}(t) \defeq \E[\sigma(tZ) Z (1 - \varphi_m(t\opt Z))]
+  - \E[\sigma(-t Z) Z \varphi_m(t\opt Z)].
+\end{equation}
+The function $h$ measures the ``calibration'' gap between the
+hypothesized link $\sigma$ and the label probabilities
+$\varphi_m$. %% , functioning the approximately ``calibrate'' $\sigma$ to the observed probabilities.
+If we presume that a solution to $h_{t\opt,m}(t) = 0$ exists, then
+%% evidently 
+$t u\opt$ minimizes $L(\theta, \sigma)$. In fact,
+such a solution exists and is unique
+(see Appendix~\ref{sec:proof-generic-solutions} for a proof):
+
+\newcommand{\Hessian}{H_L}  % Hessian matrix (as function of t)
+\newcommand{\hessfunc}{\mathsf{he}}  % Hessian function thing
+\newcommand{\linkerr}{\mathsf{le}}  % Link error function
+\newcommand{\varfunc}{C_m}  % variance function
+
+\begin{lemma}
+  \label{lemma:generic-solutions}
+  Let Assumption~\ref{assumption:x-decomposition} hold and $h = h_{t\opt,m}$
+  be the gap function~\eqref{eqn:h-m-func}. Then there is a unique solution
+  $t_m > 0$ to $h(t) = 0$, and
+  $\theta\opt_L = t_m u\opt$ uniquely minimizes
+  the loss~\eqref{eqn:generic-loss}. Define
+  \begin{equation}
+    \begin{split}
+      \Hessian(t) &
+      \defeq \E[(\sigma'(-tZ) \varphi_m(t\opt Z) + \sigma'(tZ)
+	(1 - \varphi_m(t\opt Z))) Z^2 ] u\opt {u\opt}^\top \\
+      & \qquad
+      ~ + \E[\sigma'(-tZ) \varphi_m(t\opt Z)
+	+ \sigma'(tZ) (1 - \varphi_m(t\opt Z))]
+      \projperp \Sigma \projperp.
+    \end{split}
+    \label{eqn:parameterized-hessian}
+  \end{equation}
+  Then the Hessian is $\nabla^2 L(\theta\opt_L, \sigma) = \Hessian(t_m)$.
+\end{lemma}
+
+\paragraph{Asymptotic normality of the minimizers.} 
+%With the existence of minimizers assured, we turn to their asymptotics.
+%For each of these, we require slightly different calculations, as the
+%resulting covariances are differ.
+To state asymptotic results when we have multiple labels,
+we define the average link function $\wb{\sigma}\opt = \frac{1}{m} \sum_{j=1}^m \sigma_j\opt$ and the three functions
+\begin{align}
+	\linkerr(Z) & \defeq \sigma(t_m Z) (1 - \wb{\sigma}\opt(t\opt Z))
+	- \sigma(-t_m Z) \wb{\sigma}\opt(t\opt Z), \nonumber \\
+	\hessfunc(Z) & \defeq \sigma'(-t_m Z) \varphi_m(t\opt Z)
+	+ \sigma'(t_m Z) (1 - \varphi_m(t\opt Z)),
+	\label{eqn:error-functions}
+	\\
+	v_j(Z) & \defeq
+	\sigma_j\opt(t\opt Z)(1 - \sigma_j\opt(t\opt Z))
+	(\sigma(t_m Z) + \sigma(-t_m Z))^2.
+	\nonumber
+\end{align}
+The first, the link error $\linkerr$, measures mis-specification of the
+link $\sigma$ relative to the average $\wb{\sigma}\opt$. The second,
+$\hessfunc$, is a Hessian term, as $\Hessian(t_m) =
+\E[\hessfunc(Z) Z^2]u\opt{u\opt}^\top + \E[\hessfunc(Z)] \projperp \Sigma
+\projperp$, and the third measures variance for labeler $j$.
+We then prove the following theorem
+in Appendix~\ref{sec:proof-multilabel-asymptotics}.
+\begin{theorem}
+  \label{theorem:multilabel-asymptotics}
+  Let Assumptions~\ref{assumption:x-decomposition}
+  and~\ref{assumption:model-link} hold, and let $\gme$ be the multi-label
+  estimator~\eqref{eqn:general-estimators}.
+  %
+  Define the shorthand $\wb{v} =
+  \frac{1}{m} \sum_{j = 1}^m v_j$. Then $\gme \cas \theta_L\opt$,
+  and
+  \begin{equation*}
+    \sqrt{n} (\what{\theta}_n - \theta_L\opt)
+    \cd \normal\left(0,
+    \frac{\E[\linkerr(Z)^2 Z^2] + m^{-1} \E[\wb{v}(Z) Z^2]}{
+      \E[\hessfunc(Z) Z^2]^2} u\opt {u\opt}^\top
+    + \frac{\E[\linkerr(Z)^2] + m^{-1}\E[\wb{v}(Z)]}{\E[\hessfunc(Z)]^2}
+    \prn{\projperp \Sigma \projperp}^\dagger
+    \right).
+  \end{equation*}
+  Additionally, if $\what{u}_n = \gme / \ltwos{\gme}$
+  and $t_m$ is the zero of the gap function $h_{t\opt, m}(t) = 0$, then
+  \begin{equation*}
+    \sqrt{n}(\what{u}_n - u\opt)
+    \cd
+    \normal\left(0, \frac{1}{t_m^2}
+    \frac{\E[\linkerr(Z)^2] + m^{-1}
+      \E[\wb{v}(Z)]}{\E[\hessfunc(Z)]^2}
+    \left(\projperp \Sigma \projperp\right)^\dagger\right).
+  \end{equation*}
+\end{theorem}
+
+Theorem~\ref{theorem:multilabel-asymptotics} exhibits two dependencies: the
+first on the link error terms $\E[\linkerr(Z)^2]$---a bias
+term---and the second on the rescaled average variance $\frac{1}{m}
+\E[\wb{v}(Z)]$. The multi-label estimator recovers
+an optimal $O(1/m)$ covariance if the link errors are negligible, but if
+not, it necessarily has $O(1)$ asymptotic covariance.
+%
+%% The next corollary highlights how things simplify.
+%
+In the well-specified
+case that $\sigma$ is symmetric and $\sigma = \wb{\sigma}\opt$, 
+the zero of the gap
+function~\eqref{eqn:h-m-func} is evidently $t_m = t\opt =
+\ltwo{\theta\opt}$, the error term $\linkerr(Z) = 0$,
+and $v_j(Z) = \sigma\opt(t\opt Z)(1 - \sigma\opt(t\opt Z))$, and by symmetry,
+$\sigma'(t) = \sigma'(-t)$ so that
+$\hessfunc(Z) = \sigma'(t\opt Z)$:
+\begin{corollary}[The well-specified case] \label{cor:well-specified-normalized-cov}
+	Let the conditions above hold. Then
+	\begin{equation*}
+		\sqrt{n}(\what{u}_n - u\opt)
+		\cd \normal\left(0, \frac{1}{m} \cdot
+		\frac{1}{\ltwo{\theta\opt}^2}
+		\frac{\E[\sigma(t\opt Z) (1 - \sigma(t\opt Z))]}{\E[\sigma'(t\opt Z)]^2}
+		\projperp \Sigma \projperp \right).
+	\end{equation*}
+\end{corollary}
+
+\paragraph{Asymptotic normality with majority vote.}
+When we use the majority vote estimators, the asymptotics differ:
+no averaging reduces variance as $m$ increases, even in a
+``well-specified'' case. The asymptotic variance typically decreases
+$m$ grows, but at a slower rate roughly related to
+the fraction of data where there is ``signal'', as we discuss
+briefly following Corollary~\ref{cor:lowd-majority-vote-m}.
+\begin{theorem}
+  \label{theorem:majority-vote-asymptotics}
+  Let Assumptions~\ref{assumption:x-decomposition}
+  and~\ref{assumption:model-link} hold, and let $\what{\theta}_n = \mve$ be
+  the general majority vote
+  estimator~\eqref{eqn:general-estimators}. Let $t_m$ be
+  the zero of the gap function~\eqref{eqn:h-m-func}, solving
+  $h_{t\opt,m} (t) = 0$.  Then $\what{\theta}_n \cas
+  \theta\opt_L = t_m u\opt$, and $\what{u}_n = \what{\theta}_n /
+  \ltwos{\what{\theta}_n}$ satisfies
+  \begin{equation*}
+    \sqrt{n} \left(\what{u}_n - u\opt\right)
+    \cd \normal\left(0, \frac{1}{t_m^2}
+    \frac{\E[\sigma(-t_m |Z|)^2 \rho_m(t\opt Z) + \sigma(t_m |Z|)^2
+	(1 - \rho_m(t\opt Z))]}{\E[\hessfunc(Z)]^2}
+    \prn{\projperp \Sigma \projperp}^\dagger \right).
+	\end{equation*}
+\end{theorem}
+\noindent
+We defer the proof to Appendix~\ref{sec:proof-majority-vote-asymptotics}.
+
+In most cases, we take a symmetric link function,
+so that $\sigma(t) = 1 - \sigma(-t)$, and thus $\sigma'(t) = \sigma'(-t)$
+and $\hessfunc(z) = \sigma'(t_m z) \ge 0$. This simplifies the denominator
+in Theorem~\ref{theorem:majority-vote-asymptotics} to
+$\E[\sigma'(t_m Z)]^2$.
+Written differently, we may define a (scalar) variance-characterizing
+function $\varfunc$ implicitly as follows: let $t_m = t_m(t)$ be a
+zero of $h_{t,m}(s) =
+\E[\sigma(sZ) Z (1 - \varphi_m(t Z))] - \E[\sigma(-s Z) Z \varphi_m(t Z)]$
+in $s$, $h_{t,m}(t_m(t)) = 0$ so that $t_m$
+is a function of the size $t$ (recall the gap~\eqref{eqn:h-m-func}),
+and define
+\begin{equation}
+  \label{eqn:generic-majority-covariance}
+  \varfunc(t) \defeq \frac{1}{t_m^2} \frac{\E[\sigma(-t_m |Z|)^2
+      \rho_m(t Z) + \sigma(t_m |Z|)^2 (1 - \rho_m(t Z))]}{
+    \E[\sigma'(t_m Z)]^2}
+\end{equation}
+where $t_m = t_m(t)$ above is implicitly defined.  Then
+\begin{equation*}
+  \sqrt{n}\left(\what{u}_n - u\opt\right)
+  \cd \normal\left(0,
+  \varfunc(t\opt) \prn{\projperp \Sigma \projperp}^\dagger
+  \right).
+\end{equation*}
+Each of our main results, including those on well-specified models,
+follows by characterizing the behavior of $\varfunc(t)$ in
+the asymptotics as $m \to \infty$ and
+the solution norm $t_m = \ltwos{\theta_L\opt}$ scales,
+which the calibration gap~\eqref{eqn:h-m-func} determines.
+The key is that the scaling with $m$ varies with
+the fidelity of the model, behavior of the links $\sigma$, and
+the noise exponent~\eqref{eqn:mammen-tsybakov}; our coming
+consequences of the master Theorems~\ref{theorem:multilabel-asymptotics}
+and~\ref{theorem:majority-vote-asymptotics} reify this scaling.
+
+%% \jcdcomment{Highlight more here that we have to find scaling with $m$.}
+
+%This may seem to imply that aggregated data perform better than non-aggregated method, and justify the widely usage of majority vote in practice at first glance. Indeed, our result says the majority-vote estimator $\mve$ is robust when the model is misspecified---however, as we will show in the next section, with a more careful designed approach, we can still have efficiency and perform better than majority vote-estimator as in the well-specified case.
+%
+%The message is the following: the majority-vote estimator (or other data aggregation method) seems tempting and easy to use, but both in the well-specified and misspecified case, we can do (and should do) better than the simple majority-vote estimator with non-aggregated data, calls for rethinking the general pipeline for dataset construction in modern machine learning.
+
+\subsection{Robustness to model mis-specification}
+\label{sec:robustness-model-misspecification}
+
+Having established general convergence results for the multi-label
+$\gme(\sigma)$ and majority vote  $\mve(\sigma)$ estimators, we 
+explicate their performance when %% we have a mis-specified model---
+the link $\sigma$ is incorrect. %% ---by leveraging
+%% Theorems~\ref{theorem:multilabel-asymptotics}
+%% and~\ref{theorem:majority-vote-asymptotics} to characterize their
+%% asymptotics and show the robustness
+%% of majority-vote estimators.
+%% In particular, we consider our
+%% logistic link based estimators of~\Cref{sec:well-sepcified-mod} ($\tmle$ and
+%% $\mve$) which choose $\sigma = \sigma\lr$ regardless of the data and analyze
+%% their performance. Ideally, we can try to estimate the true link functions
+%% from the data---we defer this to~\Cref{sec:semi-param}.
+%but we will focus on this simple setup here and discuss more in-depth approaches in the next section.
+\paragraph{Multi-label estimator.}
+To make interpretable statements about
+the multi-label estimator $\gme$ in~\eqref{eqn:general-estimators},
+assume identical links $\sigma_j\opt \equiv \sigma\opt \in
+\flink$.
+A corollary of Theorem~\ref{theorem:multilabel-asymptotics}
+then follows:
+\begin{corollary}
+  \label{corollary:lowd-misspcfd-logistic-regression}
+  Let Assumptions~\ref{assumption:x-decomposition} and
+  \ref{assumption:z-density} hold for some $\beta \in (0, \infty)$, and
+  $t\opt = \ltwos{\theta\opt}$. Then the calibration
+  gap function~\eqref{eqn:h-m-func} has unique positive zero
+  $t_{\sigma\opt}$ such that
+  $h_{t\opt,m}(t_{\sigma\opt}) = 0$, and the multi-label
+  estimator~\eqref{eqn:general-estimators} satisfies
+  \begin{equation*}
+    \gme \cp  t_{\sigma\opt} u\opt.
+  \end{equation*}
+  For the mean $\wb{v} = \frac{1}{m} \sum_{j = 1}^m v_j$ of the
+  variances~\eqref{eqn:error-functions}), the estimate
+  $\what{u}_{n,m} = \gme / \ltwos{\gme}$ satisfies
+  \begin{equation*}
+    \sqrt{n} \left(\what{u}_{n,m} - u\opt\right)
+    \cd \normal\left(0,
+    \frac{\E[\linkerr(Z)^2]  + m^{-1} \E[\wb{v}(Z)]}{t_{\sigma\opt}^2
+      \E[\hessfunc(Z)]^2}  
+    % C_{m,\sigma\opt}(t_{\sigma\opt})
+    \prn{\proj_{u\opt} \Sigma \proj_{u\opt}}^\dagger\right)  .
+  \end{equation*}
+  %% satisfies $\lim_{t
+  %%   \to \infty} \lim_{m \to \infty} C_{m,\sigma\opt}(t) t^{2-2\beta}
+  %% = c_Z \E[|Z|^{\beta - 1} \sigma'(|Z|)]$ and
+\end{corollary}
+
+In this simplified case, the asymptotic covariance remains of constant
+order in $m$ unless $\E[\linkerr(Z)^2] = 0$.  In contrast,
+the majority vote estimator exhibits more robustness; this is perhaps
+expected, as Corollary~\ref{cor:lowd-majority-vote-m} shows covariance scaling as $1/\sqrt{m}$ in the
+logistic link case, which is \emph{a fortiori} misspecified for majority
+vote labels.
+%has covariance scaling as $1/\sqrt{m}$, though the
+%generality of the behavior and its distinction from
+%Corollary~\ref{corollary:lowd-misspcfd-logistic-regression}
+%is interesting.
+
+\paragraph{Majority vote estimator.}
+For the majority-vote estimator, we relax our assumptions and allow
+$\sigma_j\opt$ to differ, showing how the broad conclusions
+Corollary~\ref{corollary:lowd-misspcfd-logistic-regression} suggests
+hold in some generality: majority vote estimators achieve slower
+convergence than well-specified (maximum likelihood) estimators using each
+label but exhibit more robustness.
+%
+To characterize the large $m$
+behavior, we require the following regularity conditions on
+the average link $\wb{\sigma}_m\opt = \frac{1}{m} \sum_{j=1}^m \sigma_j\opt$.
+%
+%% which we require has a limiting derivative at $0$.
+
+\begin{assumption} \label{assumption:condition-misspcfd-link-majority-vote}
+  For the sequence of link functions $\{\sigma_j \mid j \in \mathbb{N}\}
+  \subset \flink$, let $\wb{\sigma}_m\opt = \frac{1}{m} \sum_{j=1}^m
+  \sigma_j\opt$. There exists ${\wb{\sigma}\opt}'(0) >0$ such that
+  \begin{subequations}
+    \begin{align}
+      \bm{\mathrm{(i)}} \qquad  & \lim_{m \to \infty} \sqrt{m} \prn{\wb{\sigma}_m\opt\prn{\frac{t}{\sqrt m}} - \frac 1 2} = {\wb{\sigma}\opt}'(0) t   , \quad \textrm{for each } t \in \R  ; \label{ass:misspcfd-link-1} \\
+      \bm{\mathrm{(ii)}} \qquad &\liminf_{m \to \infty} \inf_{t \neq 0} \frac{\left|\wb{\sigma}_m\opt(t) - \frac 1 2 \right|}{\min \left\{|t|, 1\right\}} > 0  ; \label{ass:misspcfd-link-2} \\
+      \bm{\mathrm{(iii)}} \qquad &\lim_{t \to 0} \sup_{j \in \N}
+      \left|\sigma_j\opt(t) - \frac 1 2 \right| = 0  . \label{ass:misspcfd-link-3}
+    \end{align}
+  \end{subequations}
+\end{assumption}
+\noindent
+These assumptions simplify if the links are identical:
+if $\sigma_j\opt \equiv \sigma\opt$,
+we only require $\sigma\opt$ is differentiable around
+$0$ with ${\sigma\opt}'(0) >0$ and $|\sigma\opt(t) - \half|
+\gtrsim \min\{|t|, 1\}$.
+
+%\ha{I think it might be worth it to only consider this simpler setting where all $\sigma_j$ are identical and postpone the general case to appendix. This will remove Assumption A4 and simplify things a bit.}
+
+We can apply Theorem~\ref{theorem:majority-vote-asymptotics} to obtain
+asymptotic normality for the
+estimator~\eqref{eqn:general-estimators}. Recall
+\begin{equation}
+  \label{eq:link-function-m-majority-vote-general}
+  \rho_m(t) \defeq
+  \Prb(\majY = \sgn(\<X, \theta^\star\>) \mid \<X,
+  \theta\opt\> = t),
+\end{equation}
+the probability of a correct majority vote given the margin $\<X,
+\theta\opt\> = t$, and the calibration gap function~\eqref{eqn:h-m-func},
+which by a calculation resolves to the more convenient form
+\begin{align*}
+  h(t) & = h_{t\opt, m}(t) = \E[\sigma(t|Z|) |Z| (1 - \rho_m(t\opt Z))]
+  - \E[\sigma(-t |Z|) |Z| \rho_m(t\opt Z)].
+\end{align*}
+The main challenge is to characterize the large $m$ behavior for
+the asymptotic covariance function $\varfunc(t)$ the
+quantity~\eqref{eqn:generic-majority-covariance} implicitly
+defines.
+%
+We postpone details to Appendix~\ref{proof:lowd-misspcfd-majority-vote-m}
+and state the result, which follows from
+Theorem~\ref{theorem:majority-vote-asymptotics} and an asymptotic expansion
+of $\varfunc(t)$.
+
+\begin{proposition}
+  \label{prop:lowd-misspcfd-majority-vote-m}
+  Let Assumptions~\ref{assumption:x-decomposition} and
+  \ref{assumption:z-density} hold for some $\beta \in (0, \infty)$ with
+  $\int_0^\infty z^{\beta - 1} \sigma'(z) dz < \infty$
+  and
+  $t\opt = \ltwos{\theta\opt}$, and in addition that
+  Assumption~\ref{assumption:condition-misspcfd-link-majority-vote} holds
+  and $\sigma$ is symmetric.
+  Then there are constants $a, b > 0$, depending only on $\beta$, $c_Z$,
+  $\sigma$, and ${\wb{\sigma}\opt}'(0)$, such that there is a unique $t_m
+  \geq t_1 = t^\star$ solving $h(t_m) = 0$, and for this $t_m$ we have both
+  \begin{equation*}
+    \what{\theta}\mv_{n,m} \cp t_m u\opt
+    ~~ \mbox{and} ~~
+    \lim_{m \to \infty} \frac{t_m}{t\opt \sqrt{m}} = a  .
+  \end{equation*}
+  Moreover, the covariance~\eqref{eqn:generic-majority-covariance} has the
+  form $\varfunc(t) = \frac{b}{(t \sqrt m)^{2 - \beta}}(1 + o_m(1))$, and
+  \begin{align*}
+    \sqrt{n} \left(\what{u}\mv_{n,m} - u^\star \right)
+    &\cd \normal\left(0, C_m(t\opt) \prn{\proj_{u\opt} \Sigma \proj_{u\opt}}^\dagger\right).
+  \end{align*}
+\end{proposition}
+
+Proposition~\ref{prop:lowd-misspcfd-majority-vote-m} highlights the
+majority vote estimator's robustness: even when the link $\sigma$ is more
+or less arbitrarily incorrect, the asymptotic covariance
+scales reasonably. The noise parameter $\beta$ in
+Assumption~\ref{assumption:z-density}, analogous
+to the noise exponent~\eqref{eqn:mammen-tsybakov}, plays
+an important role. In typical cases with $\beta = 1$ (e.g., when
+$X \sim \normal(0, I_d)$), we see $\varfunc(t) \asymp \frac{1}{t \sqrt{m}}$.
+In noisier cases, corresponding to $\beta \downarrow 0$, majority vote
+provides benefits approaching a well-specified model; conversely,
+in ``easy'' cases where $\beta > 2$, majority vote estimators become
+\emph{more} unstable, as they make the data nearly separable,
+making margin-type estimators
+volatile~\cite{CandesSu19pnas}.

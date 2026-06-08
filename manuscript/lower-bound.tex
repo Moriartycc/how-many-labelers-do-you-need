@@ -1,0 +1,233 @@
+% -*- mode: latex -*- %
+
+\newcommand{\fisher}{\mathsf{I}}
+\newcommand{\fishermv}{\fisher\mv}
+
+\section{Fundamental estimation limits of majority vote labels}
+\label{sec:lower-bound}
+\label{sec:lam-majority-vote}
+
+We complement our convergence guarantees via lower bounds for labelers with
+identical logistic links $\sigma_1\opt = \dots = \sigma_m\opt = \sigma\lr$,
+providing precise efficiency limits for estimation
+from majority labels $\majY$.
+%
+%% Somewhat trivially (see Appendix~\ref{sec:imp-mv}), unless we know the
+%% number of labels $m$ and link, consistently estimating
+%% $\theta\opt$ from aggregated labels is impossible, so we provide more
+%% precise efficiency limits for estimation from majority labels $\majY$.
+%
+These results highlight the robustness of aggregation-based
+estimators: the bounds match the rates $r(m) \asymp 1/\sqrt{m}$ in
+Table~\ref{table:comparisons} even when the link $\sigma$ is
+incorrect.
+%
+As most of our results repose on classical asymptotics, we use local
+minimax theory to provide lower bounds,
+recalling a typical result combining~\citep[Lemma
+6.6.5]{LeCamYa00} and \citep[Theorem 3.11.5]{VanDerVaartWe96}:
+
+%\input{warm-up.tex}
+
+%In this section, we present lower bound analysis for labelers with identical logistic links $\sigma_1\opt = \dots = \sigma_m\opt =  \sigma\lr$ with data points $X_i$ drawn from Gaussian distribution $\normal(0, \Sigma)$. 
+
+%\subsection{Fundamental asymptotic limits in the logistic case}
+%\label{sec:lam-majority-vote}
+\begin{corollary}
+  \label{corollary:lam}
+  Let $\{\P_\theta\}$ be distributions
+  with continuous Fisher Information $\fisher(\theta)$ in a neighborhood
+  of $\theta\opt$ and $W \sim \normal(0, \fisher(\theta\opt)^{-1})$.
+  Then there exist
+  probability densities $\pi_{c,n}$ supported on
+  $\{\theta \in \R^d \mid \ltwo{\theta\opt - \theta} \le c/\sqrt{n}\}$
+  such that for any quasi-convex, symmetric, and bounded
+  loss $\varphi$,
+  \begin{equation*}
+    \liminf_{c \to \infty}
+    \liminf_n \inf_{\what{\theta}_n}
+    \int \E_\theta[\varphi(\sqrt{n}(\what{\theta}_n - \theta))]
+    \pi_{c,n}(\theta) d\theta
+    \ge \E[\varphi(W)].
+  \end{equation*}
+  If $T : \R^d \to
+  \R^k$ is differentiable at $\theta\opt$ with Jacobian $\dot{T}(\theta\opt) \in \R^{k \times d}$, then additionally
+  \begin{equation*}
+    \liminf_{c \to \infty}
+    \liminf_n \inf_{\what{T}_n}
+    \int \E_\theta[\varphi(\sqrt{n}(\what{T}_n - T(\theta)))]
+    \pi_{c,n}(\theta) d\theta
+    \ge \E[\varphi(\dot{T}(\theta\opt) W)].
+  \end{equation*}
+  The infima range over estimators $\what{\theta}_n$ and
+  $\what{T}_n$ based on $n$ i.i.d.\ observations from $\P_\theta$.
+\end{corollary}
+\noindent
+This corollary %% provides one sense in which estimators achieving
+%% asymptotic variance the inverse Fisher information are efficient. It 
+makes clear that (except at a Lebesgue measure-zero set of
+parameters $\theta$) any estimator $\what{\theta}_n$ with asymptotic
+variance $\Sigma_\theta$ satisfies
+$\Sigma_\theta \succeq \fisher(\theta)^{-1}$.
+%
+We can therefore complete our theoretical analysis of fundamental limits by
+giving the Fisher Information matrix for binary classification models with
+majority vote data (see Appendix~\ref{sec:lower-bound-supp} for proofs). 
+%We assume the links are identical,
+%$\sigma_1\opt = \dots = \sigma_m\opt = \sigma\lr$.  Recall
+%(Prop.~\ref{prop:lowd-majority-vote-m-noise}) that when $X$ is
+%normal, the majority vote estimator $\what{u}\mv_{n,m}$ has asymptotic
+%variance of order $m^{-\half}$. As we will present momentarily in
+%Theorem~\ref{thm:lower-bound-fisher-information}, $\what{u}\mv_{n,m}$ is
+%indeed rate optimal for classification as $m \to \infty$.
+
+As usual, letting Assumption~\ref{assumption:x-decomposition} hold, we write
+$X = Z u\opt + W$ with $ W \perp u\opt$. Let $t\opt = \ltwos{\theta\opt}$.
+In this case, we may explicitly decompose the Fisher information
+for $\theta \in \R^d$.
+
+\begin{lemma}
+  \label{lem:fisher-information-decomposition}
+  The Fisher information $\fishermv_m(\theta)$ for the majority vote
+  model $\{\P_{(X,\majY)}^{\sigma\lr, \theta, m}\}$ satisfies
+  \begin{align*}
+    \fishermv_m(\theta\opt) = \E \brk{\frac{\rho_m'(t\opt|Z|)^2
+        Z^2}{\rho_m(t\opt|Z|) ( 1 - \rho_m(t\opt|Z|))}} \cdot u\opt
+             {u\opt}^\top + \E \brk{\frac{\rho_m'(t\opt|Z|)^2
+               }{\rho_m(t\opt|Z|) ( 1 - \rho_m(t\opt|Z|))}} \cdot
+             \proj_{u\opt}^\perp \Sigma \proj_{u\opt}^\perp .
+  \end{align*}
+\end{lemma}
+%\begin{proof}
+%  For $p_\theta(x, y) = \Prb_\theta(\majY = y \mid X = x) q(x)$, where
+%  $q$ is the $d$-dimensional centered density of $X$,
+%  the Fisher information matrix at $\theta$ is
+%  \begin{align*}
+%    \fishermv_m(\theta) = \E \brk{\nabla_\theta \log p_\theta(X, \majY) \cdot \nabla_\theta \log p_\theta(X, \majY)^\top }.
+%  \end{align*}
+%  Substituting $\rho_m(|\<x, \theta^\star\>|) = \Prb(\majY =
+%  \sgn(\<x, \theta^\star\>) \mid X = x)$, we then have
+%	\begin{align*}
+%		& \E \brk{\nabla_\theta \log p_{\theta\opt}(X, \majY) \cdot  \nabla_\theta \log p_{\theta\opt}(X, \majY)^\top \mid X = x } \\
+%		& =  \rho_m(|\<x, \theta^\star\>|) \cdot \frac{\nabla_\theta \rho_m(|\<x, \theta^\star\>|) \cdot \nabla_\theta \rho_m(|\<x, \theta^\star\>|)^\top}{\rho_m(|\<x, \theta^\star\>|)^2} \nonumber \\
+%		& \qquad + (1- \rho_m(|\<x, \theta^\star\>|) \cdot \frac{\prn{\nabla_\theta(1 - \rho_m(|\<x, \theta^\star\>|)} \cdot \prn{\nabla_\theta(1 - \rho_m(|\<x, \theta^\star\>|)}^\top}{(1 - \rho_m(|\<x, \theta^\star\>|)^2} \nonumber \\
+%%		& =  \frac{\rho_m'(|\<x, \theta^\star\>|)^2}{\rho_m(|\<x, \theta^\star\>|)} xx^\top + \frac{\rho_m'(|\<x, \theta^\star\>|)^2}{1 - \rho_m(|\<x, \theta^\star\>|)} xx^\top \nonumber \\
+%		& = \frac{\rho_m'(|\<x, \theta^\star\>|)^2}{\rho_m(|\<x, \theta^\star\>|) ( 1 - \rho_m(|\<x, \theta^\star\>|))} \cdot xx^\top
+%	\end{align*}
+%        as desired.
+%\end{proof}
+
+\noindent
+By characterizing the large $m$ behavior of the Fisher information,
+we can then apply Corollary~\ref{corollary:lam} to understand
+the optimal efficiency of any estimator given majority vote
+data. 
+
+\begin{theorem}
+  \label{thm:lower-bound-fisher-information}
+  Let Assumption~\ref{assumption:x-decomposition} hold,
+  Assumption~\ref{assumption:z-density} hold with
+  constants $c_Z$ and $\beta$,
+  and $t\opt = \ltwos{\theta\opt}$.
+  Then there are constants $a = a(c_Z, \beta), b = b(c_Z, \beta) > 0$ and 
+%  % \begin{align*}
+%  $a = \frac{c_Z}{ \pi} \int_0^\infty \frac{e^{-z^2} z^{\beta+1}}{\Phi(-z) \Phi(z)} dz$ \mbox{and} $b = \frac{c_Z}{4 \pi} \int_0^\infty \frac{e^{-z^2} z^{\beta-1}}{\Phi(-z) \Phi(z)} dz$,
+%  % \end{align*}
+  functions
+  \begin{align*}
+    A_m(t) = \frac{a}{t^2} \left(\frac{1}{t\sqrt{m}}\right)^{\beta}( 1 + o_m(1))
+    ~~ \mbox{and} ~~
+    B_m(t) = \frac{b}{t^2}\left(\frac{1}{t\sqrt{m}}\right)^{\beta-2} (1 + o_m(1))
+  \end{align*}
+  for which
+  \begin{equation*}
+    \fishermv_m(\theta\opt) = A_m (t\opt) \cdot u\opt {u\opt}^\top + B_m(t\opt) \cdot \proj_{u\opt}^\perp \Sigma \proj_{u\opt}^\perp.
+  \end{equation*}
+\end{theorem}
+\noindent
+%See Appendix~\ref{proof:lower-bound-fisher-information} for the proof.
+
+Combining Theorem~\ref{thm:lower-bound-fisher-information}
+with the local asymptotic minimax bounds, we obtain
+optimality for estimators of both $\theta\opt$ and the direction
+$u\opt$ as $m$ gets large.
+The normalized quantity $\phi(\theta) \defeq \theta / \ltwo{\theta}$ satisfies $\dot{\phi}(\theta) = \ltwo{\theta}^{-1}
+(I_d - \phi(\theta) \phi(\theta)^\top)$, yielding
+efficient limiting covariances
+\begin{align*}
+  \Sigma_{\theta\opt} & \defeq
+  \fishermv_m(\theta\opt)^{-1}  \asymp {t\opt}^{\beta +2} m^{\frac{\beta}{2}} \cdot u\opt {u\opt}^\top +  {t\opt}^{\beta}m^{\frac{\beta-2}{2}}  \cdot \prn{\proj_{u\opt}^\perp \Sigma \proj_{u\opt}^\perp}^\dagger, \\
+  \Sigma_{u\opt} & \defeq \dot{\phi}(\theta\opt)
+  \fishermv_m(\theta\opt)^{-1} \dot{\phi}(\theta\opt)
+  \asymp {t\opt}^{\beta-2 }m^{\frac{\beta-2}{2}}  \cdot \prn{\proj_{u\opt}^\perp \Sigma \proj_{u\opt}^\perp}^\dagger,
+\end{align*}
+where we recall the shorthand $t\opt = \ltwo{\theta\opt}$.
+%
+(We use that for symmetric $A, B$ with $AB = BA = 0$,
+$(A + B)^{-1} = A^\dagger + B^\dagger$; see Lemma~\ref{lem:Sigma-inverse}
+in Appendix~\ref{sec:technical}.)
+%
+Then combining Theorem~\ref{thm:lower-bound-fisher-information} with
+Corollary~\ref{corollary:lam} yields the following efficiency
+lower bound.
+%% (Lower bounds arising from convolution
+%% and other variants of local asymptotic optimality follow similarly.)
+\begin{corollary} \label{cor:LAM-lower-bounds}
+  Let $\what{\theta}_n$ and $\what{u}_n$
+  be arbitrary estimators of $\theta\opt$ and $u\opt = \phi(\theta\opt)$
+  using the aggregated data $\{(X_i,
+  \majY_i)\}_{i=1}^n$.
+  For any bounded and symmetric quasi-convex loss $\varphi : \R^d \to \R$,
+  \begin{equation*}
+    \lim_{c \to \infty}
+    \liminf_n \sup_{\ltwo{\theta - \theta\opt} \le c/\sqrt{n}}
+    \E_\theta[\varphi(\sqrt{n}(\what{u}_n - \phi(\theta)))]
+    \ge \E[\varphi(W)],
+    ~~ \mbox{where} ~~
+    W \sim \normal(0, \Sigma_{u\opt}).
+  \end{equation*}
+  If there exist
+  $T_\theta$ or $U_\theta$
+  such that $\sqrt{n}(\what{\theta}_n - \theta\opt) \cd T_{\theta\opt}$
+  (respectively, $\sqrt{n}(\what{u}_n - u\opt) \cd U_{\theta\opt}$),
+  then
+  $\cov(T_\theta) \succeq \Sigma_{\theta\opt}$ and $\cov(U_\theta) \succeq
+  \Sigma_{u\opt}$ for Lebesgue almost every $\theta\opt \in \R^d$.
+\end{corollary}
+
+
+This result carries several implications. First, the scaling in both $t\opt
+= \ltwo{\theta\opt}$ and $m$ for the asymptotic (achieved) covariance in
+Proposition~\ref{prop:lowd-majority-vote-m-noise} is optimal: we have
+$C_m(t) \asymp t^{\beta - 2} m^{\frac{\beta - 2}{2}}$ for the majority vote
+estimator $\mve$.
+%
+This optimal scaling holds even though the model
+may be mis-specified: estimators using the aggregated majority vote labels
+$\majY$ are rate-optimal in the scale $\ltwo{\theta\opt}$ and number of
+labelers $m$ (and sample size $n$) no matter the margin-based loss.
+(Achieving the optimal constant requires a well-specified loss.)
+This robustness of estimators using aggregated data may motivate
+data-cleaning measures in dataset construction when it is difficult
+to model the particulars of the data generation process.
+
+For any noise scale $\beta > 0$ on
+the margin variable $Z = \<X, u\opt\>$ in
+Assumption~\ref{assumption:z-density}, the inverse information
+$\Sigma_{\theta\opt} \to \infty$ as $m \to \infty$, so calibration
+becomes fundamentally harder for estimators using only aggregated labels
+even with known logistic link $\sigma\lr$.
+%
+For example, in the Gaussian
+case ($\beta = 1$), then $\Sigma_{\theta\opt} = \Omega(m^{\half})$ and
+$\Sigma_{u\opt} = O(m^{-\half})$, matching
+Corollary~\ref{cor:lowd-majority-vote-m}'s scaling.
+%
+The same phenomenon holds in
+the ``low noise'' regime where $\beta > 2$, so the margin
+variable $Z$ is typically far from 0 (recall the
+exponent~\eqref{eqn:mammen-tsybakov}).
+%
+In this case, $\Sigma_{u\opt} \to \infty$ as $m \to \infty$; estimators
+necessarily become non-robust when a paucity of data identifies the direction
+$u\opt$.

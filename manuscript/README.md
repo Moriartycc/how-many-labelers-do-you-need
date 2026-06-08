@@ -1,3 +1,9 @@
-Please replace the contents of this file with relevant instructions for your repository or remove this file entirely. Also remove `JASA-template.zip` (after extracting the contents as needed).
+This directory contains the manuscript source files for the paper:  How many labelers do you have? A closer look at gold-standard labels. The main document for the manuscript is in ``../JASA-main.tex''. The main document for the supplementary materials is in ``../JASA-supp.tex''. The figures included in the manuscript and supplementary materials are in the folder ``../figure/''.
 
-This directory would generally contain the manuscript source files, including the LaTeX or Rmd file for the manuscript, and figure files and files containing tabular information.
+Authors: Chen Cheng^1, Hilal Asi^2 and John Duchi^3
+
+Affiliations:
+University of Chicago, Department of Statistics
+Apple Inc.
+Stanford University, Departments of Statistics and Electrical Engineering
+

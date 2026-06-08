@@ -1,0 +1,79 @@
+\subsection{Related work}
+\label{sec:related-work}
+
+%% We briefly overview related work, acknowledging that 
+To make our theoretical model tractable, we capture only a few of the complexities inherent in
+dataset construction. Label aggregation strategies often attempt to
+evaluate labeler uncertainty, dating to~\citet{DawidSk79}, who study
+labeler uncertainty estimation to overcome noise in
+clinical patient measurements. With the rise of
+crowdsourcing, such reliability models have
+attracted interest, with approaches for optimal budget
+allocation~\cite{KargerOhSh14}, addressing untrustworthy or malicious
+labelers~\cite{CharikarStVa17}, and more broadly a line of applied~\cite{DengDoSoLiLiFe09, RussakovskyDeSuKrSaMaHuKaKhBeBeFe15} and theoretical work
+studying crowd labeling and aggregation~\cite{WhitehillWuBeMoRu09,
+  WelinderBrPeBe10, RatnerBaEhFrWuRe17}.
+%%, with substantial
+%% applications~\cite{DengDoSoLiLiFe09, RussakovskyDeSuKrSaMaHuKaKhBeBeFe15}.
+
+Many of these focus, however, on obtaining a single
+trustworthy label for each example. Our work takes a
+different perspective.  First, we target statistical analysis for
+the full learning pipeline---understanding the landscape of the
+learning problem with multiple labels for each example---as opposed to
+obtaining only clean labels. Moreover, we argue for
+calibrating the resulting predictive model, which cleaned
+labels necessarily impede. We therefore adopt a perspective similar to
+the applied works~\citep{PetersonBaGrRu19,PlataniosAlXiMi20},
+which highlight how incorporating human
+uncertainty into learning pipelines can make classification ``more
+robust''~\citep{PetersonBaGrRu19}.  Instead of splitting the learning
+procedure into two phases, where the first aggregates labels and the second
+trains, we use non-aggregated labels throughout
+learning. \citet{PlataniosAlXiMi20} directly
+model labeler reliability via a richer model than our stylized
+scenarios, but our
+approach allows theoretically precise description of the
+methods' limiting
+behavior.
+
+
+Our results complement a growing body of work in machine learning.
+%
+The Neural Information Processing Systems conference
+includes a Datasets and Benchmarks track, as they
+``are crucial for the development of machine learning
+methods''~\cite{BeygelzimerLiVaDa21},
+%
+%% As a particular examplar, \citet{GadreEtAl23} introduce DataComp,
+%% a testbed for experimental work on datasets,
+building off the long history
+of dataset-driven development in machine learning~\cite{HardtRe22}.
+%
+We attempt to lay statistical foundations for this line of work.
+
+%We mention in passing that our consistency results rely on
+%distributional assumptions on the covariates $X$, for example,
+%Gaussianity. That such technical conditions appear may be familiar from work,
+%for example, in single-index or nonlinear measurement models~\cite{PlanVe16,
+%  PlanVe13}. In such settings, one assumes $\E[Y \mid X] = f(\<\theta\opt,
+%X\>)$ for an unknown increasing $f$, and it is essential that $\E[Y X]
+%\propto \theta\opt$ to allow estimation of $\theta\opt$; we leverage similar
+%techniques.
+
+\paragraph{Notation}
+For a matrix $M$, $\norm{M}$ denotes its spectral norm and $M^\dagger$ its
+Moore-Penrose pseudo inverse.
+%
+For a unit vector $u$, $\proj_{u}^\perp \defeq
+I - u u^\top$ projects to the space orthogonal to $\mathrm{span}\{u\}$.
+%
+We use the empirical process notation $\Prb Z = \int z d\Prb(z)$ and $\cd$
+denotes convergence in distribution.
+%
+We write $f(x) \asymp g(x)$ for $x \in \R_+$ if there exist
+numerical constants $0 < c_1, c_2 < \infty$ and $x_0 \geq 0$ such that $c_1
+|g(x)| \leq |f(x)| \leq c_2|g(x)|$ for $x \geq x_0$,
+and
+$c = o_m(1)$ means $c \to 0$ as $m \to \infty$.
+

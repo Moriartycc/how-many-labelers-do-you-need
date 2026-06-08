@@ -1,0 +1,127 @@
+\section{Proof of Theorem~\ref{theorem:multilabel-asymptotics}}
+\label{sec:proof-multilabel-asymptotics}
+
+Let $t_m$ be the solution to $h_{t\opt,m}(t) = 0$ as in
+Lemma~\ref{lemma:generic-solutions}. The consistency argument is
+immediate: the losses $\loss$ are convex, continuous, and locally Lipschitz,
+so~\citet[Thm.~5.4]{ShapiroDeRu09} gives $\what{\theta}_n
+\cas \theta\opt_L$. By an appeal to standard
+M-estimator theory~\cite[e.g.][Thm.~5.23]{VanDerVaart98},
+we thus obtain
+\begin{equation}
+	\label{eqn:multilabel-basic-asymptote}
+	\sqrt{n} \big(\what{\theta}_n - \theta\opt_L\big)
+	\cd \normal\left(0, \nabla^2 L(\theta\opt_L, \sigma)^{-1}
+	\cov\bigg(\frac{1}{m} \sum_{j = 1}^m
+	\nabla \loss_{\sigma,\theta\opt_L}(Y_j \mid X)\bigg)
+	\nabla^2 L(\theta\opt_L, \sigma)^{-1} \right).
+\end{equation}
+We expand the covariance term to obtain the first main result of the
+theorem. For shorthand, let $G_j = \nabla \loss_{\sigma,\theta\opt_L}(Y_j
+\mid X)$, so that $\sum_{j = 1}^m \E[G_j] = 0$ and the $G_j$ are
+conditionally independent given $X$. Applying the law of total covariance,
+we have
+\begin{align*}
+	\cov\bigg(\frac{1}{m} \sum_{j = 1}^m G_j\bigg)
+	& = \cov\bigg(\frac{1}{m} \sum_{j = 1}^m
+	\E[G_j \mid X]\bigg)
+	+ \E\left[\cov\bigg(
+	\frac{1}{m} \sum_{j = 1}^m G_j \mid X\bigg)\right] \\
+	& =
+	\underbrace{\cov\bigg(\frac{1}{m} \sum_{j = 1}^m \E[G_j \mid X] \bigg)}_{
+		\mathrm{(I)}}
+	+ \frac{1}{m^2} \sum_{j = 1}^m
+	\underbrace{\E\left[\cov(G_j \mid X)\right]}_{\mathrm{(II)}},
+\end{align*}
+where we have used the conditional independence of the $Y_j$ conditional on
+$X$.  We control each of terms (I) and (II) in turn.
+
+For the first, we have by the independent decomposition
+$X = Z u\opt + \projperp W$ that
+\begin{equation*}
+	\E[G_j \mid X]
+	= 
+	\left(\sigma(t_m Z)
+	(1 - \sigma_j\opt(t\opt Z))
+	- \sigma(- t_m Z) \sigma_j\opt(t\opt Z)\right)
+	X,
+\end{equation*}
+and so
+\begin{align*}
+	\mathrm{(I)} & =
+	\E\left[\left(\sigma(t_m Z) (1 - \wb{\sigma}\opt(t\opt Z))
+	- \sigma(-t_m Z) \wb{\sigma}\opt(t\opt Z)\right)^2 XX^\top \right] \\
+	& =
+	\E\left[\left(\sigma(t_m Z) (1 - \wb{\sigma}\opt(t\opt Z))
+	- \sigma(-t_m Z) \wb{\sigma}\opt(t\opt Z)\right)^2 Z^2 \right]
+	u\opt {u\opt}^\top
+	\\ & \qquad ~ + 
+	\E\left[\left(\sigma(t_m Z) (1 - \wb{\sigma}\opt(t\opt Z))
+	- \sigma(-t_m Z) \wb{\sigma}\opt(t\opt Z)\right)^2\right]
+	\projperp \Sigma \projperp \\
+	& = \E[\linkerr(Z)^2 Z^2] u\opt {u\opt}^\top
+	+ \E[\linkerr(Z)^2]   \projperp \Sigma \projperp,
+\end{align*}
+where we used the independence of $W$ and $Z$.
+For term (II) above, we see that conditional on $X$,
+$\nabla \loss_{\sigma,\theta}(Y_j \mid X)$ is a binary
+random variable taking values in
+$\{-\sigma(-t_m Z) X, \sigma(t_m Z) X\}$ with probabilities
+$\sigma_j\opt(t\opt Z)$ and
+$1 - \sigma_j\opt(t\opt Z)$, respectively, so that
+a calculation leveraging the variance of Bernoulli random variables
+yields
+\begin{align*}
+	\cov(G_j \mid X)
+	& = \sigma_j\opt(t\opt Z) (1 - \sigma_j\opt(t\opt Z))
+	\left(\sigma(t_m Z) + \sigma(-t_m Z)\right)^2 XX^\top
+	= v_j(Z) XX^\top,
+\end{align*}
+where we used the definition~\eqref{eqn:error-functions} of the
+variance terms.
+A similar calculation to that we used for term (I) then gives that
+\begin{align*}
+	\mathrm{(II)} & = \frac{1}{m^2}
+	\sum_{j = 1}^m \E[v_j(Z) Z^2] u\opt {u\opt}^\top
+	+ \frac{1}{m^2}
+	\sum_{j = 1}^m \E[v_j(Z)] \projperp \Sigma \projperp.
+	%% \mathrm{(II)} & =
+	%% \frac{1}{m^2} \sum_{j = 1}^m
+	%% \E\left[\sigma_j\opt(t\opt Z) (1 - \sigma_j\opt(t\opt Z))
+	%%   \left(\sigma(t_m Z) + \sigma(-t_m Z)\right)^2 Z^2 \right] u\opt {u\opt}^\top
+	%% \\ & \qquad ~
+	%% + \frac{1}{m^2} \sum_{j = 1}^m \E\left[
+	%%   \sigma_j\opt(t\opt Z) (1 - \sigma_j\opt(t\opt Z))
+	%%   \left(\sigma(t_m Z) + \sigma(-t_m Z)\right)^2\right]
+	%% \projperp \Sigma \projperp.
+\end{align*}
+Applying Lemma~\ref{lem:Sigma-inverse} then allows us to decompose the the
+covariance in expression~\eqref{eqn:multilabel-basic-asymptote} into
+terms in the span of $u\opt {u\opt}^\top$ and those perpendicular to
+it, so that the asymptotic covariance is
+\begin{align*}
+	\frac{\E[\linkerr(Z)^2 Z^2] + \frac{1}{m^2}
+		\sum_{j = 1}^m \E[v_j(Z) Z^2]}{
+		\E[\hessfunc(Z) Z^2]^2} u\opt {u\opt}^\top
+	+ \frac{\E[\linkerr(Z)^2] + \frac{1}{m^2}
+		\sum_{j = 1}^m \E[v_j(Z)]}{\E[\hessfunc(Z)]^2}
+	\prn{\projperp \Sigma \projperp}^\dagger,
+\end{align*}
+by applying Lemma~\ref{lemma:generic-solutions} for the form of the Hessian
+$\nabla^2 L(\theta_L\opt, \sigma)$ and Lemma~\ref{lem:Sigma-inverse} for the
+inverse, giving the first result of the theorem.
+
+To obtain the second result, we apply the delta method with
+the mapping $\phi(x) = x / \ltwo{x}$, which satisfies
+$\nabla \phi(x) = (I - \phi(x) \phi(x)^\top) / \ltwo{x}$,
+so that for $\what{u}_n = \what{\theta}_n / \ltwos{\what{\theta}_n}$ we have
+\begin{align*}
+  \sqrt{n}(\what{u}_n - u\opt)
+  & \cd
+  \normal\left(0, \frac{1}{t_m^2}
+  \frac{\E[\linkerr(Z)^2] + \frac{1}{m^2}
+    \sum_{j = 1}^m \E[v_j(Z)]}{\E[\hessfunc(Z)]^2}
+  \prn{\projperp \Sigma \projperp}^\dagger
+  \right)
+\end{align*}
+as desired.

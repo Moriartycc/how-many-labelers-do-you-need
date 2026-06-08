@@ -1,0 +1,182 @@
+\section{Discussion and extensions}
+
+\paragraph{Semi-parametric approaches.}
+\label{sec:semi-param}
+\label{sec:master-results-sem}
+
+Our analysis separates likelihood-based approaches using all the labels, as
+in~\eqref{eq:maximum-likelihood}, and majority vote estimators, which are
+robust but have slower convergence, as in
+Proposition~\ref{prop:lowd-misspcfd-majority-vote-m}.
+%
+While we mainly focus on efficiency bounds for 
+procedures we view as closer to practice,
+%---fitting a model based on available data---
+in this section, we
+present a few extensions to semiparametric approaches, more
+as an amuse-bouche to motivate further efficiency investigations
+rather than as a final word.
+%% We thus develop a few convergence results into which we can substitute
+%% semiparametric estimators.
+%
+In distinction from standard results in semiparametric theory
+(e.g.~\cite[Ch.~25]{VanDerVaart98} or~\cite{BickelKlRiWe98}), the results
+require little more than consistent estimation of the links $\sigma_j\opt$
+to recover (rate optimal) $1/m$ scaling in the asymptotic covariance.
+
+Let $\vec{\sigma} = (\sigma_1, \ldots, \sigma_m)$
+be potentially distinct labeler link functions
+(with $\sigma_j\opt$ denoting the true links).
+Then for
+$(x, y) \in \R^d \times \{\pm 1\}^m$ define the link-based loss
+\begin{equation*}
+  \loss_{\vec{\sigma}, \theta}(y \mid x)
+  \defeq \frac{1}{m} \sum_{j = 1}^m \loss_{\sigma_j,\theta}(y_j \mid x).
+\end{equation*}
+%
+To eliminate ambiguity in $\vec{\sigma}$,
+we normalize $\ltwo{\theta\opt} = 1$,
+and then define the population loss
+\begin{equation*}
+	L(\theta, \vec{\sigma})
+	\defeq \frac{1}{m} \sum_{j = 1}^m
+	\E[\loss_{\sigma_j, \theta}(Y_j \mid X)].
+\end{equation*}
+For the sequence $\{\vec{\sigma}_n\} \subset \fsymlinksp$
+of (estimated) links and data $(X_i,
+Y_i)$, $Y_i = (Y_{i1}, \ldots, Y_{im})$, we define the semi-parametric
+estimator
+\begin{align*}
+	\spe \defeq \argmin_{\theta \in \R^d}
+	\frac{1}{n} \sum_{i = 1}^n
+	\loss_{\vec{\sigma}_n, \theta}(Y_i \mid X_i).
+\end{align*}
+
+Both consistency and
+asymptotic normality hold under appropriate convergence of
+the link functions (see Appendix~\ref{sec:semi-supp} for details).
+Define the distance $d_{\flink}$ on $\R^d
+\times \flink$ by
+\begin{align}
+  d_{\flink}\left((\theta_1, \vec{\sigma}_1), (\theta_2, \vec{\sigma}_2)
+  \right)
+  \defeq
+  \ltwo{\theta_1 - \theta_2}
+  + \LtwoPbold{\vec{\sigma}_1(-Y\<X, u\opt\>)
+    - \vec{\sigma}_2(-Y\<X, u\opt\>)}.
+  \label{eqn:link-distance}
+\end{align}
+%We make the following assumption.
+%\begin{assumption}
+%	\label{assumption:sp-general}
+%	The links $\vec{\sigma}\opt \in \fsymlinksp$ are normalized so
+%	that $\P(Y_j = y \mid X = x) = \sigma\opt_j(y \<x, u\opt\>)$, and
+%	the sequence $\{\vec{\sigma}_n\} \subset \fsymlinksp$ is consistent:
+%	\begin{equation*}
+%		\LtwoPbold{\vec{\sigma}_n(-Y\<X, u\opt\>)
+%			- \vec{\sigma}\opt(-Y\<X, u\opt\>)}
+%		\cp 0.
+%	\end{equation*}
+%	Additionally, the mapping $(\theta, \vec{\sigma}) \mapsto
+%	\nabla_\theta^2 \poploss(\theta,
+%	\vec{\sigma})$ is continuous for $d_{\fsymlinksp}$ at $(u\opt,
+%	\vec{\sigma}\opt)$.
+%\end{assumption}
+%The continuity of $\nabla_\theta^2 \poploss(\theta, \vec{\sigma})$ 
+%%$\nabla_\theta^2 \poploss(\theta, \vec{\sigma})$ at
+%%$(u\opt, \vec{\sigma}\opt)$ 
+%allows us to develop local asymptotic normality.
+%To see we may expect the assumption to hold, we give reasonably simple
+%conditions sufficient for it in Lemma~\ref{lem:d-continuity-guarantees}, Appendix~\ref{sec:semi-supp}.
+Then
+the next master result for semi-parametric
+approaches characterizes the asymptotic behavior of the
+semi-parametric estimator $\spe$ using the variance function
+\begin{align*}
+  C_{m, \vec{\sigma}\opt} := \frac{1}{m} \cdot
+  \frac{\frac{1}{m} \sum_{j = 1}^m \E[\sigma_j\opt(Z) (1 - \sigma_j\opt(Z))]}{
+    (\frac{1}{m} \sum_{j = 1}^m
+    \E[{\sigma_j\opt}'(Z)])^2}.
+\end{align*} 
+\begin{theorem}
+  \label{theorem:semiparametric-master-informal}
+  Let Assumption~\ref{assumption:x-decomposition} hold and assume $|Z| > 0$
+  has nonzero and continuous density $p(z)$ on $(0, \infty)$.  Suppose the
+  sequence $\{\vec{\sigma}_n\}$ is consistent, i.e.,
+  \begin{equation*}
+    \LtwoPbold{\vec{\sigma}_n(-Y\<X, u\opt\>)
+      - \vec{\sigma}\opt(-Y\<X, u\opt\>)}
+    \cp 0,
+  \end{equation*}
+  the mapping $(\theta, \vec{\sigma}) \mapsto
+  \nabla_\theta^2 \poploss(\theta,
+  \vec{\sigma})$ is continuous for $d_{\flink}$ at $(u\opt,
+  \vec{\sigma}\opt)$, and $\Ep [\ltwo{X}^4] < \infty$.  Then $\sqrt{n}(\spe - u\opt)$ is
+  asymptotically normal, and the estimator $\what{u}\sem_{n,m} =
+  \spe / \ltwos{\spe}$ satisfies
+  \begin{equation*}
+    \sqrt{n} \prn{\what{u}\sem_{n,m} - u\opt}
+    \cd \normal\prn{0, 	C_{m, \vec{\sigma}\opt}
+      \prn{\proj_{u\opt}^\perp \Sigma \proj_{u\opt}^\perp}^\dagger}.
+  \end{equation*}
+\end{theorem}
+\noindent
+Notably, Theorem~\ref{theorem:semiparametric-master-informal} exhibits optimal
+$1/m$ covariance scaling whenever $\E[{\sigma\opt_j}'(Z)] \gtrsim 1$.
+
+We give two example applications of the general
+theory in Appendix~\ref{sec:semi-supp}: the first analyzing a full pipeline
+for a single index model setting, which robustly estimates direction $u\opt$,
+the link $\sigma\opt$, and then re-estimates $\theta\opt$; the second
+assuming a stylized black-box crowdsourcing mechanism that provides
+estimates of labeler reliability, highlighting how even in some
+crowdsourcing scenarios, there could be substantial advantages to using full
+label information.
+
+\paragraph{Future work.}
+
+In spite of the technical detail we require to prove our results,
+we view this work as almost preliminary and hope that it inspires further
+work on the full pipeline of statistical machine learning,
+from dataset creation to model release.
+%
+Many questions remain.
+
+On the theoretical side, we focus on a stylized model of
+label aggregation, with majority vote---with the exception of the
+crowdsourcing model above--functioning as the
+stand-in for more sophisticated aggregation strategies. It seems challenging
+to show that \emph{no} aggregation strategy can work as well as multi-label
+strategies; it would be interesting to delineate the benefits
+and drawbacks of more sophisticated denoising.
+% We
+% focus throughout on low-dimensional asymptotics, using asymptotic normality
+% to compare estimators. 
+Additionally, the insights make low-dimensional asymptotic predictions;
+investigating high-dimensional scaling might yield new perspectives
+as, for, classification datasets often become
+separable~\cite{CandesSu19pnas}.
+%%, which is consistent with modern
+%%applied machine learning~\cite{ZhangBeHaReVi21}.
+%but makes the asymptotics we
+% derive impossible. One option
+% is to investigate the asymptotics of maximum-margin estimators,
+% which coincide with the limits of ridge-regularized logistic
+% regression~\cite{RossetZhHa04, SoudryHoNaGuSr18}.
+
+On the methodological and applied side, given the extent to which the
+test/challenge dataset methodology drives progress in machine
+learning~\cite{Donoho17}, it seems that developing newer datasets to
+incorporate labeler uncertainty could yield substantial benefits.  A
+particular refrain is that modern deep learning methods are overconfident in
+their predictions~\cite{GoodfellowShSz15}; perhaps by
+calibrating them to \emph{labeler} uncertainty we could
+improve their robustness and performance.
+%
+Large-scale
+models now frequently use only distantly supervised
+labels~\cite{RadfordKiHaRaGoAgSaAsMiClKrSu21}, making
+the study of appropriate data cleaning and collection more timely.
+We look forward to deeper
+investigations of the foundations of the full
+practice of statistical machine learning.

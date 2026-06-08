@@ -1,0 +1,148 @@
+% -*- mode: latex -*- %
+
+\subsection{Proof of Proposition~\ref{prop:lowd-misspcfd-majority-vote-m}}  \label{proof:lowd-misspcfd-majority-vote-m}
+
+\paragraph{Minimizer of the population loss.} 
+By Lemma~\ref{lemma:generic-solutions}, we know the gap $h(t)=0$ has a
+unique solution $t_m$, with $t_m u\opt$ minimizing the population loss
+$L(\theta, \sigma)$.
+
+\paragraph{Asymptotic variance.} 
+Directly invoking Theorem~\ref{theorem:majority-vote-asymptotics} yields
+asymptotic normality:
+\begin{equation*}
+  \sqrt{n}\left(\what{u}\mv_{n,m} - u\opt\right)
+  \cd \normal\prn{0, \varfunc(t\opt) \prn{\projperp \Sigma \projperp}^\dagger},
+\end{equation*}
+where the covariance function~\eqref{eqn:generic-majority-covariance} has the
+form
+\begin{equation}
+  \varfunc(t\opt) = \frac{1}{t_m^2} \frac{\E[\sigma(-t_m |Z|)^2
+      \rho_m(t\opt Z) + \sigma(t_m |Z|)^2 (1 - \rho_m(t\opt Z))]}{
+    \E[\sigma'(t_m Z)]^2} \label{eqn:mis-majority-covariance}
+\end{equation}
+and again $t_m$ is the implicitly defined zero of $h(t) = 0$.
+
+
+\paragraph{Large $m$ behavior.}
+We derive the large $m$ asymptotics of $t_m$ and $\varfunc$ under
+Assumption~\ref{assumption:condition-misspcfd-link-majority-vote} and using
+the shorthand $\ltwo{\theta\opt} = t$. The proof is essentially identical to
+that of Proposition~\ref{prop:lowd-majority-vote-m-noise} in
+Appendix~\ref{proof:lowd-majority-vote-m-noise}.
+First, recalling
+the probability~\eqref{eq:link-function-m-majority-vote-general},
+$\rho_m(t) = \Prb(\majY = \sgn(\<X, \theta\opt\>) \mid \<X,\theta\opt\> = t)$,
+we see that $1 - \rho_m(t z) \to 0$ for
+any $z \neq 0$ as $m \to \infty$, and thus by dominated convergence,
+$\Ep \brk{|Z|\prn{1 - \rho_m(t Z)}} \to 0$.
+The analogue of the identity~\eqref{eqn:solving-for-t-m}
+in the proof of Proposition~\ref{prop:lowd-majority-vote-m-noise}, that
+$t_m$ is the zero of $h(t) = \E[\sigma(t|Z|)|Z|(1 - \rho_m(t\opt Z))]
+- \E[\sigma(-t|Z|) |Z| \rho_m(t\opt Z)]$, implies
+\begin{equation}
+  \Ep[\sigma(t_m|Z|) |Z|(1 - \rho_m(t\opt Z))]
+  = \Ep \brk{\sigma(-t_m |Z|) |Z| \rho_m(t\opt Z)}.
+  \label{eqn:mis-spec-solving-for-t-m}
+\end{equation}
+As $\sigma$ is bounded and $\E[\sigma(-t|Z|) |Z| \rho_m(t\opt |Z|)] \to
+\E[\sigma(-t|Z|) |Z|]$ for any $t$, the convergence of the left hand side of
+equality~\eqref{eqn:mis-spec-solving-for-t-m} to 0 as $m \to \infty$ means
+we must have $t_m \to \infty$.
+Invoking
+Lemma~\ref{lem:t-Z-integral-noise} yields
+\begin{align*}
+  \lim_{m \to \infty} t_m^{\beta + 1} \Ep \brk{|Z| \sigma(-t_m |Z|)}
+  =
+  \lim_{m \to \infty} t_m^{\beta} \Ep \brk{t_m|Z| \sigma(-t_m |Z|)}
+  = c_Z \int_0^\infty z^\beta \sigma(-z) dz.
+\end{align*}
+Applying Lemma~\ref{lem:m-rho-integral-noise-general} gives
+\begin{align*}
+  m^{\frac{\beta+1}{2}}\Ep \brk{|Z|(1-\rho_m(t Z))}
+  =  m^{\frac{\beta}{2}} \Ep \brk{\sqrt m|Z|(1-\rho_m(t  Z))}
+  \to c_Z {t}^{-\beta-1}\int_0^\infty z^\beta \Phi \left(-2{\wb{\sigma}\opt}'(0)z\right) dz.
+\end{align*}
+Rewriting the identity~\eqref{eqn:mis-spec-solving-for-t-m}
+using the symmetry of $\sigma$, so that $\sigma(t) + \sigma(-t) = 1$,
+we have the equivalent statement that
+$\E[|Z|(1 - \rho_m(t\opt Z))] = \E[\sigma(-t_m |Z|) |Z|]$,
+or $\E[\sigma(-t_m |Z|)|Z|] / \E[|Z|(1 - \rho_m(t\opt Z))] = 1$.
+Using this identity ratio, we find that
+\begin{equation*}
+  \frac{t_m}{\sqrt{m}}
+  =
+  \left(\frac{	t_m^{\beta + 1}\Ep \brk{|Z| \sigma(-t_m|Z|)}}{
+    m^{\frac{\beta+1}{2}} \Ep \brk{|Z|(1-\rho_m(t  Z))} }\right)^\frac{1}{\beta +1}
+  \to
+  \left(\frac{\int_{0}^{\infty} z^\beta \sigma(-z) dz}{
+    \int_0^\infty z^\beta \Phi(-2{\wb{\sigma}\opt}'(0)z) dz}\right)^{
+    \frac{1}{\beta +1}} \cdot t\opt
+  = : a t\opt.
+\end{equation*}
+This concludes the asymptotic characterization that $t_m = \sqrt{m} a t\opt
+\cdot(1 + o_m(1))$.
+
+Finally, we turn to the asymptotics for $\varfunc(t\opt)$
+in~\eqref{eqn:mis-majority-covariance}.
+By Lemma~\ref{lem:t-Z-integral-noise}
+its denominator has limit
+\begin{align*}
+  \lim_{m \to \infty}
+  \underbrace{t_m^{2 \beta} \Ep\left[\sigma'(t_m Z)\right]^2}_{:=
+    \mathsf{den}{\varfunc(t\opt)}}
+  = \lim_{t \to \infty}
+  \left(t^\beta \Ep\left[\sigma'(t Z)\right]\right)^2
+  = \left(c_Z\int_{0}^\infty z^{\beta - 1} \sigma'(z)dz\right)^2.  
+\end{align*}
+We decompose the (rescaled) numerator of the
+variance~\eqref{eqn:mis-majority-covariance} into the two parts
+\begin{align*}
+  \underbrace{m^{\frac{\beta}{2}} \Ep \left[\left(
+      \sigma(t_m|Z|)^2 - \sigma(-t_m |Z|)^2\right)
+      (1-\rho_m(t|Z|)) \right]}_{\mathrm{(I)}}
+  + \underbrace{m^{\frac{\beta}{2}} \Ep \left[\sigma(-t_m|Z|)^2\right]}_{
+    \mathrm{(II)}}.
+\end{align*}
+Lemmas~\ref{lem:t-Z-integral-noise} and that $t_m = a \sqrt{m} t\opt(1 +
+o_m(1)) \to \infty$, coupled with the dominated
+convergence theorem, establishes the convergence
+\begin{align*}
+  \lim_{m \to \infty}  \mathrm{(II)} = \lim_{m \to \infty} m^{\frac \beta 2}
+  \Ep \left[\sigma(-\sqrt{m} a t\opt |Z|)^2\right]
+  = c_Z {t}^{-\beta} \int_0^\infty \frac{z^{\beta - 1}}{\left(1 + e^{a z}\right)^2}
+  dz.
+\end{align*}
+Similarly,
+Lemma~\ref{lem:m-rho-integral-noise-general} and that
+$t_m = a \sqrt{m} t\opt(1 + o_m(1))$
+gives that
+\begin{align*}
+  \lim_{m \to \infty} \mathrm{(I)} 
+  & = \lim_{m \to \infty} m^{\frac \beta 2} \Ep \left[
+    \left(\sigma(at\opt \sqrt{m}|Z|)^2 - \sigma(-a t\opt\sqrt{m}|Z|)^2
+    \right) (1 - \rho_m(t Z)) \right] \\
+  & = c_Z \int_0^\infty z^{\beta - 1}
+  \left(\sigma(a t\opt z)^2 - \sigma(-at\opt z)^2\right)
+  \Phi \left(-2{\wb{\sigma}\opt}'(0) t z\right) dz \\
+  & = c_Z {t\opt}^{-\beta} \int_0^\infty z^{\beta - 1}
+  \left(\sigma(az)^2 - \sigma(-az)^2\right)
+  \Phi \left(-2{\wb{\sigma}\opt}'(0) z\right) dz,
+\end{align*}
+where in the last line we use change of variables $tz \mapsto z$. Hence we have
+\begin{align*}
+  \lim_{m\to \infty} m^{1 - \frac{1}{2} \beta} \varfunc(t\opt)
+  & = \lim_{m \to \infty} \frac{1}{m^{\beta - 1} t_m^{2 - 2 \beta}}
+  \cdot \frac{\lim_{m\to \infty}\mathrm{(I)} + \lim_{m\to \infty}\mathrm{(II)}}{
+    \mathsf{den}(C_m(t\opt))} \\
+  & =  \lim_{m\to \infty} \prn{\frac{t_m}{\sqrt m}}^{2\beta - 2}
+  \cdot \frac{c_Z {t\opt}^{-\beta} \int_0^\infty z^{\beta - 1}
+    \prns{\sigma(az)^2
+      + (\sigma(az)^2 - \sigma(-az)^2) \Phi(-2{\wb{\sigma}\opt}'(0) z)}
+    dz}{
+    (c_Z\int_{0}^\infty \frac{z^{\beta - 1} e^{z} }{ (1 + e^{z})^2} dz)^2}.
+\end{align*}
+Finally, as $t_m / \sqrt{m} = a t\opt (1 + o_m(1))$ we obtain that
+$m^{1 - \beta/2} \varfunc(t\opt) = {t\opt}^{\beta - 2} b$ for
+some constant $b$ depending only on $\beta, c_Z, {\wb{\sigma}\opt}'(0)$,
+and $\sigma$.

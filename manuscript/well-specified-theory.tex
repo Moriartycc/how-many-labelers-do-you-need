@@ -1,0 +1,389 @@
+\section{The well-specified logistic model}\label{sec:well-sepcified-mod}
+
+We begin in a setting that allows the cleanest and most precise comparisons
+between a method using aggregated labels~\eqref{eq:logistic-majority} and
+one without~\eqref{eq:maximum-likelihood} by considering the logistic link
+for~\eqref{eq:general-calibration-model},
+\begin{align*}
+  \sigma\lr(t) = \frac{1}{1 + e^{-t}} \in \fsymlink.
+\end{align*}
+%This simplicity allows results that highlight many of the conclusions we
+%draw, and so we present initial, relatively clean, results for the
+%estimators~\eqref{eq:maximum-likelihood} and~\eqref{eq:logistic-majority}
+%here.  
+In particular, we assume identical links $\sigma_1\opt = \dots =
+\sigma_m\opt = \sigma\lr$ and an i.i.d.\ sample $X_1, \ldots, X_n$, where
+for each $i \in [n]$ we draw $(Y_{i1}, \ldots, Y_{im}) \simiid
+\Prb_{\sigma\lr,\theta\opt}(\cdot \mid X_i)$ for a true vector $\theta\opt$.
+
+
+\subsection{The isotropic Gaussian case} \label{sec:gauss}
+
+To deliver the general taste of our results on the performance of the full
+information~\eqref{eq:maximum-likelihood} and majority
+vote~\eqref{eq:logistic-majority} approaches, we start by studying the
+simplest case when $X \sim \normal(0, I_d)$.
+
+\paragraph{Performance with non-aggregated data.}
+
+The
+non-aggregated MLE $\tmle$ in Eq.~\eqref{eq:maximum-likelihood}
+admits a standard analysis,
+which we state as a corollary of
+Proposition~\ref{prop:lowd-maximum-likelihood} to come.
+%
+%Let the population log loss be $L(\theta) = \Prb \loss_\theta(Y \mid X)$. When $m$ is fixed, we can view $(X_i, Y_{i1}, \cdots, Y_{im})$ as independent samples from $\R^d \times \left\{\pm 1\right\}^m$ which allows us to directly employ the standard asymptotic normality for maximum likelihood estimators. Let $\what{u}\lr_{n,m}$ be the normalized version of $\what{\theta}\lr_{n,m}$. The classical theory tells us the following.
+\begin{corollary}
+  \label{cor:lowd-maximum-likelihood-Gaussian} 
+  Let $X \sim \normal(0, I_d)$ and $t\opt = \ltwos{\theta\opt}$. The maximum
+  likelihood estimator $\tmle$ is consistent, with $\tmle \cp
+  \theta\opt$, and for $\proj_{u\opt}^\perp = I_d - u\opt {u\opt}^\top$,
+  \begin{align*}
+    \sqrt{n} (\what{u}\lr_{n,m} - u^\star)
+    & \cd \normal\left(0,  m^{-1}
+    \cdot (t\opt)^{-2} \cdot \E[\sigma\lr(\<\theta\opt, X\>)
+      (1 - \sigma\lr(\<\theta\opt, X\>))]^{-1}
+    \proj_{u\opt}^\perp \right).
+  \end{align*}
+\end{corollary}
+\noindent
+So the non-aggregated MLE is calibrated, recovering 
+$\theta\opt$,
+and enjoys convergence rates scaling as
+$1/\sqrt{nm}$, so that increasing the number of labels $m$ linearly 
+improves convergence rate.
+
+
+\paragraph{Performance with majority-vote aggregation.}
+
+The analysis of the majority vote estimator~\eqref{eq:logistic-majority}
+requires more care, though the assumption that $X \sim \normal(0, I_d)$ allows
+us to calculate the limits explicitly. In
+brief, we show that when $X$ is Gaussian, the estimator is mis-calibrated
+and its classification error converges more slowly in $m$
+than the
+non-aggregated classifier.
+The basic idea is that the majority vote classifier
+should still point in the direction of $\theta\opt$,
+but it should be  ``calibrated'' to the probability of a majority
+of $m$ labels being correct.
+
+We follow this idea and sketch the derivation here, as it is central to all
+of our theorems, then state a companion corollary.
+%% to Corollary~\ref{cor:lowd-maximum-likelihood-Gaussian}.  
+Each result depends on the probability
+\begin{equation*}
+  \Prb(\majY = \sgn(\<x, \theta^\star\>) \mid x)
+  = \rho_m(|\<x, \theta^\star\>|)
+\end{equation*}
+of obtaining a correct label using majority vote,
+where $\rho_m$ is the binomial probability
+\begin{align}
+  \rho_m(t) =
+  \P\left(\bindist\Big(m, \frac{1}{1 + e^{-|t|}}\Big)\ge \frac{m}{2}\right)
+  = 
+  \sum_{i=\lceil m/2 \rceil}^m \binom{m}{i} \left(\frac{1}{1 + e^{-|t|}} \right)^i \left(\frac{e^{-|t|}}{1 + e^{-|t|}} \right)^{m-i}, \label{eq:link-function-m-majority-vote}
+\end{align}
+when $m$ is odd. (When $m$ is even the sum has the
+asymptotically negligible additional additive
+term $\frac{1}{2} \binom{m}{m/2} \frac{e^{-m|t|/2}}{(1 + e^{-|t|})^m}$.)
+Key to the coming result is a
+parameter that approximately equalizes binomial (majority vote) and logistic
+(Bernoulli) probabilities, so we define
+\begin{align}
+  h_m(t) &  = \Ep \brk{|Z|(1-\rho_m(t^\star |Z|))}-\Ep
+  \brk{\frac{|Z|}{1 + e^{t|Z|}}}, \quad \text{for }Z \sim \normal(0, 1).
+  \label{eqn:h-centering}
+\end{align}
+We use $h$ to find the minimizer of population loss $\poploss\mv_m(\theta) =
+\Ep[ \ell_\theta\lr(\majY \mid X)]$ via the ansatz
+$\theta = t u^\star$ for
+some $t > 0$.
+%
+Using the definition~\eqref{eq:link-function-m-majority-vote}
+of $\rho_m$, for
+$S\subopt = \sgn(\<X, \theta\opt\>)$,
+\begin{align*}
+  \poploss\mv_m(\theta)  
+  & = \Ep\left[\log(1 + e^{-S\subopt \<X, \theta\>})
+    \cdot\rho_m(t^\star |\<X, u^\star\>|) \right]
+  + \Ep\left[\log(1 + e^{S\subopt\<X, \theta\>})
+    \cdot (1-\rho_m(t^\star|\<X, u^\star\>|)) \right],
+\end{align*}
+where we recall $t\opt = \ltwo{\theta\opt}$, and compute the gradient
+for $\theta = t u\opt$ via
+\begin{align*}
+  \nabla \poploss\mv_m(\theta) & =
+  - \Ep \left[\frac{S\subopt \rho_m(t^\star |\<X, u^\star\>|) }{1 + \exp(S\subopt \<X, \theta\>)} X \right]
+  + \Ep \left[\frac{S\subopt \exp(S\subopt \<X, \theta\>)
+      (1-\rho_m(t^\star|\<X, u^\star\>|))}{1 + \exp(S\subopt \<X, \theta\>)}  X \right].
+\end{align*}
+Setting $Z = \<X, u^\star\>$ to decompose $X$ into the independent sum $X =
+(X - u^\star Z) + u^\star Z$,
+\begin{align}
+  \nabla \poploss\mv_m(t u^\star) 
+  & \stackrel{\mathrm{(i)}}{=} - \Ep \left[\frac{\sgn(Z)}{1 + \exp(t|Z|)} \rho_m(t^\star |Z|) X \right]  + \Ep \left[\frac{\sgn(Z)\exp(t|Z|)}{1 + \exp(t|Z|)} (1-\rho_m(t^\star |Z|)) X \right] \nonumber	\\
+  %&= - \Ep \left[\frac{\sgn(Z)Z}{1 + \exp(t|Z|)} \rho_m(t^\star |Z|)\right] u^\star  + \Ep \left[\frac{\sgn(Z)Z\exp(t|Z|)}{1 + \exp(t|Z|)} (1-\rho_m(t^\star |Z|))\right]  u^\star \nonumber \\
+  %& = \left(\Ep \left[\frac{|Z|  \exp(t|Z|)}{1 + \exp(t|Z|)}\right] - \Ep \left[|Z| \rho_m(t^\star |Z|) \right]\right) u^\star \nonumber \\
+  & = \left(\Ep \brk{|Z|(1-\rho_m(t^\star  |Z|))}-\Ep \brk{\frac{|Z|}{1 + e^{t|Z|}}}\right) u^\star = h_m(t) u^\star  , \label{eq:majority-vote-root}
+\end{align} 
+where in (i) we substitute $S\subopt = \sgn(Z)$.
+%
+As we present in Corollary~\ref{cor:lowd-majority-vote-m}, $h_m(t)=0$ has a
+unique solution $t_m \asymp \sqrt m$, so $t_m u\opt$ necessarily uniquely
+minimizes the population loss $\poploss\mv_m$.
+
+By completing the calculations for the value of $t_m$ above and leveraging
+asymptotic normality, we have the following
+special case of Proposition~\ref{prop:lowd-majority-vote-m-noise} to come.
+
+\begin{corollary} \label{cor:lowd-majority-vote-m}
+  Let $X \sim \normal(0, I_d)$
+  and $t\opt = \ltwos{\theta\opt}$.
+  There are numerical constants $a, b > 0$ such that for the function $h = h_m$ in~\eqref{eqn:h-centering},
+  there is a unique $t_m \geq t_1 = t^\star$ solving $h(t_m) = 0$
+  and 
+  \begin{equation*}
+    \what{\theta}\mv_{n,m} \cp t_m u\opt
+    ~~ \mbox{and} ~~
+    \lim_{m \to \infty} \frac{t_m}{t\opt \sqrt{m}} = a.
+  \end{equation*}
+  Moreover,
+  there exists
+  $C_m(t) = \frac{b}{t \sqrt{m}}(1 + o_m(1))$
+  such that
+  $\what{u}\mv_{n,m} = \mve/\ltwos{\mve}$ satisfies
+  \begin{align*}
+    \sqrt{n} \left(\what{u}\mv_{n,m} - u^\star \right) &\cd \normal\left(0, C_m(t\opt) {\proj_{u\opt}^\perp}\right).
+  \end{align*}
+\end{corollary}
+
+It is instructive to compare the rates of this estimator to the rates
+for the non-aggregated MLE
+in \Cref{cor:lowd-maximum-likelihood-Gaussian}. First, the non-aggregated
+estimator is calibrated in that $\tmle \to \theta\opt$, in contrast to the
+majority-vote estimator, which roughly
+``calibrates'' to the probability majority vote is correct
+(cf.~\eqref{eq:majority-vote-root}) via the convergence
+$\mve \to c \sqrt{m} \theta\opt$ as $n
+\to \infty$.
+%
+The scaling of $C_m$ in
+\Cref{cor:lowd-majority-vote-m} also shows that the majority-vote
+estimator exhibits worse convergence rates by a factor of $\sqrt{m}$ than
+the estimator $\what{\theta}\lr_{n,m}$: regardless of the dimension $d$,
+for constants $c\lr$ and $c\mv$ 
+that depend only on $t\opt = \ltwos{\theta\opt}$,
+the asymptotic variances differ by $\sqrt{m}$, as
+\begin{equation*}
+  \sqrt{n}(\what{u}\lr_{n,m} - u\opt) \cd
+  \normal\left(0, m^{-1} c\lr \proj_{u\opt}^\perp  \right)
+  ~~ \mbox{while} ~~
+  \sqrt{n}(\what{u}\mv_{n,m} - u\opt) \cd
+  \normal\left(0, m^{-1/2} c\mv \proj_{u\opt}^\perp \right).
+\end{equation*}
+
+To obtain intuition for this result via comparison with
+Corollary~\ref{cor:lowd-maximum-likelihood-Gaussian}, consider the Fisher
+information $\E[\sigma\lr(\<\theta\opt, X\>) (1 - \sigma\lr(\<\theta\opt,
+  X\>)) XX^\top]$ for logistic regression. Letting $Z\opt = \<\theta\opt,
+X\>$ be the predicted margin, there is only ``information'' available for an
+estimator when $\sigma\lr(Z\opt)$ is near $\half$, as otherwise
+$\sigma\lr(Z\opt)(1 - \sigma\lr(Z\opt)) \approx 0$; under majority vote, we
+analogously require $\P(\bindist(m, \sigma\lr(Z\opt)) > \frac{m}{2}) \approx
+\half$, which in turn means that we need $\sigma\lr(Z\opt) \in \half \pm
+O(\frac{1}{\sqrt{m}})$ by standard binomial concentration, or $Z\opt =
+\<\theta\opt, X\> \in \pm O(\frac{1}{\sqrt{m}})$.  This occurs on about
+$1/\sqrt{m}$ fraction of the sample, so of $n \cdot m$ total observations,
+majority vote ``loses'' a factor $\sqrt{m}$.
+
+\newcommand{\mt}{$\textsc{M}_\beta$}
+
+\subsection{Comparisons for more general feature distributions}
+\label{sec:non-gauss}
+
+The key to the preceding results
+is that $X$ decomposes into components aligned with
+$\theta\opt$ and independent noise.
+%
+By abstracting away the Gaussianity assumptions, we may carefully track
+margins and label noise, and their roles in the merits of
+maximum-likelihood-type (full label information) estimators relative to
+those using majority-vote labels.
+%
+The results follow from the master theorems in the sequel, which rely on the
+following independence
+\begin{assumption}
+  \label{assumption:x-decomposition}
+  The covariates $X$ have non-singular covariance $\Sigma$ and decompose as a
+  sum of independent random vectors in the span of $u\opt$ and its
+  complement
+  \begin{equation*}
+    X = W +  Z u^\star  ,
+    ~~~\mbox{where}~~~
+    W \perp\!\!\!\!\perp Z  , ~~
+    \<W,u\opt\> = 0  ,
+    ~ \Ep[W] = 0  ,
+    ~ \Ep[Z] = 0  .
+    %\label{eqn:X-distribution}
+  \end{equation*}
+\end{assumption}
+%Under Assumptions~\ref{assumption:x-decomposition}, we characterize the limiting
+%behavior of the majority vote and non-aggregated models,
+We adopt \citeauthor{MammenTs99}'s
+measurement~\citep{MammenTs99} of classification difficulty through the gap
+$\Prb(Y = 1 \mid X = x) - 1/2$:
+%
+for a \emph{noise exponent} $\beta \in (0, \infty)$, we
+consider the condition
+\begin{equation}
+  \label{eqn:mammen-tsybakov}
+  \Prb ( | \Prb(Y = 1 \mid X) - 1/2| \leq \epsilon )
+  = O(\epsilon^\beta)  .
+  \tag{$\textsc{M}_\beta$}
+\end{equation}
+As $\beta \uparrow \infty$ examples are less likely to have small margin,
+and the limit $\beta=\infty$ gives the hard margin $|\P(Y = 1 \mid X) -
+\half| \ge \epsilon$ for  small $\epsilon$.
+%
+Under the independent decomposition
+Assumption~\ref{assumption:x-decomposition}, the noise
+condition~\eqref{eqn:mammen-tsybakov} solely depends on the covariate's
+projection onto the signal $Z$, motivating the following assumption on $Z$.
+\begin{assumption}
+  \label{assumption:z-density}
+  For a given $\beta > 0$, the signal variable
+  $Z$ is \emph{$(\beta, c_Z)$-regular}, meaning
+  that the absolute value $|Z|$ has density $p(z)$ on $(0, \infty)$, no
+  point mass at $0$, and satisfies
+  \begin{align*}
+    \sup_{z \in (0, \infty)} z^{1 - \beta} p(z) < \infty,
+    \qquad \lim_{z \to 0}z^{1 - \beta} p(z) = c_Z \in (0, \infty).
+  \end{align*}
+\end{assumption}
+\noindent
+Concretely, when the features $X$ are isotropic Gaussian, $Z
+\sim \normal(0, 1)$ and $\beta=1$.
+
+For a link $\sigma$ differentiable at $0$ with
+$\sigma'(0) > 0$, we have $\Prb_\sigma(Y = 1 \mid Z = z) = \sigma(t\opt z) =
+\half + \sigma'(0) t\opt z + o(t\opt z)$, so the Mammen-Tsybakov noise
+condition~\eqref{eqn:mammen-tsybakov} is equivalent to
+\begin{align*}
+  \Prb \left( \left|t^\star Z \right| \leq \epsilon \right) = O(\epsilon^\beta).
+\end{align*}
+Thus,
+under Assumption~\ref{assumption:z-density},
+condition~\eqref{eqn:mammen-tsybakov} holds, as
+by dominated convergence%% we have
+\begin{align*}
+  \Prb\left(|t\opt Z| \le \epsilon\right)
+  = \int_0^{\epsilon/t\opt} p(z) dz
+  = \int_0^{\epsilon/t\opt} c_Z(1 + o_\epsilon(1)) z^{\beta - 1} dz
+  = \frac{c_Z}{\beta} \epsilon^\beta \cdot (1 + o_\epsilon(1)).
+\end{align*}
+%%   \Prb \left( \left|t^\star Z \right| \leq \epsilon \right) = \int_0^{\frac{\epsilon}{t^\star}} p(z) dz \leq \sup_{z \in (0, \infty)} z^{1 - \beta} p(z) \cdot \int_0^{\frac{\epsilon}{t^\star}} z^{\beta - 1} dz \leq \frac{\sup_{z \in (0, \infty)} z^{1 - \beta} p(z)}{{t^\star}^\beta \beta} \cdot \epsilon^\beta.
+%% \end{align*}
+We provide extensions of
+Corollaries~\ref{cor:lowd-maximum-likelihood-Gaussian}
+and~\ref{cor:lowd-majority-vote-m} in the more general cases the noise
+exponent $\beta$ allows.
+%
+The maximum likelihood estimator retains its convergence guarantees in this
+setting, and we can generalize the final claim of
+Corollary~\ref{cor:lowd-maximum-likelihood-Gaussian} (see
+Appendix~\ref{proof:lowd-maximum-likelihood} for a proof):
+
+%% We investigate the non-aggregated MLE estimator and the majority-vote
+%% estimator under general distribution assumptions with noise exponent
+%% $\beta$.
+
+\begin{proposition}
+  \label{prop:lowd-maximum-likelihood}
+  Let Assumptions~\ref{assumption:x-decomposition} and
+  \ref{assumption:z-density} hold for some $\beta  > 0$ and
+  $t\opt = \ltwos{\theta\opt}$. Let $L\lr(\theta) = \Ep[
+    \ell_\theta\lr(Y \mid X)]$ be the population loss.
+  %
+  Then maximum likelihood estimator~\eqref{eq:maximum-likelihood} satisfies
+  \begin{equation*}
+    \sqrt{n} \left(\what{\theta}\lr_{n,m} - \theta\opt\right)
+    \cd \normal(0, m^{-1}\nabla^2 L\lr(\theta\opt)^{-1})  . %\label{eq:mle-normality-theta}
+  \end{equation*}
+  Moreover,
+  \begin{equation*}
+    \sqrt{n}\left(\what{u}\lr_{n,m} - u\opt\right)
+    \cd \normal\left(0, m^{-1} \cdot (t\opt)^{-2} \proj_{u\opt}^\perp
+    \nabla^2 \poploss\lr(\theta\opt)^{-1} \proj_{u\opt}^\perp\right), %\label{eq:mle-normality-u}
+  \end{equation*}
+  and there exist $C(t)$ and constant $b > 0$ such that
+  $C(t) = \frac{b}{ t^{2 - \beta}}(1 + o_t(1))$ and 
+  \begin{equation*}
+    \sqrt{n} \left(\what{u}\lr_{n,m} - u\opt\right)
+    \cd \normal\left(0, m^{-1} \cdot C(t\opt) \prn{\proj_{u\opt}^\perp \Sigma \proj_{u\opt}^\perp}^\dagger \right).  %\label{eq:mle-normality}
+  \end{equation*}
+\end{proposition}
+
+For majority-vote aggregation, we can generalize
+Corollary~\ref{cor:lowd-majority-vote-m} to have
+$t_m \asymp \sqrt{m}$, but now
+the noise exponent $\beta$ determines the convergence rate
+(see Appendix~\ref{proof:lowd-majority-vote-m-noise} for a proof):
+
+\begin{proposition} \label{prop:lowd-majority-vote-m-noise}
+  Let Assumptions~\ref{assumption:x-decomposition} and
+  \ref{assumption:z-density} hold for some $\beta \in (0, \infty)$
+  and $t\opt =
+  \ltwos{\theta\opt}$.
+  %
+  Let $h = h_m$ be the
+  function~\eqref{eqn:h-centering} with signal covariate $Z$ defined in
+  Assumption~\ref{assumption:x-decomposition}.
+  %
+  Then there are constants $a, b > 0$, depending only on $\beta$ and $c_Z$,
+  such that the following hold: there is a unique $t_m \geq t_1 = t^\star$
+  solving $h(t_m) = 0$ and for this $t_m$ we have both
+	\begin{equation*}
+		\what{\theta}\mv_{n,m} \cp t_m u\opt
+		~~ \mbox{and} ~~
+		\lim_{m \to \infty} \frac{t_m}{t\opt \sqrt{m}} = a.
+	\end{equation*}
+	Moreover,
+	there exists a function
+	$C_m(t) = \frac{b}{(t \sqrt m)^{2 - \beta}}(1 + o_m(1))$
+	as $m \to \infty$ such that
+	\begin{align*}
+		\sqrt{n} \left(\what{u}\mv_{n,m} - u^\star \right)
+		&\cd \normal\left(0, C_m(t\opt) \prn{\proj_{u\opt} \Sigma \proj_{u\opt}}^\dagger\right).
+	\end{align*}
+\end{proposition}
+
+Paralleling the discussion in Section~\ref{sec:gauss}, we may compare the
+performance of the MLE $\what{\theta}\lr_{n,m}$ and
+the majority-vote estimator $\what{\theta}\mv_{n,m}$.
+%
+When the classification problem is hard---meaning that
+$\beta$ in Condition~\eqref{eqn:mammen-tsybakov} is near 0%% so that
+%%that classifying most examples is nearly random chance
+---the aggregation in the majority vote estimator still allows
+convergence (nearly) as quickly as the non-aggregated estimator; the
+problem is so noisy that data ``cleaning'' by aggregation is helpful.
+For easier problems, where $\beta \gg 0$, the gap between them
+grows; this is sensible, as aggregation is likely to
+force a dataset to be separable, thus making fitting methods
+unstable (a minimizer may even fail to exist). 
+
+%% Then we see that $\what{\theta}\mv_{n,m}$ is always not calibrated where
+%% $\what{\theta}\mv_{n,m} \to \Theta(\sqrt{m} \theta\opt)$ regardless of the
+%% noise exponent, while the MLE estimator is calibrated. In terms of
+%% classification, the majority-vote estimator also exhibits worse convergence
+%% rates $\frac{O(1)}{\sqrt{n m^{1 - \frac{1}{2} \beta}}}$ in
+%% Theorem~\ref{thm:lowd-majority-vote-m-noise} comparing to
+%% $\frac{O(1)}{\sqrt{nm}}$ in Theorem~\ref{thm:lowd-maximum-likelihood}. We
+%% recover our results in Sec.~\ref{sec:non-agg-gauss} by taking $\beta = 1$,
+%% and we also see that for noisier data with smaller $\beta$, the
+%% majority-vote estimator is more effective.
+
+%% \cc{Perhaps discussion about $\beta > 2$? If we don't reviewers might ask}
+
+

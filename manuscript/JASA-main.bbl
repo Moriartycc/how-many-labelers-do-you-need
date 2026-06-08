@@ -1,0 +1,227 @@
+\begin{thebibliography}{33}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Asuncion and Newman(2007)]{AsuncionNe07}
+A.~Asuncion and D.~J. Newman.
+\newblock {UCI} machine learning repository, 2007.
+\newblock URL \url{http://www.ics.uci.edu/~mlearn/MLRepository.html}.
+
+\bibitem[Bartlett et~al.(2006)Bartlett, Jordan, and McAuliffe]{BartlettJoMc06}
+P.~L. Bartlett, M.~I. Jordan, and J.~McAuliffe.
+\newblock Convexity, classification, and risk bounds.
+\newblock \emph{Journal of the American Statistical Association}, 101:\penalty0
+  138--156, 2006.
+
+\bibitem[Beygelzimer et~al.(2021)Beygelzimer, Liang, {Wortman Vaughan}, and
+  Dauphin]{BeygelzimerLiVaDa21}
+A.~Beygelzimer, P.~Liang, J.~{Wortman Vaughan}, and Y.~Dauphin.
+\newblock {NeurIPS} 2021 datasets and benchmarks track.
+
+\bibitem[Bickel et~al.(1998)Bickel, Klaassen, Ritov, and
+  Wellner]{BickelKlRiWe98}
+P.~Bickel, C.~A.~J. Klaassen, Y.~Ritov, and J.~Wellner.
+\newblock \emph{Efficient and Adaptive Estimation for Semiparametric Models}.
+\newblock Springer Verlag, 1998.
+
+\bibitem[Boucheron et~al.(2005)Boucheron, Bousquet, and
+  Lugosi]{BoucheronBoLu05}
+S.~Boucheron, O.~Bousquet, and G.~Lugosi.
+\newblock Theory of classification: a survey of some recent advances.
+\newblock \emph{ESAIM: Probability and Statistics}, 9:\penalty0 323--375, 2005.
+
+\bibitem[Cand\`{e}s and Sur(2019)]{CandesSu19pnas}
+E.~Cand\`{e}s and P.~Sur.
+\newblock A modern maximum-likelihood theory for high-dimensional logistic
+  regression.
+\newblock \emph{Proceedings of the National Academy of Sciences}, 116\penalty0
+  (29):\penalty0 14516--14525, 2019.
+
+\bibitem[Charikar et~al.(2017)Charikar, Steinhardt, and
+  Valiant]{CharikarStVa17}
+M.~Charikar, J.~Steinhardt, and G.~Valiant.
+\newblock Learning from untrusted data.
+\newblock In \emph{Proceedings of the Forty-Ninth Annual ACM Symposium on the
+  Theory of Computing}, 2017.
+
+\bibitem[Codella et~al.(2019)Codella, Rotemberg, Tschandl, Celebi, Dusza,
+  Gutman, Helba, Kalloo, Liopyris, Marchetti, Kittler, and
+  Halpern]{CodellaRoTsCeDuGuHeKaLiMa19}
+N.~Codella, V.~Rotemberg, P.~Tschandl, M.~E. Celebi, S.~Dusza, D.~Gutman,
+  B.~Helba, A.~Kalloo, K.~Liopyris, M.~Marchetti, H.~Kittler, and A.~Halpern.
+\newblock Skin lesion analysis toward melanoma detection 2018: A challenge
+  hosted by the {I}nternational {S}kin {I}maging {C}ollaboration ({ISIC}).
+\newblock \emph{arXiv:1902.03368 [cs.CV]}, 2019.
+
+\bibitem[Dawid and Skene(1979)]{DawidSk79}
+A.~Dawid and A.~Skene.
+\newblock Maximum likelihood estimation of observer error-rates using the {EM}
+  algorithm.
+\newblock \emph{Journal of the Royal Statistical Society}, 28:\penalty0 20--28,
+  1979.
+
+\bibitem[Deng et~al.(2009)Deng, Dong, Socher, Li, Li, and
+  Fei-Fei]{DengDoSoLiLiFe09}
+J.~Deng, W.~Dong, R.~Socher, L.~Li, K.~Li, and L.~Fei-Fei.
+\newblock Image{N}et: a large-scale hierarchical image database.
+\newblock In \emph{Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition}, pages 248--255, 2009.
+
+\bibitem[Donoho(2017)]{Donoho17}
+D.~L. Donoho.
+\newblock 50 years of data science.
+\newblock \emph{Journal of Computational and Graphical Statistics}, 26\penalty0
+  (4):\penalty0 745--766, 2017.
+
+\bibitem[Gadre et~al.(2023)Gadre, Ilharco, Fang, Hayase, Smyrnis, Nguyen,
+  Marten, Wortsman, Ghosh, Zhang, Orgad, Entezari, Daras, Pratt, Ramanujan,
+  Bitton, Marathe, Mussmann, Vencu, Cherti, Krishna, Koh, Saukh, Ratner, Song,
+  Hajishirzi, Farhadi, Beaumont, Oh, Dimakis, Jitsev, Carmon, Shankar, and
+  Schmidt]{GadreEtAl23}
+S.~Y. Gadre, G.~Ilharco, A.~Fang, J.~Hayase, G.~Smyrnis, T.~Nguyen, R.~Marten,
+  M.~Wortsman, D.~Ghosh, J.~Zhang, E.~Orgad, R.~Entezari, G.~Daras, S.~Pratt,
+  V.~Ramanujan, Y.~Bitton, K.~Marathe, S.~Mussmann, R.~Vencu, M.~Cherti,
+  R.~Krishna, P.~W. Koh, O.~Saukh, A.~Ratner, S.~Song, H.~Hajishirzi,
+  A.~Farhadi, R.~Beaumont, S.~Oh, A.~Dimakis, J.~Jitsev, Y.~Carmon, V.~Shankar,
+  and L.~Schmidt.
+\newblock {DataComp}: In search of the next generation of multimodal datasets.
+\newblock In \emph{Advances in Neural Information Processing Systems 36}, 2023.
+
+\bibitem[Goodfellow et~al.(2015)Goodfellow, Shlens, and
+  Szegedy]{GoodfellowShSz15}
+I.~J. Goodfellow, J.~Shlens, and C.~Szegedy.
+\newblock Explaining and harnessing adversarial examples.
+\newblock In \emph{Proceedings of the Third International Conference on
+  Learning Representations}, 2015.
+
+\bibitem[Hardt and Recht(2022)]{HardtRe22}
+M.~Hardt and B.~Recht.
+\newblock \emph{Patterns, Predictions, and Actions: A story about machine
+  learning}.
+\newblock Princeton University Press, 2022.
+\newblock Available at \url{https://mlstory.org/}.
+
+\bibitem[Hastie et~al.(2009)Hastie, Tibshirani, and Friedman]{HastieTiFr09}
+T.~Hastie, R.~Tibshirani, and J.~Friedman.
+\newblock \emph{The Elements of Statistical Learning}.
+\newblock Springer, second edition, 2009.
+
+\bibitem[He et~al.(2016)He, Zhang, Ren, and Sun]{HeZhReSu16}
+K.~He, X.~Zhang, S.~Ren, and J.~Sun.
+\newblock Deep residual learning for image recognition.
+\newblock In \emph{Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition}, pages 770--778, 2016.
+
+\bibitem[Karger et~al.(2014)Karger, Oh, and Shah]{KargerOhSh14}
+D.~Karger, S.~Oh, and D.~Shah.
+\newblock Budget-optimal task allocation for reliable crowdsourcing systems.
+\newblock \emph{Operations Research}, 62\penalty0 (1):\penalty0 1--24, 2014.
+
+\bibitem[Krizhevsky and Hinton(2009)]{KrizhevskyHi09}
+A.~Krizhevsky and G.~Hinton.
+\newblock Learning multiple layers of features from tiny images.
+\newblock Technical report, University of Toronto, 2009.
+
+\bibitem[{Le Cam} and Yang(2000)]{LeCamYa00}
+L.~{Le Cam} and G.~L. Yang.
+\newblock \emph{Asymptotics in Statistics: Some Basic Concepts}.
+\newblock Springer, 2000.
+
+\bibitem[Lewis et~al.(2004)Lewis, Yang, Rose, and Li]{LewisYaRoLi04}
+D.~Lewis, Y.~Yang, T.~Rose, and F.~Li.
+\newblock {RCV}1: A new benchmark collection for text categorization research.
+\newblock \emph{Journal of Machine Learning Research}, 5:\penalty0 361--397,
+  2004.
+
+\bibitem[Mammen and Tsybakov(1999)]{MammenTs99}
+E.~Mammen and A.~B. Tsybakov.
+\newblock Smooth discrimination analysis.
+\newblock \emph{Annals of Statistics}, 27:\penalty0 1808--1829, 1999.
+
+\bibitem[Marcus et~al.(1994)Marcus, Santorini, and Marcinkiewicz]{MarcusSaMa94}
+M.~P. Marcus, B.~Santorini, and M.~A. Marcinkiewicz.
+\newblock Building a large annotated corpus of {E}nglish: the {P}enn
+  {T}reebank.
+\newblock \emph{Computational Linguistics}, 19:\penalty0 313--330, 1994.
+
+\bibitem[Peterson et~al.(2019)Peterson, Battleday, Griffiths, and
+  Russakovsky]{PetersonBaGrRu19}
+J.~C. Peterson, R.~M. Battleday, T.~L. Griffiths, and O.~Russakovsky.
+\newblock Human uncertainty makes classification more robust.
+\newblock In \emph{Proceedings of the IEEE/CVF International Conference on
+  Computer Vision}, pages 9617--9626, 2019.
+
+\bibitem[Platanios et~al.(2020)Platanios, Al-Shedivat, Xing, and
+  Mitchell]{PlataniosAlXiMi20}
+E.~A. Platanios, M.~Al-Shedivat, E.~Xing, and T.~Mitchell.
+\newblock Learning from imperfect annotations.
+\newblock \emph{arXiv:2004.03473 [cs.LG]}, 2020.
+
+\bibitem[Radford et~al.(2021)Radford, Kim, Hallacy, Ramesh, Goh, Agarwal,
+  Sastry, Askell, Mishkin, Clark, Krueger, and
+  Sutskever]{RadfordKiHaRaGoAgSaAsMiClKrSu21}
+A.~Radford, J.~W. Kim, C.~Hallacy, A.~Ramesh, G.~Goh, S.~Agarwal, G.~Sastry,
+  A.~Askell, P.~Mishkin, J.~Clark, G.~Krueger, and I.~Sutskever.
+\newblock Learning transferable visual models from natural language
+  supervision.
+\newblock In \emph{Proceedings of the 38th International Conference on Machine
+  Learning}, 2021.
+
+\bibitem[Ratner et~al.(2017)Ratner, Bach, Ehrenberg, Fries, Wu, and
+  R\'{e}]{RatnerBaEhFrWuRe17}
+A.~Ratner, S.~H. Bach, H.~Ehrenberg, J.~Fries, S.~Wu, and C.~R\'{e}.
+\newblock Snorkel: rapid training data creation with weak supervision.
+\newblock \emph{Proceedings of the VLDB Endowment}, 11\penalty0 (3):\penalty0
+  269--282, 2017.
+
+\bibitem[Russakovsky et~al.(2015)Russakovsky, Deng, Su, Krause, Satheesh, Ma,
+  Huang, Karpathy, Khosla, Bernstein, Berg, and
+  Fei-Fei]{RussakovskyDeSuKrSaMaHuKaKhBeBeFe15}
+O.~Russakovsky, J.~Deng, H.~Su, J.~Krause, S.~Satheesh, S.~Ma, Z.~Huang,
+  A.~Karpathy, A.~Khosla, M.~Bernstein, A.~C. Berg, and L.~Fei-Fei.
+\newblock Image{N}et large scale visual recognition challenge.
+\newblock \emph{International Journal of Computer Vision}, 115\penalty0
+  (3):\penalty0 211--252, 2015.
+
+\bibitem[Ustalov et~al.(2024)Ustalov, Pavlichenko, and Tseitlin]{UstalovPaTs24}
+D.~Ustalov, N.~Pavlichenko, and B.~Tseitlin.
+\newblock Learning from crowds with crowd-kit.
+\newblock \emph{Journal of Open Source Software}, 9\penalty0 (96):\penalty0
+  6227, 2024.
+
+\bibitem[van~der Vaart(1998)]{VanDerVaart98}
+A.~W. van~der Vaart.
+\newblock \emph{Asymptotic Statistics}.
+\newblock Cambridge Series in Statistical and Probabilistic Mathematics.
+  Cambridge University Press, 1998.
+
+\bibitem[van~der Vaart and Wellner(1996)]{VanDerVaartWe96}
+A.~W. van~der Vaart and J.~A. Wellner.
+\newblock \emph{Weak Convergence and Empirical Processes: With Applications to
+  Statistics}.
+\newblock Springer, New York, 1996.
+
+\bibitem[Vapnik(1995)]{Vapnik95}
+V.~Vapnik.
+\newblock \emph{The Nature of Statistical Learning Theory}.
+\newblock Springer, 1995.
+
+\bibitem[Welinder et~al.(2010)Welinder, Branson, Perona, and
+  Belongie]{WelinderBrPeBe10}
+P.~Welinder, S.~Branson, P.~Perona, and S.~Belongie.
+\newblock The multidimensional wisdom of crowds.
+\newblock In \emph{Advances in Neural Information Processing Systems 23}, pages
+  2424--2432, 2010.
+
+\bibitem[Whitehill et~al.(2009)Whitehill, Wu, Bergsma, Movellan, and
+  Ruvolo]{WhitehillWuBeMoRu09}
+J.~Whitehill, T.~Wu, J.~Bergsma, J.~Movellan, and P.~Ruvolo.
+\newblock Whose vote should count more: Optimal integration of labels from
+  labelers of unknown expertise.
+\newblock \emph{Advances in Neural Information Processing Systems 22},
+  22:\penalty0 2035--2043, 2009.
+
+\end{thebibliography}

@@ -1,0 +1,62 @@
+\section{Proof of Theorem~\ref{theorem:majority-vote-asymptotics}}
+\label{sec:proof-majority-vote-asymptotics}
+
+As in the proof of Theorem~\ref{theorem:multilabel-asymptotics}, we begin
+with a consistency result. Let $t_m$ be the solution to $h_{t\opt, m}(t) =
+0$ as in Lemma~\ref{lemma:generic-solutions}.
+The once again, \citet[Thm.~5.4]{ShapiroDeRu09}
+shows that $\what{\theta}_n \cas \theta\opt_L$.
+As previously, appealing to standard
+M-estimator theory~\cite[e.g.][Thm.~5.23]{VanDerVaart98},
+we obtain
+\begin{equation}
+	\label{eqn:vote-basic-asymptote}
+	\sqrt{n} \big(\what{\theta}_n - \theta\opt_L\big)
+	\cd \normal\left(0, \nabla^2 L(\theta\opt_L, \sigma)^{-1}
+	\cov \left(\nabla \loss_{\sigma,\theta\opt_L}(\majY \mid X)\right)
+	\nabla^2 L(\theta\opt_L, \sigma)^{-1} \right),
+\end{equation}
+the difference from the asymptotic~\eqref{eqn:multilabel-basic-asymptote}
+appearing in the covariance term.
+Here, we recognize that conditional on $X = Z u\opt + W$, the vector
+$\nabla \loss_{\sigma,\theta\opt_L}(\majY \mid X)$
+takes on the values
+$\{-\sigma(-t_m Z) X, \sigma(t_m Z) X\}$ each with probabilities
+$\varphi_m(t\opt Z)$ and $1 - \varphi_m(t\opt Z)$, respectively,
+while $\nabla \loss_{\sigma,\theta\opt_L}(\majY \mid X)$ is (unconditionally)
+mean zero.
+Thus
+we have
+\begin{align*}
+	\cov \left(\nabla \loss_{\sigma,\theta\opt_L}(\majY \mid X)\right)
+	& = \E\left[\sigma(-t_m Z)^2 \varphi_m(t\opt Z) XX^\top
+	+ \sigma(t_m Z)^2 (1 - \varphi_m(t\opt Z)) XX^\top\right] \\
+	& = \E\left[\left(\sigma(- t_m Z)^2 \varphi_m(t\opt Z)
+	+ \sigma(t_m Z)^2 (1 - \varphi_m(t\opt Z))\right) Z^2\right]
+	u\opt{u\opt}^\top \\
+	& \qquad ~ +
+	\E\left[\sigma(- t_m Z)^2 \varphi_m(t\opt Z)
+	+ \sigma(t_m Z)^2 (1 - \varphi_m(t\opt Z))\right]
+	\projperp \Sigma \projperp.
+\end{align*}
+
+Applying Lemma~\ref{lem:Sigma-inverse}
+as in the proof of Theorem~\ref{theorem:multilabel-asymptotics}
+to  decompose the covariance
+terms in the asymptotic~\eqref{eqn:vote-basic-asymptote}, and substituting in $\rho_m(t) = \sigma(t) \ind \{t \geq 0\} + (1- \sigma(t)) \ind \{t < 0\}$,
+the limiting covariance in expression~\eqref{eqn:vote-basic-asymptote}
+becomes
+\begin{align*}
+  & \frac{\E[(\sigma(-t_m |Z|)^2 \rho_m(t\opt Z) + \sigma(t_m |Z|)^2
+      (1 - \rho_m(t\opt Z))) Z^2]}{
+    \E[\hessfunc(Z) Z^2]^2}
+  u\opt {u\opt}^\top \\
+  & \qquad ~ + 
+  \frac{\E[\sigma(-t_m |Z|)^2 \rho_m(t\opt Z) + \sigma(t_m |Z|)^2
+      (1 - \rho_m(t\opt Z))]}{
+    \E[\hessfunc(Z)]^2}
+  \prn{\projperp \Sigma \projperp}^\dagger.
+\end{align*}
+Lastly, we apply the delta method to $\phi(x) = x / \ltwo{x}$,
+exactly as in the proof of Theorem~\ref{theorem:multilabel-asymptotics},
+which gives the theorem.

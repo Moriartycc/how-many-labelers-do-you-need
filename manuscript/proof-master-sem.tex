@@ -1,0 +1,726 @@
+\section{Proof of Theorem~\ref{theorem:semiparametric-master}}
+\label{proof:semiparametric-master}
+
+We divide the theorem into two main parts, consistent with the typical
+division of asymptotic normality results into a consistency result and a
+distributional result. Recall the notation $L(\theta,
+\vec{\sigma}) = \E[\loss_{\vec{\sigma},\theta}(Y \mid X)]$
+and
+$\LtwoP{\vec{\sigma} - \vec{g}}^2
+= \E[\ltwo{\vec{\sigma}(Z) - \vec{g}(Z)}^2]$,
+where $Z$ has the distribution
+that Assumption~\ref{assumption:x-decomposition} specifies.
+
+\subsection{Proof of consistency}
+
+We demonstrate the consistency $\spe \cp u\opt$ in three parts, which we
+present as Lemmas~\ref{lemma:super-generic-solutions},
+\ref{lemma:vec-sigma-theta-continuity}, and
+\ref{lemma:vec-sigma-probability}. The first presents an analogue of
+Lemma~\ref{lemma:generic-solutions} generalized to the case in
+which there are $m$ distinct link functions, allowing us to characterize
+the link-dependent minimizers
+\begin{equation*}
+  \theta\opt_{\vec{\sigma}} \defeq \argmin_\theta L(\theta, \vec{\sigma})
+\end{equation*}
+via a one-dimensional scalar on the line $\{t u\opt \mid t \in \R_+\}$.  The
+second, Lemma~\ref{lemma:vec-sigma-theta-continuity}, then shows that
+$\theta\opt_{\vec{\sigma}} \to u\opt$ as $\vec{\sigma}$ approaches
+$\vec{\sigma}\opt$, where the scaling that
+$\ltwos{\theta\opt_{\vec{\sigma}}} \to 1$ follows by the normalization
+Assumption~\ref{assumption:sp-general}.
+Finally, the third lemma
+demonstrates the probabilistic convergence $\spe -
+\theta\opt_{\vec{\sigma}_n} \cp 0$ whenever $\vec{\sigma}_n \cp
+\vec{\sigma}\opt$ in $L^2(P)$.
+
+We begin with the promised analogue of
+Lemma~\ref{lemma:generic-solutions}.
+\begin{lemma}
+  \label{lemma:super-generic-solutions}
+  Define the calibration gap function
+  \begin{equation}
+    \label{eqn:general-h-m-func}
+    h_{\vec{\sigma}}(t)
+    \defeq \frac{1}{m} \sum_{j = 1}^m
+    \E\left[\left(\sigma_j(tZ) - \sigma_j\opt(Z)\right) Z\right].
+  \end{equation}
+  Then the loss $L(\theta, \vec{\sigma})$ has unique
+  minimizer $\theta\opt_{\vec{\sigma}} = t_{\vec{\sigma}} u\opt$ for the
+  unique $t_{\vec{\sigma}} \in (0, \infty)$ solving
+  $h_{\vec{\sigma}}(t) = 0$. Additionally,
+  taking
+  $\hessfunc_j(t, z) \defeq
+  \sigma_j'(-tz) \sigma_j\opt(z) + \sigma_j'(tz) \sigma_j\opt(-z)$,
+  we have
+  \begin{equation*}
+    \nabla^2 L(t u\opt, \vec{\sigma})
+    = \frac{1}{m} \sum_{j = 1}^m \left(
+    \E[\hessfunc_j(t, Z) Z^2] u\opt {u\opt}^\top
+    + \E[\hessfunc_j(t, Z)] \projperp \Sigma \projperp \right)
+    \succ 0.
+  \end{equation*}
+\end{lemma}
+\begin{proof}
+	We perform a derivation similar to that we used
+	to derive the gap function~\eqref{eqn:h-m-func}, with a few
+	modifications to allow collections of $m$ link functions.
+	Note that
+	\begin{align*}
+		L(\theta, \vec{\sigma})
+		& = \frac{1}{m} \sum_{j = 1}^m
+		\E[\loss_{\sigma_j, \theta}(1 \mid X) \sigma\opt_j(\<X, u\opt\>)
+		+ \loss_{\sigma_j,\theta}(-1 \mid X) \sigma\opt_j(-\<X, u\opt\>)],
+	\end{align*}
+	so that leveraging the usual ansatz that $\theta = t u\opt$, we have
+	\begin{align*}
+		\nabla L(\theta, \vec{\sigma})
+		& = \E\left[\frac{1}{m}
+		\sum_{j = 1}^m \left(\sigma\opt_j(-\<X, u\opt\>) \sigma_j(\<\theta, X\>)
+		- \sigma\opt_j(\<X, u\opt\>) \sigma_j(-\<\theta, X\>)\right) X \right] \\
+		& = \frac{1}{m} \sum_{j = 1}^m
+		\E\left[\left(\sigma_j\opt(-Z) \sigma_j(t Z)
+		- \sigma_j\opt(Z) \sigma_j(-tZ) Z\right)\right] u\opt \\
+		& = h_{\vec{\sigma}}(t) u\opt,
+	\end{align*}
+	where $h_{\vec{\sigma}}(t) = \frac{1}{m} \sum_{j = 1}^m
+	\E[(\sigma_j\opt(-Z) \sigma_j(tZ) - \sigma_j\opt(Z) \sigma_j(-tZ)) Z]$ is
+	the immediate generalization of the gap~\eqref{eqn:h-m-func}. We
+	now simplify it to the form~\eqref{eqn:general-h-m-func}. Using the
+	symmetries $\sigma\opt(z) = 1 - \sigma\opt(-z)$ and $\sigma(z) = 1 -
+	\sigma(-z)$ for any $\sigma, \sigma\opt \in \Flink$, we observe that
+	\begin{equation*}
+		\sigma(tz) (1 - \sigma\opt(z))
+		- \sigma(-tz) \sigma\opt(z)
+		= \sigma(tz) - (\sigma(tz) + \sigma(-tz)) \sigma\opt(z)
+		= \sigma(tz) - \sigma\opt(z),
+	\end{equation*}
+	and so
+	$h_{\vec{\sigma}}(t) = \frac{1}{m} \sum_{j = 1}^m\E[(\sigma_j(tZ) -
+	\sigma_j\opt(Z))Z]$.
+	Of course, $h_{\vec{\sigma}}(0) = -\frac{1}{m}
+	\sum_{j = 1}^m \E[\sigma_j\opt(Z) Z] < 0$, as $\E[Z] = 0$, while
+	$\lim_{t \to \infty} h_{\vec{\sigma}}(t) =
+	\frac{1}{m} \sum_{j = 1}^m \E[|Z| - \sigma_j\opt(Z) Z] > 0$.
+	Then as $h_{\vec{\sigma}}'(t) =
+	\frac{1}{m} \sum_{j = 1}^m \E[\sigma_j'(tZ) Z^2] > 0$, there
+	exists a unique $t_{\vec{\sigma}} \in (0, \infty)$ satisfying
+	$h_{\vec{\sigma}}(t_{\vec{\sigma}}) = 0$.
+	
+	We turn to the Hessian derivation, where as in the proof of
+	Lemma~\ref{lemma:generic-solutions}, we
+	write for $\theta = tu\opt$ that
+	\begin{align*}
+		\nabla^2 L(\theta, \vec{\sigma})
+		& = \frac{1}{m} \sum_{j = 1}^m \E\left[
+		(\sigma_j'(-t Z) \sigma\opt_j(Z)
+		+ \sigma_j'(tZ) \sigma\opt_j(-Z)) Z^2\right] u\opt{u\opt}^\top \\
+		& \qquad ~ +
+		\frac{1}{m} \sum_{j = 1}^m \E\left[
+		(\sigma_j'(-t Z) \sigma\opt_j(Z)
+		+ \sigma_j'(tZ) \sigma\opt_j(-Z))\right] \projperp \Sigma
+		\projperp,
+	\end{align*}
+	and so $\nabla^2 L(\theta, \vec{\sigma}) \succ 0$ and $L(\theta,
+	\vec{\sigma})$ has unique minimizer $\theta_{\vec{\sigma}}\opt =
+	t_{\vec{\sigma}} u\opt$.
+\end{proof}
+
+With Lemma~\ref{lemma:super-generic-solutions} serving as the analogue
+of Lemma~\ref{lemma:generic-solutions}, we can now show
+the continuity of the optimizing parameter $\theta\opt_{\vec{\sigma}}$
+in $\vec{\sigma}$:
+\begin{lemma}
+	\label{lemma:vec-sigma-theta-continuity}
+	As $\LtwoP{\vec{\sigma} - \vec{\sigma}\opt} \to 0$,
+	we have $\theta\opt_{\vec{\sigma}} - u\opt \to 0$.
+\end{lemma}
+\begin{proof}
+	Via Lemma~\ref{lemma:super-generic-solutions}, it is evidently
+	sufficient to show that the solution $t_{\vec{\sigma}}$ to
+	$h_{\vec{\sigma}}(t) = 0$ converges to $1$.
+	To show this,
+	note the expansion
+	\begin{equation}
+		\label{eqn:expand-h-m}
+		m h_{\vec{\sigma}}(t) =
+		\sum_{j = 1}^m \left(\E[(\sigma_j(tZ) - \sigma_j\opt(tZ)) Z]
+		+ \E[(\sigma_j\opt(tZ) - \sigma_j\opt(Z))Z]
+		\right).
+	\end{equation}
+	We use the following claim, which shows that
+	the first term tends to 0 uniformly in $t$ near $1$:
+	\begin{claim}
+		\label{claim:taco}
+		For any $\sigma, \sigma\opt \in \Flink$, we have
+		$\sup_{t \in [\half,2]} \LtwoP{\sigma(tZ) - \sigma\opt(tZ)}
+		\to 0$ whenever $\LtwoP{\sigma\opt - \sigma} \to 0$.
+	\end{claim}
+	\begin{proof}
+		We use that the density $p(z)$ of $|Z|$ is continuous
+		and nonzero on $(0, \infty)$. Take any $0 < M_0 < M_1 < \infty$.
+		Then
+		\begin{align*}
+			\lefteqn{\sup_{t \in [\half, 2]}
+				\LtwoP{\sigma\opt(tZ) - \sigma(tZ)}
+				=  \sup_{t \in [\half, 2]} \sqrt{\int_0^\infty \prn{\sigma\opt(tz) - \sigma(tz)}^2 p(z) dz}} \\
+			& \stackrel{(i)}{\leq}
+			\Prb(|Z| \leq M_0) + \Prb(|Z| \geq M_1) +
+			\sup_{t \in [\half, 2]} \sqrt{\int_{M_0}^{M_1}
+				\prn{\sigma\opt(tz) - \sigma(tz)}^2 p(tz) \cdot
+				\frac{p(z)}{p(tz)} dz} \nonumber \\
+			& \leq \Prb(|Z| \leq M_0) + \Prb(|Z| \geq M_1) + \sup_{
+				\frac{M_0}{2} \le z, z'
+				\le 2 M_1}
+			\sqrt{\frac{p(z)}{p(z')}}
+			\sup_{t \in [\half, 2]} \sqrt{\int_{M_0}^{M_1}
+				\prn{\sigma\opt(tz) - \sigma(tz)}^2 p(tz) dz}  ,
+		\end{align*}
+		where in $(i)$ we use that the link functions $\sigma\opt$ and $\sigma$
+		are bounded within $[0,1]$. For any fixed $0 < M_0 \le M_1 < \infty$,
+		the ratio $\frac{p(z)}{p(z')}$ is bounded
+		for $z, z' \in [\half M_0, 2 M_1]$, and using
+		the substitution $tz \mapsto z$ we have
+		\begin{align*}
+			\sup_{t \in [\half, 2]} \sqrt{
+				\int_{M_0}^{M_1}
+				\prn{\sigma\opt(tz) - \sigma(tz)}^2 p(tz) dz}
+			\leq \sqrt{2} \cdot \LtwoP{\sigma\opt - \sigma}.
+		\end{align*}
+		We thus have that
+		$\LtwoP{\sigma(tZ) - \sigma\opt(tZ)}
+		\le K \LtwoP{\sigma - \sigma\opt}
+		+ \P(|Z| \not \in [M_0, M_1])$,
+		where $K$ depends only on $M_0, M_1$ and the
+		distribution of $Z$.
+		Take $M_0 \downarrow 0$ and $M_1 \uparrow \infty$.
+	\end{proof}
+	
+	Leveraging the expansion~\eqref{eqn:expand-h-m} preceding
+	Claim~\ref{claim:taco} and the claim itself, we see that
+	\begin{equation*}
+		h_{\vec{\sigma}}(t) = \E[Z^2] \cdot o(1) +
+		\frac{1}{m} \sum_{j = 1}^m
+		\E[(\sigma_j\opt(tZ) - \sigma_j\opt(Z))Z]
+	\end{equation*}
+	uniformly in $t \in [\half, 2]$ as $\LtwoP{\vec{\sigma}\opt -
+		\vec{\sigma}} \to 0$. The monotonicity of each $\sigma_j\opt$ guarantees
+	that if $f_j(t) = \E[(\sigma_j\opt(tZ) - \sigma_j\opt(Z))Z]$, then
+	$f'_j(t) = \E[{\sigma_j\opt}'(tZ) Z^2] > 0$, and so $t = 1$ uniquely
+	solves $f_j(t) = 0$ and we must have $t_{\vec{\sigma}} \to 1$ as
+	$\LtwoP{\vec{\sigma} - \vec{\sigma}\opt} \to 0$.
+\end{proof}
+
+Finally, we proceed to the third part of the consistency argument:
+the convergence in probability.
+\begin{lemma}
+	\label{lemma:vec-sigma-probability}
+	If $\LtwoP{\vec{\sigma}_n - \vec{\sigma}} \cp 0$,
+	then $\spe - \theta_{\vec{\sigma}_n}\opt \cp 0$.
+\end{lemma}
+\begin{proof}
+	By Lemma~\ref{lemma:super-generic-solutions}
+	and the assumed continuity of the population Hessian,
+	there exists $\delta > 0$ such that
+	\begin{equation}
+		L(\theta, \vec{\sigma}) \ge L(\theta\opt_{\vec{\sigma}}, \vec{\sigma})
+		+ \frac{\lambda}{2} \ltwo{\theta - \theta\opt_{\vec{\sigma}}}^2
+		\label{eqn:hessian-lb}
+	\end{equation}
+	whenever both $\LtwoP{\vec{\sigma} - \vec{\sigma}\opt} \le \delta$ and
+	$\ltwo{\theta\opt_{\vec{\sigma}} - \theta} \le \delta$. Applying
+	the uniform convergence
+	Lemma~\ref{lemma:rademacher-symmetrization}, we see that
+	for any $r < \infty$, we have
+	\begin{equation*}
+		\sup_{\ltwo{\theta} \le r, \vec{\sigma} \in \Flink^m}
+		|P_n \loss_{\vec{\sigma},\theta} - L(\theta, \vec{\sigma})| \cp 0.
+	\end{equation*}
+	For $\delta > 0$, define the events
+	\begin{equation*}
+		\event_n(\delta) \defeq \left \{
+		\ltwo{\theta\opt_{\vec{\sigma}} - u\opt} \le \delta,
+		\LtwoP{\vec{\sigma}_n - \vec{\sigma}\opt} \le \delta \right\},
+	\end{equation*}
+	where
+	Lemma~\ref{lemma:vec-sigma-theta-continuity}
+	and the assumption that $\LtwoP{\vec{\sigma}_n - \vec{\sigma}\opt}
+	\cp 0$ imply that $\P(\event_n(\delta)) \to 1$ for all $\delta > 0$.
+	By the growth condition~\eqref{eqn:hessian-lb}
+	and uniform convergence
+	$P_n \loss_{\vec{\sigma},\theta} - L(\theta,\vec{\sigma}) \cp 0$
+	over $\ltwo{\theta} \le r$,
+	we therefore have that with probability tending to 1, 
+	\begin{equation*}
+		\inf_{\ltwos{\theta - \theta\opt_{\vec{\sigma}_n}} = \delta}
+		\left\{P_n \loss_{\theta,\vec{\sigma}_n} - P_n \loss_{\theta\opt_{\vec{\sigma}_n},
+			\vec{\sigma}_n} \right\}
+		\ge \frac{\lambda}{4} \delta^2.
+	\end{equation*}
+	The convexity of the losses $\loss_{\theta,\vec{\sigma}}$ in $\theta$ and that
+	$\spe$ minimizes $P_n \loss_{\theta,\vec{\sigma}_n}$ then
+	guarantee the desired convergence $\spe - \theta\opt_{\vec{\sigma}_n} \cp 0$.
+\end{proof}
+
+\subsection{Asymptotic normality via Donsker classes}
+
+\providecommand{\G}{\mathbb{G}}
+
+While we do not have $\LtwoP{\vec{\sigma}_n - \vec{\sigma}\opt} =
+o_P(n^{-1/2})$, which allows the cleanest and simplest asymptotic normality
+results with nuisance parameters
+(e.g.~\cite[Thm.~25.54]{VanDerVaart98}), we still expect
+$\sqrt{n}(\spe - \theta\opt_{\vec{\sigma}_n})$ to be asymptotically
+normal, and therefore, as $\theta\opt_{\vec{\sigma}} = t u\opt$ for some
+$t > 0$, the normalized estimators $\spe / \ltwos{\spe}$
+should be asymptotically normal to $u\opt$.
+To develop the asymptotic normality results, we perform an analysis
+of the empirical process centered at the \emph{estimators}
+$\spe$, rather than the ``true'' parameter $u\opt$ as would
+be typical.
+
+We begin with an expansion. We let $\theta\opt_n =
+\theta\opt_{\vec{\sigma}_n}$ for shorthand.
+Then as $\P_{n,m} \nabla_\theta \ell_{\spe,
+	\vec{\sigma}_n} = 0$ and $\P \nabla_\theta \ell_{\theta\opt_n,
+	\vec{\sigma}_n} = 0$, we can derive
+\begin{align*}
+	\G_{n,m} \nabla_\theta\ell_{\spe, \vec{\sigma}_n} & = \sqrt{n} \prn{\P_{n,m} \nabla_\theta \ell_{\spe, \vec{\sigma}_n} - \P \nabla_\theta \ell_{\spe, \vec{\sigma}_n}} \nonumber \\
+	& = \sqrt{n} \prn{\P \nabla_\theta\ell_{\theta\opt_n, \vec{\sigma}_n} - \P \nabla_\theta\ell_{\spe, \vec{\sigma}_n}} \nonumber \\
+	& = \sqrt{n} \prn{\nabla_\theta \poploss(\theta\opt_n, \vec{\sigma}_n) - \nabla_\theta \poploss (\spe, \vec{\sigma}_n) } \nonumber \\
+	& = \prn{\int_0^1 \nabla_{\theta}^2 \poploss((1-t) \spe + t \theta\opt_n , \vec{\sigma}_n ) d t} \cdot \sqrt{n}(\theta\opt_n - \spe).
+\end{align*}
+The assumed continuity of $\nabla_\theta^2 \poploss(\theta, \vec{\sigma})$
+at $(u\opt, \vec{\sigma}\opt)$ (recall
+Assumption~\ref{assumption:sp-general}) then implies that
+\begin{align}
+	\sqrt{n}(\theta\opt_n - \spe)
+	& = \prn{\int_0^1 \nabla_{\theta}^2 \poploss((1-t) \theta\opt_n + t \spe, \vec{\sigma}_n ) d t}^{-1}
+	\cdot\, \G_{n,m} \nabla_\theta\loss_{\spe, \vec{\sigma}_n} \nonumber \\
+	& =
+	\prn{\nabla_\theta^2 \poploss(u\opt, \vec{\sigma}\opt)  + o_P(1)}^{-1}
+	\cdot \G_{n,m} \nabla_\theta \loss_{\spe, \vec{\sigma}_n},
+	\label{eqn:sp-mle-mid-1}
+\end{align}
+where we have used the consistency guarantees $\theta\opt_n \cp u\opt, \spe
+\cp u\opt$ by Lemmas~\ref{lemma:vec-sigma-theta-continuity}
+and~\ref{lemma:vec-sigma-probability} and that $\LtwoP{\vec{\sigma}_n -
+	\vec{\sigma}} \cp 0$ by assumption.
+
+The expansion~\eqref{eqn:sp-mle-mid-1} forms the basis of our asymptotic
+normality result; while $\spe$ and $\vec{\sigma}_n$ may be data
+dependent, by leveraging uniform central limit theorems and the
+theory of Donsker function classes, we can show that
+$\G_{n,m} \nabla \loss$ has an appropriate normal limit.
+To that end,
+define the
+function classes
+\begin{align*}
+	\mc{F}_{\delta}
+	\defeq \left\{\nabla_\theta \loss_{\theta, \sigma}
+	\mid \ltwo{\theta - u\opt} \leq \delta,
+	\sigma \in \Flink \right\},
+\end{align*}
+where we leave the Lipschitz constant $\lipconst$ in $\Flink$ tacit.
+By Assumption~\ref{assumption:sp-general} and that $\spe \cp u\opt$, we know
+with probability tending to $1$ we have the membership $
+\nabla_\theta\ell_{\spe, \vec{\sigma}_n} \in \mc{F}_\delta$. The key
+result is then that $\mathcal{F}_\delta$ is a Donsker class:
+\begin{lemma}
+  \label{lemma:donsker-sp}
+  Assume that $\Ep [\ltwo{X}^4] < \infty$.  Then $\mc{F}_\delta$ is a
+  Donsker class, and moreover, if $d_{\Flink}((\spe, \vec{\sigma}_n),
+  (u\opt, \vec{\sigma}\opt)) \cp 0$, then
+  \begin{equation*}
+    \G_{n,m} \nabla_\theta\ell_{\spe, \vec{\sigma}_n}
+    - \G_{n,m} \nabla_\theta\ell_{u\opt, \vec{\sigma}\opt} \cp 0.
+  \end{equation*}
+\end{lemma}
+
+Temporarily deferring the proof of Lemma~\ref{lemma:donsker-sp}, let us see
+how it leads to the proof of Theorem~\ref{theorem:semiparametric-master}.
+Using Lemma~\ref{lemma:donsker-sp} and Slutsky's lemmas in the
+equality~\eqref{eqn:sp-mle-mid-1}, we obtain
+\begin{align*}
+	\sqrt{n}(\spe - \theta_n\opt)
+	& = 
+	-\prn{\nabla_\theta^2 \poploss(u\opt, \vec{\sigma}\opt)  + o_P(1)}^{-1}
+	\cdot \G_{n,m} \nabla_\theta \loss_{u\opt, \vec{\sigma}\opt}
+	+ o_P(1) \\
+	& \cd \normal\left(0,
+	\nabla^2 L(u\opt, \vec{\sigma}\opt)
+	\cov\bigg(\frac{1}{m}
+	\sum_{j = 1}^m \nabla \loss_{u\opt, \sigma_j\opt}(Y_j \mid X)\bigg)
+	\nabla^2 L(u\opt, \vec{\sigma}\opt)\right).
+\end{align*}
+Calculations completely similar to those we use in the proof of
+Theorem~\ref{theorem:multilabel-asymptotics} then give
+Theorem~\ref{theorem:semiparametric-master}: because $\P(Y_j = y \mid X = x)
+= \sigma_j\opt(y \<u\opt, x\>)$ by assumption,
+\begin{equation*}
+	\cov\bigg(\frac{1}{m}
+	\sum_{j = 1}^m \nabla \loss_{u\opt, \sigma_j\opt}(Y_j \mid X)\bigg)
+	= \frac{1}{m^2} \sum_{j = 1}^m
+	\cov(\nabla \loss_{u\opt, \sigma_j\opt}(Y_j \mid X))
+\end{equation*}
+because
+$Y_j \mid X$ are conditionally independent, while
+\begin{align*}
+	\cov(\nabla \loss_{u\opt,\sigma_j\opt}(Y_j \mid X))
+	& = \E[\sigma_j\opt(Z)(1 - \sigma_j\opt(Z)) XX^\top] \\
+	& = \E[\sigma_j\opt(Z)(1 - \sigma_j\opt(Z)) Z^2]
+	u\opt{u\opt}^\top
+	+ \E[\sigma_j\opt(Z)(1 - \sigma_j\opt(Z))]
+	\projperp \Sigma \projperp.
+\end{align*}
+When
+$\sigma_j = \sigma_j\opt$, the Hessian function $\hessfunc_j$
+in Lemma~\ref{lemma:super-generic-solutions}
+simplifies to $\hessfunc_j(1, z) = {\sigma_j\opt}'(z)$ as
+$\sigma_j\opt$ is symmetric about 0.
+We then apply the delta method
+as in the proof of Theorem~\ref{theorem:multilabel-asymptotics}.
+
+Finally, we return to the proof of Lemma~\ref{lemma:donsker-sp}.
+
+\paragraph{Proof of Lemma~\ref{lemma:donsker-sp}.}
+
+\newcommand{\ball}{\mathbb{B}}
+\newcommand{\Fflip}{\mc{F}_{\mathsf{flip}}}
+
+To prove $\mathcal{F}_\delta$ is Donsker, we show that each coordinate of
+$\nabla_{\theta} \loss_{\theta, \sigma} \in \mathcal{F}_\delta$ is, and as
+$\nabla_\theta \loss_{\theta, \sigma} (y \mid x) = -y\sigma(-y\<x,
+\theta\>)x$, this amounts to showing the coordinate functions $f_{\theta,
+	\sigma}^{(i)}(v) = v_i\sigma(-\<v, \theta\>)$ form a Donsker class when
+$v$ has distribution $V = YX$. Let
+\begin{align*}
+	\mathcal{F}_\delta^{(i)}
+	& \defeq \left\{ f_{\theta, \sigma}^{(i)}(\cdot) \mid
+	\ltwo{\theta - u\opt} \leq \delta, ~
+	\sigma \in \Flink \right\},
+\end{align*}
+so it is evidently sufficient to prove
+that $\mathcal{F}_\delta^{(1)}$ forms a Donsker class.
+
+We use bracketing and entropy numbers~\cite{VanDerVaartWe96} to control the
+$\mc{F}_\delta^{(i)}$. Recall that for a function class $\mc{F}$, an
+\emph{$\epsilon$-bracket} of $\mc{F}$ in $L^q(\P)$ is a collection of
+functions $\{(l_i, u_i)\}$ such that for each $f \in \mc{F}$, there exists
+$i$ such that $\ell_i \le f \le u_i$ and $\norm{u_i - l_i}_{L^q(\P)} \le
+\epsilon$. The \emph{bracketing number} $N_{[\,]}(\epsilon, \mc{F}, L^q(\P))$
+is the cardinality of the smallest such $\epsilon$-bracket, and
+the \emph{bracketing entropy} is
+\begin{align*}
+	J_{[\,]}(\mc{F}, L^q(\P))
+	\defeq \int_0^\infty
+	\sqrt{\log N_{[\,]}(\epsilon , \mathcal{F}, L^q(\Prb))} d \epsilon.
+\end{align*}
+To show that $\mc{F}_\delta^{(i)}$ is Donsker, it is
+sufficient~\cite[Ch.~2.5.2]{VanDerVaartWe96} to show that
+$J_{[\,]}(\mc{F}_\delta^{(i)}, L^2(\P)) < \infty$.
+%
+Our approach to demonstrate that $\mc{F}_\delta^{(1)}$ is Donsker is thus to
+construct an appropriate $\epsilon$-bracket of $\mc{F}_\delta^{(1)}$, which
+we do
+by first covering $\ell_2$-balls in $\R^d$, then for vectors
+$\theta \in \R^d$, constructing a bracketing of the induced function class
+$\{f_{\theta,\sigma}^{(1)}\}_{\sigma \in \Flink}$, which we combine
+to give the final bracketing of $\mc{F}_\delta^{(1)}$.
+
+We proceed with this two-stage covering and bracketing.
+Let $\epsilon, \gamma > 0$ be small numbers whose values we determine
+later.
+Define the $\ell_2$ ball $\ball_2^d = \{x \in \R^d \mid  \ltwo{x} \le 1\}$,
+and for any $0 < \epsilon < \delta$, let
+$\mc{N}_\epsilon$ be a minimal $\epsilon$-cover of $\delta \ball_2^d$
+in the Euclidean norm
+of size $N = N(\epsilon, \delta \ball_2^d, \ltwo{\cdot})$,
+$\mc{N}_\epsilon = \{\theta_1, \ldots, \theta_N\}$, so that for
+any $\theta$ with $\ltwo{\theta} \le \delta$ there exists
+$\theta_i \in \mc{N}_\epsilon$ with $\ltwo{\theta - \theta_i} \le \epsilon$.
+Standard bounds~\cite[Lemma~5.7]{Wainwright19}) give
+\begin{align}
+	\label{eqn:ball-covering-number}
+	\log N(\epsilon, \delta \ball_2^d, \ltwo{\cdot})
+	\le d \log \prn{1 + \frac{2\delta}{\epsilon}}.
+\end{align}
+For simplicity of notation and to avoid certain tedious negations, we define
+the ``flipped'' monotone function family
+\begin{equation*}
+	\Fflip \defeq \{g : \R \to \R \mid g(t) = \sigma(-t)\}_{
+		\sigma \in \Flink}.
+\end{equation*}
+Now, for any $\theta \in \R^d$, let
+$\mu_\theta$
+denote the pushforward measure of $\<V, \theta\> = Y\<X, \theta\>$.
+For $\theta \in \R^d$, we then let
+$\mathcal{N}_{[\,],\gamma, \theta}$ be a minimal
+$\gamma$-bracketing of
+$\Fflip$
+in the  $L^4(\mu_{\theta})$ norm. That is,
+for $N = N_{[\,]}(\gamma, \Fflip, L^2(\mu_\theta))$, we have
+$\mathcal{N}_{[\,], \gamma, \theta}
+= \{(l_{\theta, i}, u_{\theta, i})\}_{i = 1}^{N}$,
+and for each $\sigma \in \Flink$,
+there exists $i = i(\sigma)$ such that
+\begin{align*}
+	l_{\theta, i}(t) \leq
+	\sigma(-t) \leq
+	u_{\theta, i}(t)
+	~~ \mbox{and} ~~ \norm{u_{\theta, i} - l_{\theta, i}}_{L^4(\mu_{\theta})}
+	\leq \gamma.
+\end{align*}
+Because elements of $\Fflip \subset \R \to [0, 1]$ are monotone,
+\citet[Thm.~2.7.5]{VanDerVaartWe96} guarantee there
+exists a universal constant $K < \infty$ such that
+\begin{align}
+	\label{eqn:monotone-covering-bound}
+	\sup_Q \log N_{[\,]}(\gamma, \Fflip, L^4(Q)) \leq \frac{K}{\gamma},
+\end{align}
+and in particular,
+$\log N_{[\,]}(\gamma, \Fflip, L^4(\mu_\theta)) \le \frac{K}{\gamma}$ for
+each $\theta \in \R^d$.
+
+With the covering $\mc{N}_\epsilon$ and induced bracketing collections
+$\mc{N}_{[\,],\gamma,\theta}$, we now turn to a construction of the
+actual bracketing of the class $\mc{F}_\delta^{(1)}$.
+For any $\theta \in \R^d$ and bracket $(l_{\theta,i},
+u_{\theta, i}) \in \mathcal{N}_{[\,], \gamma, \theta}$, define
+the functionals $\what{l}_{\theta,j}, \what{u}_{\theta,j} : \R^d \to \R$ by
+\begin{align*}
+	\what{l}_{\theta, j}(v)
+	& \defeq \hinge{v_1}
+	\max\left\{l_{\theta,j}(\<v, \theta\>) - \mathsf{L} \ltwo{v} \epsilon,
+	0 \right\}
+	- \hinge{-v_1} \min\left\{u_{\theta, j}(\<v, \theta\>) + \mathsf{L} \ltwo{v} \epsilon, 1
+	\right\}  , \\
+	\what{u}_{\theta, j}(v)
+	& \defeq \hinge{v_1} \min\left\{u_{\theta, j}(\<v, \theta\>)
+	+ \lipconst \ltwo{v} \epsilon, 1 \right\}
+	- \hinge{-v_1} \max\left\{l_{\theta, j}(\<v, \theta\>) -
+	\lipconst \ltwo{v} \epsilon, 0 \right\}.
+\end{align*}
+The key is that these functions form a bracketing
+of $\mc{F}_\delta^{(1)}$:
+\begin{lemma}
+	\label{lemma:bracketing-construction}
+	Define the set
+	\begin{equation*}
+		\mc{B}_{\epsilon,\gamma}
+		\defeq
+		\left\{ \left(\what{l}_{\theta_i, j},
+		\what{u}_{\theta_i, j}\right)
+		\mid
+		\theta_i \in \mc{N}_\epsilon,
+		~ 1 \le j \le N_{[\,]}(\gamma, \Fflip, L^4(\mu_{\theta_i}))\right\}.
+	\end{equation*}
+	Then
+	$\mc{B}_{\epsilon,\gamma}$ is a
+	\begin{equation*}
+		2 \lipconst \E[\ltwo{X}^4]^{1/2} \cdot \epsilon
+		+ \E[\ltwo{X}^4]^{1/4} \cdot \gamma
+	\end{equation*}
+	bracketing
+	of $\mc{F}_\delta^{(1)}$ with cardinality
+	at most
+	$\log \card(\mc{B}_{\epsilon,\gamma})
+	\le \frac{K}{\gamma} + d \log(1 + \frac{\delta}{\epsilon})$.
+\end{lemma}
+\begin{proof}
+	Let $f_{\theta, \sigma}^{(1)}(v) \in \mathcal{F}_\delta^{(1)}$.
+	Take $\theta_i \in \mathcal{N}_{\epsilon}$ satisfying
+	$\ltwo{\theta - \theta_i} \leq \epsilon$ and
+	$(l_{\theta_i, j}, u_{\theta,j}) \in \mc{N}_{[\,], \gamma, \theta_i}$
+	such that $l_{\theta_i, j}(t) \leq  \sigma(-t) \leq u_{\theta_i, j}(t)$
+	for all $t$, where $\norm{u_{\theta_i,j} - l_{\theta_i,j}}_{L^4(\mu_{\theta_i})}
+	\le \gamma$. We first demonstrate the bracketing guarantee
+	\begin{align*}
+		\what{l}_{\theta_i, j}(v)
+		\leq f_{\theta, \sigma}^{(1)}(v) = v_1 \sigma(-\<v, \theta\>)
+		\leq \what{u}_{\theta_i, j}(v)
+		~~ \mbox{for~all~} v \in \R^d.
+	\end{align*}
+	For the upper bound, we have
+	\begin{align*}
+		\lefteqn{f_{\theta, \sigma}^{(1)}(v) = v_1 \sigma(-\<v, \theta\>)}
+		\\
+		& \stackrel{\mathrm{(i)}}{\leq}
+		\hinge{v_1} \min \left\{\sigma(-\<v, \theta_i\>) + \lipconst |\<v, \theta_i - \theta\>|, 1\right\}
+		- \hinge{-v_1} \max \left\{\sigma(-\<v, \theta_i\>) - \lipconst |\<v, \theta_i - \theta\>|, 0\right\} \\
+		& \stackrel{\mathrm{(ii)}}{\leq} \hinge{v_1}
+		\min \left\{\sigma(-\<v, \theta_i\>) + \lipconst \ltwo{v} \epsilon, 1\right\}
+		- \hinge{-v_1} \max \left\{\sigma(-\<v, \theta_i\>) - \lipconst \ltwo{v} \epsilon, 0\right\} \\
+		& \stackrel{\mathrm{(iii)}}{\leq}
+		\hinge{v_1} \min\left\{u_{\theta_i, j}(\<v, \theta_i\>) + \lipconst \ltwo{v} \epsilon, 1 \right\}
+		- \hinge{-v_1} \max\left\{l_{\theta_i, j}(\<v, \theta_i\>) - \lipconst \ltwo{v} \epsilon, 0 \right\} \\
+		& = \what{u}_{\theta_i, j}(v),
+	\end{align*}
+	where step (i) follows from the $\lipconst$-Lipschitz continuity of
+	$\sigma$, (ii) from the Cauchy-Schwarz inequality and
+	that $\ltwo{\theta - \theta_i} \le \epsilon$,
+	while step (iii) follows
+	by the construction that
+	$l_{\theta_i, j}(t) \leq \sigma(-t) \leq u_{\theta_i,
+		j}(t)$ for all $t \in \R$.
+	Similarly, we obtain the lower bound
+	\begin{align*}
+		f_{\theta, \sigma}^{(1)}(v) = v_1 \sigma(-\<v, \theta\>) 
+		\geq \what{l}_{\theta_i, j}(v),
+	\end{align*}
+	again valid for all $v \in \R^d$.
+	
+	The second part of the proof is to bound the distance between the upper
+	and lower elements in the bracketing.  By definition,
+	$\what{u}_{\theta_i, j} - \what{l}_{\theta_i, j}$ has the pointwise
+	upper bound
+	\begin{align*}
+		\prn{\what{u}_{\theta_i, j}(v) - \what{l}_{\theta_i, j}(v)}^2 &\leq \prn{|v_1| \prn{u_{\theta_i, j}(\<v, \theta_i\>) - l_{\theta_i, j}(\<v, \theta_i\>) + 2 \lipconst \ltwo{v} \epsilon }}^2   .
+	\end{align*}
+	Recalling that $V = YX$,
+	by the Minkowski and Cauchy-Schwarz inequalities, we thus obtain
+	\begin{align*}
+		\norm{\what{u}_{\theta_i, j}(V) - \what{l}_{\theta_i, j}(V)}_{L^2(\Prb)} & \leq \norm{|V_1| \prn{u_{\theta_i, j}(\<V, \theta_i\>) - l_{\theta_i, j}(\<V, \theta_i\>)} }_{L^2(\Prb)} + \norm{|V_1| \cdot 2 \lipconst \ltwo{V} \epsilon }_{L^2(\Prb)} \nonumber \\
+		& \leq \norm{|V_1|}_{L^4(\Prb)} \cdot \prn{\norm{u_{\theta_i, j}(\<V, \theta_i\>) - l_{\theta_i, j}(\<V, \theta_i\>)}_{L^4(\Prb)} + 2\lipconst \epsilon \cdot \norm{\ltwo{V}}_{L^4(\Prb)}  }  .
+	\end{align*}
+	Noting the trivial bounds $ \norm{|V_1|}_{L^4(\Prb)} \le
+	\norm{X}_{L^4(\Prb)} < \infty$ and the assumed bracketing distance
+	\begin{align*}
+		\norm{u_{\theta_i, j}(\<V, \theta_i\>) - l_{\theta_i, j}(\<V, \theta_i\>)}_{L^4(\Prb)} 	& = \norm{u_{\theta_i, j} - l_{\theta_i, j}}_{L^4(\mu_{\theta_i})}
+		\le \gamma,
+	\end{align*}
+	we have
+	the desired bracketing
+	distance $\norms{\what{u}_{\theta_i, j} - \what{l}_{\theta_i, j}}_{L^2(\Prb)}
+	\leq 2\lipconst \Ep[\ltwo{X}^4]^{1/2} \epsilon
+	+ \Ep[\ltwo{X}^4]^{1/4} \gamma$.
+	
+	The final cardinality bound is immediate via
+	inequalities~\eqref{eqn:ball-covering-number}
+	and~\eqref{eqn:monotone-covering-bound}.
+\end{proof}
+
+Lemma~\ref{lemma:bracketing-construction} will yield the desired entropy
+integral bound. Fix any $t > 0$, and note that if we take $\epsilon
+=\epsilon(t) \defeq t / (4 \lipconst \E[\ltwo{X}^4]^{1/2})$ and $\gamma =
+\gamma(t) \defeq t / (2 \E[\ltwo{X}^4]^{1/4})$, then the set
+$\mc{B}_{\epsilon, \gamma}$ is a $t$-bracketing of $\mc{F}_\delta^{(1)}$ in
+$L^2$, and moreover, we have the cardinality bound
+\begin{align*}
+	\log N_{[\,]}(t, \mathcal{F}_{\delta}^{(1)} , L^2(\Prb))
+	&
+	\leq d \log \left(1 + \frac{2 \delta}{\epsilon(t)}\right)
+	+ \frac{K}{\gamma(t)}
+	\leq \frac{8\lipconst d \delta \cdot \Ep [\ltwo{X}^4]^{1/2}
+		+ 2K \Ep[\ltwo{X}^4]^{1/4}}{t}.
+\end{align*}
+Additionally, as covering numbers are necessarily integer,
+we have $\log N_{[\,]}(t) = 0$
+whenever
+$t > (8\lipconst d \delta \cdot \Ep [\ltwo{X}^4]^{1/2}
++ 2K \Ep[\ltwo{X}^4]^{1/4}) / \log 2$.
+This gives the entropy integral bound
+\begin{align*}
+	J_{[\, ]}(\mathcal{F}_{\delta}^{(1)}, L^2(\Prb))
+	& = \int_0^\infty \sqrt{\log N_{[\,]}(t ,\mathcal{F}_{\delta}^{(1)} ,
+		L^2(\Prb))} d t < \infty,
+\end{align*}
+and consequently (cf.~\cite[Thm.~19.5]{VanDerVaart98} or
+\cite[Ch.~2.5.2]{VanDerVaartWe96}), $\mathcal{F}_{\delta}^{(1)}$ is a
+Donsker class.  A completely identical argument shows that
+$\mathcal{F}_{\delta}^{(i)}, i=2,3,\dots, d$ are Donsker, and so
+$\mathcal{F}_\delta$ is a Donsker class, completing the proof of the
+first claim in Lemma~\ref{lemma:donsker-sp}.
+
+To complete the proof of Lemma~\ref{lemma:donsker-sp},
+we need to show that
+\begin{align*}
+	\G_{n,m} (\nabla_\theta\loss_{\spe, \vec{\sigma}_n}
+	- \nabla_\theta\loss_{u\opt, \vec{\sigma}\opt})
+	=
+	\frac{1}{m}
+	\sum_{j = 1}^m
+	\G_n^{(j)} (\nabla_\theta\loss_{\spe, \sigma_{n,j}}
+	- \nabla_\theta \loss_{u\opt, \sigma\opt_j})
+	\cp 0,
+\end{align*}
+where $\G_n^{(j)}$ denotes the empirical process on
+$(X_i, Y_{ij})_{i=  1}^n$. Notably, because $m$ is finite, it is sufficient
+to show that
+\begin{equation*}
+	\G_n^{(j)} (\nabla_\theta\loss_{\spe, \sigma_{n,j}}
+	- \nabla_\theta \loss_{u\opt, \sigma\opt_j})
+	\cp 0,
+	~~~
+	j = 1, \ldots, m.
+\end{equation*}
+To that end, we suppress dependence on $j$ for notational
+simplicity and simply write $\G_n$ and $\loss_{\spe, \sigma_n}$, where
+$\LtwoP{\sigma_n - \sigma\opt} \cp 0$.
+For any Donsker class $\mc{F} \subset \mc{X} \to \R^d$ and
+$\epsilon > 0$,
+we have
+\begin{equation*}
+	\limsup_{\delta \downarrow 0}
+	\limsup_{n \to \infty}
+	\P\left(\sup_{\LtwoP{f - g} \le \delta}
+	\G_n(f - g) \ge \epsilon\right) = 0,
+\end{equation*}
+(see~\cite[Thm.~3.7.31]{GineNi21}), and so in turn it is sufficient to prove
+that
+\begin{equation}
+	\label{eqn:ltwo-p-convergence-sp}
+	\LtwoPbold{\nabla \loss_{\spe, \sigma_n} - \nabla\loss_{u\opt, \sigma\opt}}
+	\cp 0.
+\end{equation}
+
+To demonstrate the convergence~\eqref{eqn:ltwo-p-convergence-sp}, let $M$ be
+finite, and note that for any fixed $\theta, \sigma \in \Flink$ that for $V
+= YX$ we have
+\begin{align*}
+	\LtwoPbold{\nabla \loss_{\theta, \sigma}
+		- \nabla \loss_{u\opt, \sigma\opt}}^2
+	& = \Ep \brk{\ltwo{V\sigma(-\<V, \theta\>) -
+			V\sigma\opt(-\<V,  u\opt\>)}^2} \\
+	& \leq \Ep \brk{\ltwo{V}^2 \indic{\ltwo{V} \geq M}}
+	+ M^2 \LtwoPbold{\sigma(-\<V, \theta\>) - \sigma\opt(-\<V, u\opt\>)}^2 \\
+	& \leq \Ep \brk{\ltwo{X}^2 \indic{\ltwo{X} \geq M}}
+	+ 2M^2 \LtwoPbold{\sigma(-\<V, u\opt\>) - \sigma\opt(-\<V, u\opt\>)}^2 \\
+	& \qquad\qquad\qquad\qquad\qquad\qquad ~
+	+ 2M^2 \LtwoPbold{\sigma(-\<V, u\opt\>) - \sigma(-\<V, \theta\>)}^2
+\end{align*}
+by the triangle inequality.
+As 
+\begin{align*}
+	\LtwoPbold{\sigma(-\<V, u\opt\>) - \sigma(-\<V, \theta\>)}
+	\leq \lipconst \ltwo{\theta - u\opt} \cdot \LtwoPbold{V}
+	= \lipconst \ltwo{\theta - u\opt} \cdot \LtwoPbold{X}
+\end{align*}
+and $\spe - u\opt \cp 0$ and
+\begin{align*}
+	\LtwoPbold{\sigma_n(-\<V, u\opt\>) - \sigma\opt(-\<V, u\opt\>)}
+	= \LtwoPbold{\sigma_n - \sigma\opt} \cp 0
+\end{align*}
+by assumption,
+it follows that for any $\epsilon > 0$ that
+\begin{align*}
+	\P\left(\LtwoPbold{\nabla_{\theta} \loss_{\spe, \sigma_n}
+		- \nabla_{\theta} \loss_{u\opt, \sigma\opt}}
+	\ge \E[\ltwo{X}^2 \indic{\ltwo{X} \geq M}] + \epsilon
+	\right) \to 0.
+\end{align*}
+Taking $M \uparrow \infty$ gives the
+convergence~\eqref{eqn:ltwo-p-convergence-sp}, completing the proof.
+
+
+%\appendix
+%
+%\section{Technical Lemmas}
+%
+%\begin{lemma}
+%	\label{lemma:invert-sums}
+%	Let $A, B$ be symmetric matrices with $A + B$ full rank
+%	and assume that $AB = BA = 0$. Then
+%	$(A + B)^{-1} = A^\dagger + B^\dagger$.
+%\end{lemma}
+

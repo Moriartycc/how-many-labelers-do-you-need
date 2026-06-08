@@ -1,0 +1,25 @@
+% -*- mode: latex -*- %
+
+\begin{abstract}
+  The construction of most supervised learning datasets revolves around
+  collecting multiple labels for each instance, then aggregating the labels
+  to form a type of ``true'' label.
+  %
+  We question the wisdom of this pipeline by developing a (stylized)
+  theoretical model of this process and analyzing its statistical
+  consequences, showing how access to non-aggregated label information can
+  make training well-calibrated models more feasible than it is with
+  cleaned labels.
+  %
+  The entire story, however, is subtle, and the
+  contrasts between aggregated and fuller label information depend on
+  the particulars of the problem,
+  where estimators that use aggregated information exhibit robust but slower
+  rates of convergence, while estimators that can effectively
+  leverage all labels converge more quickly \emph{if} they have
+  fidelity to (or can learn) the true labeling process.
+  The theory
+  makes several predictions for real-world datasets, including when
+  non-aggregate labels should improve learning performance, which we
+  test to corroborate the validity of our predictions.
+\end{abstract}

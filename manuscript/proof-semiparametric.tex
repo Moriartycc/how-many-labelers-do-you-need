@@ -1,0 +1,147 @@
+\section{Proofs for semiparametric approaches}
+
+\subsection{Proof of Lemma~\ref{lem:d-continuity-guarantees}}
+\label{proof:d-continuity-guarantees}
+
+As $\sigma$ and $\sigma\opt$ are $\lipconst$-Lipschitz, we may without loss
+of generality assume that $\lipconst = 1$ and so $\linf{\sigma_j'} \le 1$
+and $\linf{{\sigma\opt_j}'} \le 1$.  We can compute the Hessian at any
+$\theta \in \R^d$ and $\vec{\sigma} = (\sigma_1, \dots, \sigma_m)$,
+\begin{align*}
+  \nabla^2 L(\theta, \vec{\sigma}) & = \E\left[\frac{1}{m}
+    \sum_{j = 1}^m \left(\sigma\opt_j(-\<X, u\opt\>) \sigma_j'(\<\theta, X\>)
+    + \sigma\opt_j(\<X, u\opt\>) \sigma_j'(-\<\theta, X\>)\right) X X^\top \right] \\
+  & = \frac{1}{m} \sum_{j = 1}^m \E\left[\sigma_j'(-Y\<X, \theta\>) XX^\top\right],
+\end{align*}
+where in the last line we use that $\sigma_j\opt$ and $\sigma_j$ are symmetric for $j=1,\dots, m$. Therefore we can upper bound the distance between Hessians by
+\begin{align*}
+	\norm{\nabla^2 L(\theta, \vec{\sigma}) - \nabla^2 L(u\opt, \vec{\sigma}\opt)} & \leq \frac{1}{m} \sum_{j = 1}^m \underbrace{\norm{\E\left[\sigma_j'(-Y\<X, \theta\>) XX^\top\right] - \E\left[{\sigma_j\opt}'(-Y\<X, u\opt\>) XX^\top\right]  }}_{:=\delta_j},
+\end{align*}
+and thus we only need to prove each quantity $\delta_j \to 0$ if
+$d_{\fsymlinksp}((\theta, \vec{\sigma}), (u\opt, \vec{\sigma}\opt)) \to 0$,
+that is, if $\ltwo{\theta - u\opt} \to 0$ and $\LtwoP{\sigma_j(-Y\<X,
+  u\opt\>) - \sigma_j\opt(-Y\<X, u\opt\>)} \to 0$. In the following, we will
+show $\delta_j \to 0$ under the two different conditions. To further
+simplify the quantity, we claim it is sufficient to show $\xi_j \defeq
+\norm{\E[\sigma_j'(-Y\<X, \theta\>) XX^\top] -
+  \E[\sigma_j'(-Y\<X, u\opt\>) XX^\top]} \to 0$. Indeed, we have
+\begin{lemma}
+  If $\xi_j \to 0$ and $\LtwoP{\sigma_j(-Y\<X, u\opt\>) -
+    \sigma_j\opt(-Y\<X, u\opt\>)} \to 0$, then $\delta_j \to 0$.
+\end{lemma}
+\begin{proof}
+  By the triangle inequality and the independent decomposition $X = Z u\opt
+  + W$, we have
+  \begin{align*}
+    \delta_j & \leq \xi_j + \norm{\E\left[\sigma_j'(-Y\<X, u\opt\>) XX^\top\right] - \E\left[{\sigma_j\opt}'(-Y\<X, u\opt\>) XX^\top\right] } \nonumber \\
+    & = \xi_j + \norm{\E\left[(\sigma_j'(Z)-{\sigma_j\opt}'(Z)) Z^2\right] \cdot u\opt {u\opt}^\top } = \xi_j + \left|\E\left[(\sigma_j'(Z)-{\sigma_j\opt}'(Z)) Z^2\right] \right|.
+  \end{align*}
+  It remains to show $\E\left[(\sigma_j'(Z)-{\sigma_j\opt}'(Z)) Z^2\right]
+  \to 0$. Using the symmetry of $\sigma_j$ and $\sigma\opt_j$, so
+  $\sigma_j'(t) = \sigma_j'(-t)$, we can replace $Z$ by $|Z|$. Then
+  integrating by parts, for any $0 < \epsilon < M < \infty$ we have
+  \begin{align*}
+    \Ep \brk{\sigma_j'(Z) Z^2 \ind \{\epsilon \leq |Z| \leq M\}} & = \int_\epsilon^M \sigma_j'(z) z^2 p(z) dz \nonumber \\
+    &= \sigma_j(M) M^2p(M) - \sigma_j(\epsilon) \epsilon^2 p(\epsilon)  - \int_\epsilon^M \sigma_j(z) (2z p(z) + z^2 p'(z)) dz.
+  \end{align*}
+  By our w.l.o.g.\ assumption that $\linf{\sigma'} \leq 1$, we have $|\Ep
+  [\sigma_j'(Z) Z^2] - \Ep [\sigma_j'(Z) Z^2 \ind \{\epsilon \leq |Z| \leq
+    M\}]| \leq \Ep[Z^2 \ind\{|Z| < \epsilon \text{ or } |Z| >
+    M\}]$. Thus, recognizing the trivial
+  bound $\linf{\sigma_j} \leq 1$, we have
+  \begin{align*}
+    \left|\E\left[(\sigma_j'(Z)-{\sigma_j\opt}'(Z)) Z^2\right] \right| &\leq 2 \Ep[Z^2 \ind\{|Z| < \epsilon \text{ or } |Z| > M\}] + 2 \prn{\epsilon^2 p(\epsilon) + M^2p(M)} + \nonumber \\
+    & \qquad + \underbrace{\left|\int_\epsilon^M \sigma_j(z) (2z p(z) + z^2 p'(z)) -  \int_\epsilon^M \sigma_j\opt(z) (2z p(z) + z^2 p'(z))\right|}_{(\star)}.
+  \end{align*}
+ 	
+  We show for any fixed $0 < \epsilon < M < \infty$, $(\star) \to 0$. Applying
+  the Cauchy-Schwarz inequality twice, we have the bounds
+  \begin{align*}
+    \left|\int_\epsilon^M (\sigma_j(z) - \sigma_j\opt(z)) z p(z) dz \right| &\leq \LtwoP{\sigma_j(Z) - \sigma_j\opt(Z)} \cdot \sqrt{\Ep[Z^2]} \to 0, \\
+    \left|\int_\epsilon^M (\sigma_j(z) - \sigma_j\opt(z)) z^2 p'(z) dz \right| & \leq  \LtwoP{\sigma_j(Z) - \sigma_j\opt(Z)} \cdot \sqrt{\int_\epsilon^M z^4 \prn{\frac{p'(z)}{p(z)}}^2 p(z) dz} \nonumber \\
+    & \leq \LtwoP{\sigma_j(Z) - \sigma_j\opt(Z)} \cdot \sup_{z \in [\epsilon, M]} \left|\frac{p'(z)}{p(z)}\right| \sqrt{\Ep[Z^4]} \to 0,
+  \end{align*}
+  where for the final inequality we use that $p(z)$ is nonzero and
+  continuously differentiable.
+
+  As $(\star) \to 0$, we evidently have
+  $\limsup |\E[(\sigma_j'(Z) - {\sigma_j\opt}'(Z)) Z^2]|
+  \le 2 \E[Z^2 (\ind\{|Z| < \epsilon\} + \ind\{|Z| > M\})]
+  + 2 (\epsilon^2 p(\epsilon) + M^2 p(M))$ for arbitrary
+  $0 < \epsilon < M < \infty$.
+  Using the assumptions that $\Ep[Z^2] \leq \Ep[\ltwo{X}^2] < \infty$
+  and $\lim_{z \to s} z^2p(z) = 0$ for $s \in \{0, \infty\}$, we
+  conclude the proof by taking $\epsilon \to 0$ and $M \to \infty$.
+\end{proof}
+
+Finally we prove $\xi_j \defeq \norm{\E[\sigma_j'(-Y\<X, \theta\>) XX^\top]
+  - \E[\sigma_j'(-Y\<X, u\opt\>) XX^\top]} \to 0$ under the two conditions
+in the statement of Lemma~\ref{lem:d-continuity-guarantees}: that
+$\sigma'_j$ are Lipschitz or $X$ has a continuous density.
+\paragraph{Condition 1. The links have Lipschitz derivatives}
+We apply Jensen's inequality to write
+\begin{align*}
+  \xi_j \leq \E\left[|\sigma_j'(-Y\<X, \theta\>) - \sigma_j'(-Y\<X, u\opt\>)| \cdot \norm{XX^\top}\right]
+  & = \E\left[|\sigma_j'(-Y\<X, \theta\>) - \sigma_j'(-Y\<X, u\opt\>)| \cdot \ltwo{X}^2\right] \\
+  & \le \norm{\sigma_j'}_{\textup{Lip}}
+  \ltwo{\theta - u\opt} \cdot \E\left[\ltwo{X}^3\right],
+\end{align*}
+where $\norm{\cdot}_{\textup{Lip}}$ denotes the Lipschitz
+constant of its argument. Taking
+$\theta \to u\opt$ completes the proof for this case.
+\paragraph{Condition 2. The covariates have continuous density}
+Let $X$ have density $q(x)$. We rewrite the convergence
+$\theta \to u\opt$ instead as $\theta
+= V u\opt$ where $V \to I_d$ is invertible. We again divide the expectation
+into large $\ltwo{X}$ part and small $\ltwo{X}$ part. Let
+$M < \infty$ be large enough that $\E[\ltwo{X}^2 \ind\{\ltwo{X} > M\}]
+\le \epsilon$. Then using $\linfs{\sigma_j'} < \infty$,
+we obtain
+\begin{align*}
+  \xi_j & \leq \norm{\E\left[(\sigma_j'(-Y\<X, \theta\>) -{\sigma_j}'(-Y\<X, u\opt\>)) XX^\top \right] \ind \{\ltwo{X} \leq M\}} + 2 \lipconst'
+  \Ep \brk{\ltwo{X}^2 \ind \{\ltwo{X} > M\}} \nonumber \\
+  & \le \norm{ \prn{V^{-\top} \E\left[\sigma_j'(-\<V^\top X, u\opt\>) V^\top X XV \right] V - \E\left[{\sigma_j}'(-\<X, u\opt\>)XX^\top \right]}  \ind \{\ltwo{X} \leq M\}}  + 2 \linf{\sigma_j'} \epsilon.
+\end{align*}
+By the linear transformation of variables $X' \defeq V^\top X$, the first
+term in the above display is
+\begin{align*}
+	&\norm{ V^{-\top} \E\left[\sigma_j'(-Y\<V^\top X, u\opt\>) V^\top X XV \right] V - \E\left[{\sigma_j}'(-Y\<X, u\opt\>)XX^\top \right]} \nonumber \\
+	&= \norm{\det(V^{-1}) \cdot V^{-\top} \prn{\int_{\ltwo{V^\top x} \leq M} \sigma_j'(-x^\top u\opt) xx^\top p(V^{-\top} x) dx}  V - \int_{\ltwo{x} \leq M} \sigma_j'(-x^\top u\opt) xx^\top p(x) dx}.
+\end{align*}
+Since $p(x)$ is absolutely continuous on any compact set, the above term
+converges to $0$ as $V \to I_d$. Finally, as $\epsilon > 0$ was arbitrary,
+we take $M \to \infty$ to conclude that $\xi_j \to 0$.
+
+\subsection{Proof of Proposition~\ref{prop:crowd-sourcing-estimator}} \label{proof:crowd-sourcing-estimator}
+
+We apply Theorem~\ref{theorem:semiparametric-master}.
+We first give the specialization
+of $C_{m,\vec{\sigma}\opt}$ that the assumptions of the proposition
+imply, recognizing that as
+${\sigma\lr}' = \sigma\lr(1 - \sigma\lr)$, we have
+\begin{align*}
+  C_{m, \vec{\sigma}\opt} & =
+  \frac{\sum_{j = 1}^m
+    \E[\sigma\lr(\alpha_j\opt Z) (1 - \sigma\lr(\alpha_j\opt Z))]}{
+    (\sum_{j = 1}^m\E[{\sigma\lr}'(\alpha_j\opt Z)])^2}
+  = \prn{ \sum_{j = 1}^m \E[\sigma\lr(\alpha_j\opt Z) (1 - \sigma\lr(\alpha_j\opt Z))]}^{-1}.
+\end{align*} 
+We now argue that we can actually invoke
+Theorem~\ref{theorem:semiparametric-master}, which requires verification of
+Assumption~\ref{assumption:sp-general}. Because for any $M < \infty$, the
+link functions $t \mapsto \sigma\lr(\alpha t)$ have Lipschitz continuous
+derivatives for $|\alpha| \le M$, so when $\vec{\sigma}_n$ has form
+$\vec{\sigma}_n = [\sigma\lr(\alpha_{n,j}\cdot)]_{j = 1}^m$,
+Lemma~\ref{lem:d-continuity-guarantees} implies the continuity of the
+mapping $(\theta, \vec{\sigma}) \mapsto \nabla_\theta^2 \poploss(\theta,
+\vec{\sigma})$ for $d_{\fsymlinksp}$ at $(u\opt, \vec{\sigma}\opt)$.
+Then recognizing that by
+Lipschitz continuity of $\sigma\lr$ we have
+\begin{equation*}
+  \LtwoPbold{\vec{\sigma}_n(Z)
+    - \vec{\sigma}\opt(Z)}
+  \le \ltwo{\alpha_n - \alpha\opt}^2 \LtwoPbold{Z}^2
+  \cp 0
+\end{equation*}
+whenever $\alpha_n \in \R^m$ satisfies $\alpha_n \cp \alpha\opt$, we
+obtain the proposition.

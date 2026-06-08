@@ -1,0 +1,234 @@
+\usepackage{geometry}
+\geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+
+\usepackage{amsmath, amssymb, amsfonts, bm, mathtools}
+\usepackage{amsthm}
+\usepackage{xcolor}
+\definecolor{darkblue}{rgb}{0,0,.5}
+\usepackage{graphicx}
+\usepackage{subfigure}
+
+\newcommand{\theHalgorithm}{\arabic{algorithm}}
+
+\usepackage[numbers]{natbib}
+
+\usepackage[colorlinks=true,allcolors=darkblue]{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+
+\allowdisplaybreaks
+
+\usepackage{float}
+\usepackage{multirow}
+\usepackage{footnote}
+\usepackage{dsfont}
+% \usepackage{mathabx}
+
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{nicefrac}
+
+
+\usepackage{hyperref}
+\usepackage[capitalize]{cleveref}
+\usepackage{crossreftools}
+
+
+\usepackage{tikz}
+\usepackage{overpic}
+
+
+\definecolor{cc}{RGB}{125,0,0}
+\definecolor{jd}{RGB}{0,125,0}
+\definecolor{ha}{RGB}{0,0,200}
+
+\newcommand{\cc}[1]{\textcolor{cc}{[CC: #1]}}
+\newcommand{\jd}[1]{\textcolor{jd}{[JD: #1]}}
+\newcommand{\ha}[1]{\textcolor{ha}{[HA: #1]}}
+
+ % \usepackage[inline]{showlabels}
+
+
+% \newcommand{\Pr}{\mathsf{Pr}}
+
+\usepackage{dsfont}
+
+
+\newcommand{\ind}{\mathds{1}}
+\newcommand{\var}{\mathsf{Var}}
+\newcommand{\cov}{\mathsf{Cov}}
+\newcommand{\Ep}{\mathbb{E}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Prb}{\mathbb{P}}
+\newcommand{\R}{\mathbb{R}} % real numbers
+\newcommand{\N}{\mathbb{N}} % natural numbers
+\newcommand{\Z}{\mathbb{Z}} % integers
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\mc}[1]{\mathcal{#1}}
+\newcommand{\brc}[1]{\left\{{#1}\right\}}
+\newcommand{\prn}[1]{\left({#1}\right)} % parentheses
+\newcommand{\prnbig}[1]{\big({#1}\big)} % parentheses
+\newcommand{\prns}[1]{({#1})} % parentheses small
+\newcommand{\prnBig}[1]{\Big({#1}\Big)} % parentheses
+\newcommand{\prnBigg}[1]{\Bigg({#1}\Bigg)} % parentheses
+\newcommand{\brk}[1]{\left[{#1}\right]} % bracket
+\newcommand{\brkbig}[1]{\big[{#1}\big]} % parentheses
+\newcommand{\brkBig}[1]{\Big[{#1}\Big]} % parentheses
+\newcommand{\brkBigg}[1]{\Bigg[{#1}\Bigg]} % parentheses
+\newcommand{\norm}[1]{\left\|{#1}\right\|} % norm
+\newcommand{\normbig}[1]{\big\|{#1}\big\|} % norm
+\newcommand{\abs}[1]{\left|{#1}\right|} % norm
+\newcommand{\what}[1]{\widehat{#1}}
+\newcommand{\wt}[1]{\widetilde{#1}}
+\newcommand{\wb}[1]{\overline{#1}}
+\newcommand{\wbmj}[1]{{#1}^+}
+\newcommand{\majY}{Y^+}
+\newcommand{\majmark}[1]{{#1}^+}
+\newcommand{\sgn}{\mathsf{sign}}
+\newcommand{\pred}{\mathsf{d}}
+\newcommand{\dist}{\mathsf{dist}}
+\newcommand{\NN}{\mathsf{NN}}
+\newcommand{\normal}{\mathsf{N}}
+\newcommand{\bindist}{\mathsf{Binomial}}
+\newcommand{\maj}{\mathsf{maj}}
+\newcommand{\dstr}{\mathcal{P}}
+\newcommand{\lr}{^{\textup{lr}}}
+\newcommand{\sem}{^{\textup{sp}}}
+\newcommand{\cs}{^{\textup{cs}}}
+\newcommand{\mv}{^{\textup{mv}}}
+\newcommand{\ds}{^{\textsc{ds}}}
+\newcommand{\dsp}{^{\textsc{ds-p}}}
+\newcommand{\glad}{^{\textsc{glad}}}
+\newcommand{\gladp}{^{\textsc{glad-p}}}
+\newcommand{\amv}{^{\textup{amv}}}
+\newcommand{\mm}{^{\textup{mm}}}
+\newcommand{\proj}{\mathsf{P}}
+\newcommand{\proju}{\proj_{u\opt}}
+\newcommand{\projperp}{\proj_{u\opt}^\perp}
+\newcommand{\Flink}{\mathcal{F}_{\mathsf{link}}}
+\newcommand{\lipconst}{\mathsf{L}}
+\newcommand{\loss}{\ell}
+\newcommand{\poploss}{L}
+\newcommand{\popsignloss}{L^{\textup{sgn}}}
+\newcommand{\flink}{\mathcal{F}_{\mathsf{link}}}
+\newcommand{\fsymlink}{\mathcal{F}_{\mathsf{link}}^0}
+\newcommand{\fsymlinkL}{\mathcal{F}_{\mathsf{link}}^{\mathsf{L}}}
+\newcommand{\fsymlinksp}{\mathcal{F}_{\mathsf{link}}^{\mathsf{sp}}}
+% Norms for convenience, along with sizes
+\newcommand{\lone}[1]{\norm{#1}_1} % l1 norm
+\newcommand{\ltwo}[1]{\norm{#1}_2} % l2 norm
+\newcommand{\linf}[1]{\norm{#1}_\infty} % l-infinity norm
+\newcommand{\lzero}[1]{\norm{#1}_0} % l0 norm
+\newcommand{\dnorm}[1]{\norm{#1}_*} % Dual norm
+\newcommand{\lfro}[1]{\left\|{#1}\right\|_{\rm Fr}} % Frobenius norm
+\newcommand{\ltv}[2]{\mathsf{TV}\prn{#1, #2}}
+\newcommand{\matrixnorm}[1]{\left|\!\left|\!\left|{#1}
+	\right|\!\right|\!\right|} % Matrix norm with three bars
+\newcommand{\normbigg}[1]{\bigg\|{#1}\bigg\|} % A norm with 1 argument and bigg
+% brackets.
+\newcommand{\dnormbigg}[1]{\bigg\|{#1}\bigg\|_*} % A norm with 1 argument and bigg
+% brackets.
+\newcommand{\lonebigg}[1]{\normbigg{#1}_1} % l1 norm
+\newcommand{\ltwobigg}[1]{\normbigg{#1}_2} % l2 norm
+\newcommand{\ltwobig}[1]{\normbig{#1}_2} % l2 norm
+\newcommand{\ltwoBig}[1]{\normBig{#1}_2} % l2 norm
+\newcommand{\linfbigg}[1]{\normbigg{#1}_\infty} % l-infinity norm
+\newcommand{\norms}[1]{\|{#1}\|} % A norm with 1 argument and normal (small)
+% brackets.
+\newcommand{\matrixnorms}[1]{|\!|\!|{#1}|\!|\!|} % Small matrix norm
+\newcommand{\matrixnormbigg}[1]{\bigg|\!\bigg|\!\bigg|{#1}\bigg|\!\bigg|\!\bigg|} % Small matrix norm
+\newcommand{\lones}[1]{\norms{#1}_1} % l1 norm with small brackets
+\newcommand{\ltwos}[1]{\norms{#1}_2} % l2 norm with small brackets
+\newcommand{\linfs}[1]{\norms{#1}_\infty} % l-infinity norm with small brackets
+\newcommand{\lzeros}[1]{\norms{#1}_0} % l0 norm with small brackets
+
+\newcommand{\opnorm}[1]{\matrixnorm{#1}_{\rm op}} % Operator norm with three bars
+\newcommand{\opnormbigg}[1]{\matrixnormbigg{#1}_{\rm op}} % Operator norm with three bars
+\newcommand{\opnorms}[1]{\matrixnorms{#1}_{\rm op}} % Small operator norm with three bars
+\newcommand{\<}{\langle} % Angle brackets
+\renewcommand{\>}{\rangle}
+
+\DeclareMathOperator*{\argmax}{argmax}
+\DeclareMathOperator*{\argmin}{argmin}
+
+\newcommand{\sX}{\mathcal{X}} % input space
+\newcommand{\sY}{\mathcal{Y}} % output space
+
+
+\newcommand{\simiid}{\stackrel{\textup{iid}}{\sim}}
+\newcommand{\indic}[1]{1\!\left\{{#1}\right\}}
+
+\newcommand{\cd}{\rightsquigarrow}
+% \newcommand{\cd}{\stackrel{d}{\rightarrow}}
+\newcommand{\cp}{\stackrel{p}{\rightarrow}}
+\newcommand{\cas}{\stackrel{a.s.}{\rightarrow}}
+
+\makeatletter
+\long\def\@makecaption#1#2{
+  \vskip 0.8ex
+  \setbox\@tempboxa\hbox{\small {\bf #1:} #2}
+  \parindent 1.5em  %% How can we use the global value of this???
+  \dimen0=\hsize
+  \advance\dimen0 by -3em
+  \ifdim \wd\@tempboxa >\dimen0
+  \hbox to \hsize{
+    \parindent 0em
+    \hfil 
+    \parbox{\dimen0}{\def\baselinestretch{0.96}\small
+      {\bf #1.} #2
+      %%\unhbox\@tempboxa
+    } 
+    \hfil}
+  \else \hbox to \hsize{\hfil \box\@tempboxa \hfil}
+  \fi
+}
+\makeatother
+
+\newcommand{\defeq}{\coloneqq}
+\newcommand{\Ltwo}[1]{\norm{#1}_{L^2}}
+\newcommand{\LtwoP}[1]{\norm{#1}_{L^2(\Prb)}}
+\newcommand{\LtwoPbold}[1]{\norm{#1}_{L^2(\Prb)}}
+\newcommand{\LtwoPn}[1]{\norm{#1}_{L^2(\Prb_n)}}
+\newcommand{\LtwoPns}[1]{\norms{#1}_{L^2(\Prb_n)}}
+\newcommand{\LtwoQ}[1]{\norm{#1}_{L^2(Q)}}
+\newcommand{\LtwoQn}[1]{\norm{#1}_{L^2(Q_n)}}
+\newcommand{\LtwoQns}[1]{\norms{#1}_{L^2(Q_n)}}
+\newcommand{\lipnorm}[1]{\norm{#1}_{\textup{Lip}}}
+
+\newcommand{\half}{\frac{1}{2}}
+\newcommand{\event}{\mc{E}}
+
+\newcommand{\conv}{\textup{Conv}}
+\newcommand{\card}{\textup{card}}
+\newcommand{\starhull}{\textup{Star}}
+\newcommand{\hinge}[1]{\left({#1}\right)_+}
+\newcommand{\hinges}[1]{({#1})_+}
+
+\newcommand{\red}[1]{\textcolor{red}{#1}}
+\newcommand{\blue}[1]{\textcolor{blue}{#1}}
+\newcommand{\darkblue}[1]{\textcolor{darkblue}{#1}}
+
+\definecolor{innerboxcolor}{rgb}{.9,.95,1}
+\definecolor{outerlinecolor}{rgb}{.6,0,.2}
+
+\newcommand{\jcdcomment}[1]{\fcolorbox{outerlinecolor}{innerboxcolor}{
+    \begin{minipage}{.9\textwidth}
+      \red{\bf JCD Comment:} {#1}
+  \end{minipage}} \\
+}
+
+\newcommand{\opt}{^\star}
+\newcommand{\subopt}{_\star}
+\newcommand{\gme}{\what{\theta}_{n,m}} %General multilabel estimator
+\newcommand{\tmle}{\what{\theta}\lr_{n,m}} %MLE estimator without aggregation (logistic regression)
+\newcommand{\mve}{\what{\theta}\mv_{n,m}} %Majority vote estimator
+\newcommand{\spe}{\what{\theta}\sem_{n,m}} %Semiparametric estimator
+\newcommand{\csmle}{\what{\theta}\cs_{n,m}} %Crowdsourcing estimator
+\newcommand{\dse}{\what{\theta}\ds_{n,m}} %Dawid-Skene estimator
+\newcommand{\dspe}{\what{\theta}\dsp_{n,m}} %Dawid-Skene soft estimator
+\newcommand{\glade}{\what{\theta}\glad_{n,m}} %GLAD estimator
+\newcommand{\gladpe}{\what{\theta}\gladp_{n,m}} %GLAD soft estimator
+\newcommand{\G}{\mathbb{G}}

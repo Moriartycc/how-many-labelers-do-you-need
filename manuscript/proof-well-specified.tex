@@ -1,0 +1,168 @@
+% -*- mode: latex -*- %
+%\setcounter{theorem}{6}
+%\setcounter{equation}{9}
+
+\section{Proofs of asymptotic normality}
+
+In this appendix, we include proofs of the convergence results in
+Propositions~\ref{prop:lowd-maximum-likelihood},
+\ref{prop:lowd-majority-vote-m-noise}, and
+\ref{prop:lowd-misspcfd-majority-vote-m}. In each, we divide the proof into
+three steps: we characterize the loss minimizer, apply one of the master
+Theorems~\ref{theorem:multilabel-asymptotics}
+or~\ref{theorem:majority-vote-asymptotics} to obtain asymptotic normality,
+and then characterize the behavior of the asymptotic covariance as $m \to
+\infty$.
+
+\subsection{Proof of Proposition~\ref{prop:lowd-maximum-likelihood}}
+\label{proof:lowd-maximum-likelihood}
+
+\paragraph{Asymptotic normality of the MLE.}
+The asymptotic
+normality result is an
+immediate consequence of the classical asymptotics for maximum likelihood
+estimators~\cite[Thm.~5.29]{VanDerVaart98}.
+
+
+\paragraph{Normalized estimator.}
+For the normalized estimator, we appeal to the master results developed in Section~\ref{sec:master-results}.
+%
+In particular, since we are in the well-specified logistic model, we can invoke Corollary~\ref{cor:well-specified-normalized-cov} and write directly that
+\begin{equation*}
+	\sqrt{n}(\what{u}_{n,m}\lr- u\opt)
+	\cd \normal\left(0, \frac{1}{m} \cdot
+	\frac{1}{{t\opt}^2}
+	\frac{\E[\sigma\lr(t\opt Z) (1 - \sigma\lr(t\opt Z))]}{\E[{\sigma\lr}'(t\opt Z)]^2}
+	\projperp \Sigma \projperp \right),
+\end{equation*}
+which immediately implies
+\begin{align*}
+	C(t) & = \frac{1}{t^2}
+	\frac{\E[\sigma\lr(t Z) (1 - \sigma\lr(t Z))]}{\E[{\sigma\lr}'(t Z)]^2} = \frac{1}{t^2\Ep\left[\frac{e^{t Z} }{(1 + e^{t Z})^2}\right]},
+\end{align*}
+and that further $ C(t) {t}^{2 - \beta} = {t}^{-\beta} \Ep[\frac{e^{t|Z|}
+  }{(1 + e^{t |Z|})^2}]^{-1}$. To compute the limit when $t \to
+\infty$, we invoke Lemma~\ref{lem:t-Z-integral-noise} and
+we conclude that
+\begin{align*}
+  \lim_{t \to \infty} C(t) t^{2 - \beta} = \lim_{t\to \infty}
+  \frac{1}{t^\beta \Ep[\frac{e^{t |Z|} }{(1 + e^{t |Z|})^2}]}
+  = \frac{1}{ c_Z \int_{0}^{\infty} \frac{z^{\beta - 1} e^{z} }{(1 + e^{z})^2}
+    dz}.
+\end{align*}
+
+\subsection{Proof of Proposition~\ref{prop:lowd-majority-vote-m-noise}}
+\label{proof:lowd-majority-vote-m-noise}
+
+\paragraph{Minimizer of the population loss.}
+We can see identity~\eqref{eq:majority-vote-root} still holds with the
+calibration gap $h(t) = h_m(t) = \E[|Z|(1 - \rho_m(t\opt |Z|))] -
+\E[\frac{|Z|}{1 + e^{t|Z|}}]$ in Eq.~\eqref{eqn:h-centering} as $X-u\opt Z$
+and $u\opt Z$ are independent. The function $h(t)$ is monotonically
+increasing in $t$ with $h(\infty) =\Ep \brk{|Z|(1-\rho_m(t^\star |Z|))} >
+0$, while $1 - \rho_m(t|Z|) \leq 1 - \rho_1(t|Z|) = \frac{1}{1 + e^{t|Z|}}$,
+we must have $h(t^\star) \leq 0$. Therefore there must be a unique zero
+point $t_m \ge t\opt$ of $h(t)$, and so $t_m u\opt$ is the unique minimizer
+of the population loss $\poploss\mv_m(\theta)$.
+
+\paragraph{Asymptotic variance.}
+As $t_m$ solves $h_m(t_m) = 0$, 
+Eq.~\eqref{eq:majority-vote-root} guarantees that $t_m u\opt$ is the global
+minimizer of the population loss $\poploss\mv_m$. Appealing to
+Theorem~\ref{theorem:majority-vote-asymptotics}, it follows that
+$\what{\theta}\mv_{n,m} \cp t_m u\opt$, and
+\begin{align*}
+  \sqrt{n} (\what{u}\mv_{n,m} -  u^\star)&\cd \normal\left(0, \varfunc(t\opt)
+  \prn{\proj_{u\opt} \Sigma \proj_{u\opt}}^\dagger\right)
+\end{align*}
+for the variance function~\eqref{eqn:generic-majority-covariance},
+which in this case simplifies to
+\begin{align*}
+  \varfunc(t\opt)
+  %% & = \frac{1}{t_m^2} \frac{\E[\sigma\lr(-t_m |Z|)^2
+  %%     \rho_m(t Z) + \sigma\lr(t_m |Z|)^2 (1 - \rho_m(t Z))]}{
+  %%   \E[{\sigma\lr}'(t_m Z)]^2} \nonumber \\
+  & = \frac{\Ep[\frac{1}{(1 + e^{t_m|Z|})^2} \rho_m(t\opt |Z|)
+      + \frac{1}{(1 + e^{-t_m|Z|})^2} (1-\rho_m(t\opt |Z|)) ]}{
+    t_m^2 \Ep[\frac{e^{t_m Z} }{ (1 + e^{t_m Z})^2}]^2}
+\end{align*}
+via the symmetry $\rho_m(t) = \rho_m(-t)$.
+
+\paragraph{Large $m$ behavior.} The remainder of the
+proof is to characterize the behavior of $\varfunc(t\opt)$ as $m\to\infty$.
+We first derive asymptotics for $t_m$. To simplify notation, we let
+$\ltwo{\theta} = t = t\opt$. Because $t_m$ solves $h_m(t_m) = 0$ we have
+\begin{align}
+  \Ep \brk{\frac{|Z|}{1 + e^{t_m|Z|}}} = \Ep \brk{|Z|(1-\rho_m(t |Z|))},
+  \label{eqn:solving-for-t-m}
+\end{align}
+we must have $t_m \to \infty$ as $m \to \infty$ because $\rho_m(t) \to 1$
+for any $t > 0$ as $m \to \infty$, so the right side of
+equality~\eqref{eqn:solving-for-t-m} converges to 0 by the dominated
+convergence theorem, and hence so must the left hand side.  Invoking
+Lemma~\ref{lem:t-Z-integral-noise} for the left hand side, it follows that
+\begin{align*}
+  \lim_{m \to \infty} t_m^{\beta + 1} \Ep \brk{\frac{|Z|}{1 + e^{t_m|Z|}}} & = \lim_{m \to \infty} t_m^{\beta} \Ep \brk{\frac{t_m|Z|}{1 + e^{t_m|Z|}}}  =  c_Z \int_{0}^{\infty} \frac{z^\beta}{1 + e^{z}} dz, %\label{eq:large-m-general-mid-1}
+\end{align*}
+while invoking Lemma~\ref{lem:m-rho-integral-noise-general} for the right
+hand side of~\eqref{eqn:solving-for-t-m}, it follows that
+\begin{align*}
+  \lim_{m \to \infty} m^{\frac{\beta+1}{2}}\Ep \brk{|Z|(1-\rho_m(t  |Z|))} & = \lim_{m \to \infty} m^{\frac{\beta}{2}} \Ep \brk{\sqrt m|Z|(1-\rho_m(t  |Z|))} \nonumber \\
+  &  = c_Z \int_0^\infty z^\beta \Phi \left(-\frac{tz}{2}\right) dz = c_Z {t}^{-\beta-1}\int_0^\infty z^\beta \Phi \left(-\frac{z}{2}\right) dz, %\label{eq:large-m-general-mid-2}
+\end{align*}
+where the last line follows from change of variables $tz \mapsto z$. The
+identity~\eqref{eqn:solving-for-t-m}
+implies that the ratio $\Ep [|Z|/(1 + e^{t_m|Z|})] / \Ep [|Z|(1-\rho_m(t
+  |Z|))] = 1$ and so we have that as $m \to \infty$,
+\begin{align*}
+		\frac{t_m}{\sqrt{m}} & = \left(\frac{	t_m^{\beta + 1}}{ m^{\frac{\beta+1}{2}}}\right)^{\frac{1}{\beta +1}} =  \left(\frac{	t_m^{\beta + 1}\Ep \brk{\frac{|Z|}{1 + e^{t_m|Z|}}}}{ m^{\frac{\beta+1}{2}} \Ep \brk{|Z|(1-\rho_m(t |Z|))} }\right)^{\frac{1}{\beta +1}}  \to  \left(\frac{\int_{0}^{\infty} \frac{z^\beta}{1 + e^{z}} dz}{\int_0^\infty z^\beta \Phi \left(-\frac{z}{2}\right) dz}\right)^{\frac{1}{\beta +1}} \cdot t= : a t .  \label{eq:Cm-asymp-noise-tm}
+\end{align*}
+In particular, $t_m / t\opt \sqrt{m} = a(1 + o_m(1))$.
+
+We finally proceed to compute asymptotic behavior of $\varfunc(t\opt)$, the
+variance~\eqref{eqn:generic-majority-covariance}. By
+Lemma~\ref{lem:t-Z-integral-noise} the limit of its denominator as $t_m \to
+\infty$ satisfies
+\begin{align*}
+  \lim_{m \to \infty}
+  \underbrace{t_m^{2 \beta}
+    \Ep\left[\frac{e^{t_m Z} }{ (1 + e^{t_m Z})^2}\right]^2}_{
+    :=\mathsf{den}(C_m(t))}
+  & = \lim_{t \to \infty} \left( t^\beta \Ep\left[\frac{e^{t Z} }{ (1 + e^{t Z})^2}\right]\right)^2 =
+  \left(c_Z\int_{0}^\infty \frac{z^{\beta - 1} e^{z} }{ (1 + e^{z})^2} dz\right)^2.
+\end{align*}
+We decompose the numerator into the two parts
+\begin{align*}
+  \lefteqn{m^{\frac{\beta}{2}} \Ep \left[\frac{1}{\left(1 + e^{t_m|Z|}\right)^2} \rho_m(t |Z|) + \frac{1}{\left(1 + e^{-t_m|Z|}\right)^2} (1-\rho_m(t|Z|)) \right]} \nonumber \\
+  & = \underbrace{m^{\frac{\beta}{2}} \Ep \left[\left(\frac{1}{\left(1 + e^{-t_m|Z|}\right)^2} - \frac{1}{\left(1 + e^{t_m|Z|}\right)^2} \right)(1-\rho_m(t|Z|)) \right]}_{\mathrm{(I)}} + \underbrace{m^{\frac{\beta}{2}} \Ep \left[\frac{1}{\left(1 + e^{t_m|Z|}\right)^2}\right]}_{\mathrm{(II)}}  .
+\end{align*}
+As we have already shown that $m^{-\frac{1}{2}} t_m \to at$, we know for any
+$\epsilon > 0$ that for large enough $m$, $(1-\epsilon) a t \sqrt m
+\leq t_m \leq (1 +\epsilon) at \sqrt{m}$. We can thus invoke
+Lemma~\ref{lem:t-Z-integral-noise} to get
+\begin{align*}
+  \lim_{m \to \infty}  \mathrm{(II)} = \lim_{m \to \infty} m^{\frac \beta 2} \Ep \left[\frac{1}{\left(1 + e^{\sqrt m at|Z|}\right)^2}\right] &  = c_Z \int_0^\infty  \frac{z^{\beta - 1}}{\left(1 + e^{a t z}\right)^2} dz  = c_Z {t}^{-\beta} \int_0^\infty \frac{z^{\beta - 1}}{\left(1 + e^{a z}\right)^2} dz  . %\label{eq:Cm-asymp-noise-4}
+\end{align*}
+With the same argument, we apply Lemma~\ref{lem:m-rho-integral-noise-general}
+to establish the convergence
+\begin{align*}
+  \lim_{m \to \infty} \mathrm{(I)} 
+  & = c_Z \int_0^\infty z^{\beta - 1}\left(\frac{1}{\left(1 + e^{-a tz}\right)^2} - \frac{1}{\left(1 + e^{a t z}\right)^2} \right) \Phi \left(-\frac{tz}{2}\right) dz \\
+  & = c_Z \int_0^\infty z^{\beta - 1}\frac{e^{a tz} - 1}{e^{a t z} + 1} \Phi \left(-\frac{tz}{2}\right) dz
+  = c_Z {t}^{-\beta} \int_0^\infty z^{\beta - 1}\frac{e^{a z} - 1}{e^{a z} + 1} \Phi \left(-\frac{z}{2}\right) dz    , % \label{eq:Cm-asymp-noise-5}
+\end{align*}
+where we use the change of variables $tz \mapsto z$. Taking limits, we have
+\begin{align*}
+  \lim_{m\to \infty} m^{1 - \frac{1}{2} \beta} C_m(t)
+  & = \lim_{m\to \infty}  \frac{m^{\frac \beta 2}
+    \Ep[\frac{1}{(1 + e^{t_m|Z|})^2} \rho_m(t |Z|)
+      + \frac{1}{(1 + e^{-t_m|Z|})^2}(1-\rho_m(t|Z|))]}{
+    m^{\beta - 1} t_m^{2 - 2 \beta} \cdot t_m^{2 \beta} \Ep[\frac{e^{t_m Z} }{ (1 + e^{t_m Z})^2}]^2} \\
+  & = \lim_{m \to \infty}
+  \left(\frac{t_m}{\sqrt{m}}\right)^{2 \beta - 2}
+  \cdot \frac{\lim_{m\to \infty}\mathrm{(I)} + \lim_{m\to \infty}\mathrm{(II)}}{\mathsf{den}(C_m(t))} \\
+  & =
+  (at)^{2 \beta - 2}
+  \cdot \frac{c_Z {t}^{-\beta} \int_0^\infty z^{\beta - 1}\left(\frac{1}{\left(1 + e^{a z}\right)^2} + \frac{e^{a z} - 1}{e^{a z} + 1} \Phi \left(-\frac{z}{2}\right)\right) dz}{  (c_Z\int_{0}^\infty \frac{z^{\beta - 1} e^{z} }{ (1 + e^{z})^2} dz)^2},
+\end{align*}
+where we used that $t_m/\sqrt{m} \to at$ as above. 
