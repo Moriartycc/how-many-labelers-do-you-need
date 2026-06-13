@@ -19,7 +19,7 @@ We adapt the original CIFAR-10 dataset, which consists of 6000 32*32 images from
 ### Source files
 
 * `./raw_labels.py` and `./aggregation_labels.py`: Python code generating pseudo-labels and aggregating labels using majority vote and crowdsourcing approaches.
-* `./main.py`: Python code generating test errors from the above pseudo-labelers in the file `./all_output.csv'.
+* `./main.py`: Python code generating test errors from the above pseudo-labelers in the file `./all_output.csv`.
 * `./plot.py`: Python code reproducing meshed test error curves in Fig 2(a) and 2(b) from the output of `./main.py`.
 * `./plot-repeats.py`: Python code reproducing test error curves under multiple trials in Fig 2(c) and 2(d) from the output of `.main.py`.
 * `./all_output_varying_median.csv`: Output file from `./main.py` for reproducing Fig 2(a) and 2(b).
