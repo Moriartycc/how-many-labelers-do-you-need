@@ -38,7 +38,7 @@ Mechanical Turk workers. We use an ImageNet pretrained ResNet50 model to generat
 
 * `./original.tsv`: Individual 108\*39 labels.
 * `./resnet-features.txt`: Last layer output of the pretrained ResNet50 model. The features were obtained by passing data in `./original.tsv` into the ResNet 50 model with weights obtained from (https://github.com/huyvnphan/PyTorch\_CIFAR10).
-* `./main.m`: MATLAB source file to reproducing the figures in the paper.
+* `./main.m`: MATLAB source file reproducing the figures in the paper.
 * `./resnet-calib-bluebirds.pdf` and `./resnet-class-bluebirds.pdf`: outputs of the experiments in Fig 1(a) and Fig 1(b) of the paper.
 
 
