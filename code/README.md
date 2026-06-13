@@ -2,7 +2,7 @@ This directory contains code and source files for reproducing numerical experime
 
 
 
-\*\*How many labelers do you have? A closer look at gold-standard labels\*\*
+**How many labelers do you have? A closer look at gold-standard labels**
 
 
 
@@ -26,13 +26,13 @@ Affiliations:
 
 
 
-1\. University of Chicago, Department of Statistics
+1. University of Chicago, Department of Statistics
 
 
 
-2\. Apple Inc.
+2. Apple Inc.
 
 
 
-3\. Stanford University, Departments of Statistics and Electrical Engineering
+3. Stanford University, Departments of Statistics and Electrical Engineering
 
