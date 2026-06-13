@@ -18,11 +18,16 @@ In this experiment, we consider Peterson et al.’s CIFAR-10H dataset (https://g
 
 ### Source files
 
-* `./original.tsv`: Individual 108\*39 labels.
-* `./resnet-features.txt`: Last layer output of the pretrained ResNet50 model. The features were obtained by passing data in `./original.tsv` into the ResNet 50 model with weights obtained from (https://github.com/huyvnphan/PyTorch\_CIFAR10).
-* `./main.m`: MATLAB source file to reproducing the figures in the paper.
-* `./resnet-calib-bluebirds.pdf` and `./resnet-class-bluebirds.pdf`: outputs of the experiments in Fig 1(a) and Fig 1(b) of the paper.
+* `./cifar10h-counts.npy` and `./cifar10h-probs.npy`: The original label counts for the CIFAR-10H dataset and the empirical probabilities from the counts, which were obtained from (https://github.com/jcpeterson/cifar-10h).
+* `./outputs.mat`, `./pred.mat` and `./true.mat`: Intermediate weight files from the pretrained CIFAR10 outputs.
+* `./resnet-calib.fig`, `./resnet-class.fig`, `./resnet-calib.pdf` and `./resnet-calib.pdf`: Outputs of the MATLAB code.
+* `./resnet-calib-new.fig`, `./resnet-class-new.fig`, `./resnet-calib-new.pdf` and `./resnet-calib-new.pdf`: Modified displaying style files of the above outputs with the same data, which are the final versions appeared in the paper.
+* `./main.py`: Python code applying the pretrained CIFAR10 models (https://github.com/huyvnphan/PyTorch\_CIFAR10) to generate intermediate last layer weights and features.
+* `./main.m`: MATLAB source file reproducing the figures in the paper.
 
 
 
 ### Instructions and Configurations
+
+* Run `./main.py` in Python 3.11 with the necessary packages installed in the code. The code requires external pretrained CIFAR10 models from (https://github.com/huyvnphan/PyTorch\_CIFAR10).
+* Run `./main.m` in MATLAB 2022b or later.
