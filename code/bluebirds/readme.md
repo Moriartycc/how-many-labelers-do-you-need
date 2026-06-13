@@ -2,7 +2,7 @@ This directory contains code and source files for reproducing numerical experime
 
 
 
-\*\*How many labelers do you have? A closer look at gold-standard labels\*\*
+**How many labelers do you have? A closer look at gold-standard labels**
 
 
 
@@ -14,19 +14,19 @@ Affiliations:
 
 
 
-1\. University of Chicago, Department of Statistics
+1. University of Chicago, Department of Statistics
 
 
 
-2\. Apple Inc.
+2. Apple Inc.
 
 
 
-3\. Stanford University, Departments of Statistics and Electrical Engineering
+3. Stanford University, Departments of Statistics and Electrical Engineering
 
 
 
-\### Description
+### Description
 
 The experiments use original data from the BlueBirds dataset (https://github.com/eaplatanios/noisy-labels), a small dataset of 108 images with ResNet features. The task is to classify each image as one of Indigo Bunting or Blue Grosbeak (two similarlooking blue bird species). For each image, we have 39 labels, obtained through Amazon
 
@@ -34,18 +34,18 @@ Mechanical Turk workers. We use an ImageNet pretrained ResNet50 model to generat
 
 
 
-\### Source files
+### Source files
 
-* `./original.tsv': Individual 108\*39 labels.
-* `./resnet-features.txt': Last layer output of the pretrained ResNet50 model. The features were obtained by passing data in `./original.tsv' into the ResNet 50 model with weights obtained from (https://github.com/huyvnphan/PyTorch\_CIFAR10).
-* `./main.m': MATLAB source file to reproducing the figures in the paper.
-* `./resnet-calib-bluebirds.pdf' and `./resnet-class-bluebirds.pdf': outputs of the experiments in Fig 1(a) and Fig 1(b) of the paper.
+* `./original.tsv`: Individual 108\*39 labels.
+* `./resnet-features.txt`: Last layer output of the pretrained ResNet50 model. The features were obtained by passing data in `./original.tsv` into the ResNet 50 model with weights obtained from (https://github.com/huyvnphan/PyTorch\_CIFAR10).
+* `./main.m`: MATLAB source file to reproducing the figures in the paper.
+* `./resnet-calib-bluebirds.pdf` and `./resnet-class-bluebirds.pdf`: outputs of the experiments in Fig 1(a) and Fig 1(b) of the paper.
 
 
 
-\### Instructions and Configurations
+### Instructions and Configurations
 
-* Run `./main.m' in MATLAB 2022b or later. To run the code the user is required to install MOSEK with CVX. See further insturctions in (https://cvxr.com/cvx/doc/mosek.html).
+* Run `./main.m` in MATLAB 2022b or later. To run the code the user is required to install MOSEK with CVX. See further insturctions in (https://cvxr.com/cvx/doc/mosek.html).
 
 
 
