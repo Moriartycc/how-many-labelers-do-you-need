@@ -1,6 +1,5 @@
 load('original.tsv');
 load('resnet-features.txt');
-load('vgg-features.txt');
 [image_ID, image_first, image_all] = unique(original(:, 2));
 [lbler_ID, lbler_first, lbler_all] = unique(original(:, 1));
 n = length(image_ID);
