@@ -1,4 +1,4 @@
-This directory contains code and source files for reproducing numerical experiments in Appendix A for the paper:
+This directory contains code and source files for reproducing the numerical experiments in Appendix A of the paper:
 
 **How many labelers do you have? A closer look at gold-standard labels**
 
@@ -14,20 +14,20 @@ Affiliations:
 
 ### Description
 
-In this experiment, we consider Peterson et al.’s CIFAR-10H dataset (https://github.com/jcpeterson/cifar-10h), which consists of 10,000 images from CIFAR-10 test set with soft labeling in that for each image, we have approximately 50 labels from different annotators. Each 32 × 32 image in the dataset belongs to one of the ten classes airplane, automobile, bird, cat, dog, frog, horse, ship, or truck; labelers assign each image to one of the classes.
+In this experiment, we consider Peterson et al.'s [CIFAR-10H dataset](https://github.com/jcpeterson/cifar-10h), which consists of 10,000 images from the CIFAR-10 test set with approximately 50 labels from different annotators for each image. Each 32-by-32 image belongs to one of ten classes: airplane, automobile, bird, cat, deer, dog, frog, horse, ship, or truck.
 
 ### Source files
 
 * `./cifar10h-counts.npy` and `./cifar10h-probs.npy`: The original label counts for the CIFAR-10H dataset and the empirical probabilities from the counts, which were obtained from (https://github.com/jcpeterson/cifar-10h).
 * `./outputs.mat`, `./pred.mat` and `./true.mat`: Intermediate weight files from the pretrained CIFAR10 outputs.
-* `./resnet-calib.fig`, `./resnet-class.fig`, `./resnet-calib.pdf` and `./resnet-calib.pdf`: Outputs of the MATLAB code.
-* `./resnet-calib-new.fig`, `./resnet-class-new.fig`, `./resnet-calib-new.pdf` and `./resnet-calib-new.pdf`: Modified displaying style files of the above outputs with the same data, which are the final versions appeared in the paper.
-* `./main.py`: Python code applying the pretrained CIFAR10 models (https://github.com/huyvnphan/PyTorch\_CIFAR10) to generate intermediate last layer weights and features.
+* `./resnet-calib.fig`, `./resnet-class.fig`, `./resnet-calib.pdf` and `./resnet-class.pdf`: Outputs of the MATLAB code.
+* `./resnet-calib-new.fig`, `./resnet-class-new.fig`, `./resnet-calib-new.pdf` and `./resnet-class-new.pdf`: Restyled versions of the same outputs; these are the final versions appearing in the paper.
+* `./main.py`: Python code applying the [pretrained CIFAR-10 models](https://github.com/huyvnphan/PyTorch_CIFAR10) to generate intermediate last-layer weights and features.
 * `./main.m`: MATLAB source file reproducing the figures in the paper.
 
 
 
 ### Instructions and Configurations
 
-* Run `./main.py` in Python 3.11 with the necessary packages installed in the code. The code requires external pretrained CIFAR10 models from (https://github.com/huyvnphan/PyTorch\_CIFAR10).
-* Run `./main.m` in MATLAB 2022b or later.
+* Run `./main.py` in Python 3.11 after installing the required packages. The code uses external [pretrained CIFAR-10 models](https://github.com/huyvnphan/PyTorch_CIFAR10).
+* Run `./main.m` in MATLAB R2022b or later.

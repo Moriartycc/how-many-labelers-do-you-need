@@ -1,4 +1,4 @@
-This directory contains code and source files for reproducing numerical experiments for the paper:
+This directory contains code and source files for reproducing the numerical experiments in the paper:
 
 
 
@@ -6,13 +6,13 @@ This directory contains code and source files for reproducing numerical experime
 
 
 
-The experiments and instructions for Sec 5.1 of the paper is in the directory `./bluebirds/`.
+The experiments and instructions for Section 5.1 of the paper are in the directory [`bluebirds/`](./bluebirds/).
 
 
 
-The experiments and instructions for Sec 5.2 of the paper is in the directory `./semisynthetic/`.
+The experiments and instructions for Section 5.2 of the paper are in the directory [`semisynthetic/`](./semisynthetic/).
 
 
 
-The experiments and instructions for Appendix A of the paper is in the directory `./cifar10h/`.
+The experiments and instructions for Appendix A of the paper are in the directory [`cifar10h/`](./cifar10h/).
 

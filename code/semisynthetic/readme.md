@@ -1,4 +1,4 @@
-This directory contains code and source files for reproducing numerical experiments in Sec 5.2 for the paper:
+This directory contains code and source files for reproducing the numerical experiments in Section 5.2 of the paper:
 
 **How many labelers do you have? A closer look at gold-standard labels**
 
@@ -14,14 +14,14 @@ Affiliations:
 
 ### Description
 
-We adapt the original CIFAR-10 dataset, which consists of 6000 32*32 images from each of k=10 classes (60,000 total images). To mimic collecting messy data, rather than the single-label in the base CIFAR-10 data, we construct pseudo-labelers using a pretrained eighteen layer residual network (ResNet18). We fit majority vote and MLE based approaches investigated in our paper. We also investigate the standard Dawid-Skene (DS) and GLAD crowdsourcing methods.
+We adapt the original CIFAR-10 dataset, which consists of 6,000 32-by-32 images from each of 10 classes (60,000 images in total). To mimic the collection of noisy labels, we replace the single label in the base CIFAR-10 data with pseudo-labels generated using a pretrained 18-layer residual network (ResNet18). We fit the majority-vote and MLE-based approaches investigated in the paper. We also investigate the standard Dawid-Skene (DS) and GLAD crowdsourcing methods.
 
 ### Source files
 
 * `./raw_labels.py` and `./aggregation_labels.py`: Python code generating pseudo-labels and aggregating labels using majority vote and crowdsourcing approaches.
 * `./main.py`: Python code generating test errors from the above pseudo-labelers in the file `./all_output.csv`.
 * `./plot.py`: Python code reproducing meshed test error curves in Fig 2(a) and 2(b) from the output of `./main.py`.
-* `./plot-repeats.py`: Python code reproducing test error curves under multiple trials in Fig 2(c) and 2(d) from the output of `.main.py`.
+* `./plot-repeats.py`: Python code reproducing test error curves under multiple trials in Fig 2(c) and 2(d) from the output of `./main.py`.
 * `./all_output_varying_median.csv`: Output file from `./main.py` for reproducing Fig 2(a) and 2(b).
 * `./all_output_105_20repeats.csv`: Output file from `./main.py` for reproducing Fig 2(c).
 * `./all_output_42_20repeats.csv`: Output file from `./main.py` for reproducing Fig 2(d).
@@ -31,6 +31,6 @@ We adapt the original CIFAR-10 dataset, which consists of 6000 32*32 images from
 
 ### Instructions and Configurations
 
-* Run `./main.py` in Python 3.11 with the necessary packages installed in the code. The code requires external pretrained CIFAR10 models from (https://github.com/huyvnphan/PyTorch\_CIFAR10) and crowdsourcing toolkit from (https://github.com/Toloka/crowd-kit).
+* Run `./main.py` in Python 3.11 after installing the required packages. The code uses external [pretrained CIFAR-10 models](https://github.com/huyvnphan/PyTorch_CIFAR10) and the [Crowd-Kit](https://github.com/Toloka/crowd-kit) crowdsourcing toolkit.
 * Run `./plot.py` to reproduce Fig 2(a) and 2(b).
 * Run `./plot-repeats.py` to reproduce Fig 2(c) and 2(d) choosing `./all_output_105_20repeats.csv` or `./all_output_42_20repeats.csv` as the input.
