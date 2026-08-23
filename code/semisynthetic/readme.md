@@ -75,6 +75,6 @@ Intermediate files include `raw_votes.pt`, `task_votes.csv`, `alpha_set.csv`, th
 
 ### Runtime, hardware, and randomness
 
-Plotting the supplied CSV files normally takes less than a minute. A full simulation repeatedly processes all 60,000 CIFAR-10 images and performs 50 training epochs for each method and configuration. Budget many hours to several days for a 20-trial run; a CUDA-capable GPU is strongly recommended, and CPU execution is substantially slower. Allow several gigabytes of free disk space for the CIFAR-10 data, pretrained weights, intermediate files, and outputs.
+Plotting the supplied CSV files normally takes less than a minute. A full simulation repeatedly processes all 60,000 CIFAR-10 images and performs 50 training epochs for each method and configuration. A 20-trial run takes many hours to several days. A CUDA-capable GPU substantially reduces runtime; CPU execution is considerably slower. Several gigabytes of free disk space are needed for the CIFAR-10 data, pretrained weights, intermediate files, and outputs.
 
 The scripts use CUDA automatically when available. Their random-number seed calls are commented out, so newly generated pseudo-labels and trained models will not be bit-for-bit identical to the supplied results. The three supplied CSV files and four supplied PDFs are the archived paper outputs.

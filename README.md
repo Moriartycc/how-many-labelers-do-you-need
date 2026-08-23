@@ -1,22 +1,14 @@
-JASA Reproducibility Materials for the paper:
+# Reproducibility materials
 
-**How many labelers do you have? A closer look at gold-standard labels**
+This repository accompanies the paper **How many labelers do you have? A closer look at gold-standard labels** by Chen Cheng (Department of Statistics, University of Chicago), Hilal Asi (Apple), and John Duchi (Departments of Statistics and Electrical Engineering, Stanford University).
 
-Authors: Chen Cheng^1, Hilal Asi^2 and John Duchi^3
+## Repository contents
 
-Affiliations:
+- [`manuscript/`](./manuscript/) contains the manuscript and supplementary-material source files.
+- [`code/`](./code/) contains the code, data, archived outputs, and instructions for reproducing the computational figures.
+- [`acc-form-2021.docx`](./acc-form-2021.docx) and [`acc-form-2021.pdf`](./acc-form-2021.pdf) provide the completed JASA Author Contributions Checklist.
 
-1. University of Chicago, Department of Statistics
-
-2. Apple Inc.
-
-3. Stanford University, Departments of Statistics and Electrical Engineering
-
-The directory [`manuscript/`](./manuscript/) contains the manuscript source files for the paper.
-
-The directory [`code/`](./code/) contains the source files, data, and instructions for reproducing the experiments in the paper.
-
-The code in this repository is released under the [MIT License](./LICENSE).
+The code is released under the [MIT License](./LICENSE).
 
 ## Software requirements
 

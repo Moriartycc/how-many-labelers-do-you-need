@@ -61,7 +61,7 @@ The script reads `original.tsv` and `resnet-features.txt`, performs the repeated
 
 ### Runtime and randomness
 
-The full script solves approximately 70,000 CVX problems: two fits for each of 35 labeler counts, 100 trials, and 10 folds. Budget many hours or longer on a CPU, depending on the MOSEK installation. The script uses MATLAB's `randperm` and `rand` without setting a seed, so a fresh full run will not be bit-for-bit identical. The two supplied PDF files are the paper outputs and can be inspected without rerunning the experiment.
+The full script solves approximately 70,000 CVX problems: two fits for each of 35 labeler counts, 100 trials, and 10 folds. Runtime is many hours or longer on a CPU, depending on the MOSEK installation. The script uses MATLAB's `randperm` and `rand` without setting a seed, so a fresh full run will not be bit-for-bit identical. The two supplied PDF files are the paper outputs and can be inspected without rerunning the experiment.
 
 
 
