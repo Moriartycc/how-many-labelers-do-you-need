@@ -1,0 +1,13 @@
+# Python 3.11
+torch==2.6.0
+torchvision==0.21.0
+numpy==1.26.4
+pandas==2.2.3
+scipy==1.14.1
+matplotlib==3.9.2
+crowd-kit==1.4.2
+
+# The cifar10_models source repository is not packaged for installation by pip.
+# Clone it separately and add its root directory to PYTHONPATH.
+# Repository: https://github.com/huyvnphan/PyTorch_CIFAR10
+# Revision: 641cac24371b17052b9bb6e56af1c83b5e97cd7f
