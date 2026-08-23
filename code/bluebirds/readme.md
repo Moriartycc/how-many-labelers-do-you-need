@@ -14,7 +14,7 @@ Affiliations:
 
 
 
-1. University of Chicago, Department of Statistics
+1. University of Illinois Urbana-Champaign, Department of Statistics
 
 
 

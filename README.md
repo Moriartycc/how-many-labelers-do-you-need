@@ -1,6 +1,6 @@
 # Reproducibility materials
 
-This repository accompanies the paper **How many labelers do you have? A closer look at gold-standard labels** by Chen Cheng (Department of Statistics, University of Chicago), Hilal Asi (Apple), and John Duchi (Departments of Statistics and Electrical Engineering, Stanford University).
+This repository accompanies the paper **How many labelers do you have? A closer look at gold-standard labels** by Chen Cheng (Department of Statistics, University of Illinois Urbana-Champaign), Hilal Asi (Apple), and John Duchi (Departments of Statistics and Electrical Engineering, Stanford University).
 
 ## Repository contents
 
